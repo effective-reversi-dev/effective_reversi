@@ -17,3 +17,4 @@ __pycache__/
 !/templateLanguages.xml
 !/vcs.xml
 django/mysite/db.sqlite3
+django/.idea
