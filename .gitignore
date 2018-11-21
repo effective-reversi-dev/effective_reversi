@@ -18,3 +18,10 @@ __pycache__/
 !/vcs.xml
 django/mysite/db.sqlite3
 django/.idea
+reversi/.env
+reversi/db.sqlite3
+reversi/jquery-webpack-stats.json
+reversi/webpack-stats.json
+reversi/reversi/settings/local.py
+reversi/assets/images/spritesmith-generated/
+reversi/assets/sass/vendor/spritesmith.scss
