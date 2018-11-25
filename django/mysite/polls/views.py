@@ -1,6 +1,6 @@
 # Create your views here.
-from django.http import HttpResponseRedirect
 from django.db.models import F
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils import timezone
@@ -45,6 +45,7 @@ class ResultsView(generic.DetailView):
         """
         return Question.objects.filter(pub_date__lte=timezone.now())
 
+
 # def index(request):
 #     latest_question_list = Question.objects.order_by('-pub_date')[:5]
 #     context = {'latest_question_list': latest_question_list}
@@ -67,9 +68,9 @@ def vote(request, question_id):
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
         # Redisplay the question voting form.
-        return render(request, 'polls.detail.html', {
+        return render(request, 'polls/detail.html', {
             'question': question,
-            'error_message': "You didn't select a choice.",
+            'error_message': "You didn't select a choice."
         })
     else:
         selected_choice.votes = F('votes') + 1
