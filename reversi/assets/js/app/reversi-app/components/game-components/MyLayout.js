@@ -1,5 +1,5 @@
 import React from 'react';
-import  GoldenLayout from 'golden-layout';
+import GoldenLayout from 'golden-layout';
 
 class MyLayout extends React.Component {
     componentDidMount() {

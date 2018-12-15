@@ -1,3 +1,3 @@
-import MyLayout from './components';
+import App from './components';
 
-export default MyLayout;
+export default App;

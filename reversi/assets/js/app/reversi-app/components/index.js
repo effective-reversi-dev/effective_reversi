@@ -1,3 +1,3 @@
-import MyLayout from './MyLayout';
+import App from './App';
 
-export default MyLayout;
+export default App;
