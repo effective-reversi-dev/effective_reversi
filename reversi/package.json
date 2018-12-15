@@ -51,6 +51,9 @@
     }
   },
   "dependencies": {
+    "@material-ui/core": "^3.6.2",
+    "@material-ui/icons": "^3.0.1",
+    "@material-ui/styles": "^3.0.0-alpha.3",
     "autoprefixer": "^9.3.0",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",
