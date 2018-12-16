@@ -61,6 +61,8 @@ baseConfig[1].plugins = [
     }
   }),
   new webpack.ProvidePlugin({
+    React: "react",
+    ReactDOM: "react-dom",
     $: "jquery",
     jQuery: "jquery",
     "window.jQuery": "jquery",
