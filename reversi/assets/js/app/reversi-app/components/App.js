@@ -1,35 +1,29 @@
 import React from 'react';
-import MyLayout from './game-components/MyLayout';
 
-import AppBar from '@material-ui/core/AppBar';
-import ExitToApp from '@material-ui/icons/ExitToApp';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import GameDrawer from './game-components/GameDrawer';
+import GameGoldenLayout from './game-components/GameGoldenLayout';
+import GameHeader from './game-components/GameHeader';
 
 class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isOpenDrawer: false,
+        }
+        this.handleDrawer = this.handleDrawer.bind(this);
+    }
+
+    handleDrawer(isOpenDrawer) {
+        this.setState({isOpenDrawer: isOpenDrawer})
+    }
+
     render() {
         return(
-            <div className='App'>
-                <AppBar position='static' color='default'>
-                    <Toolbar>
-                        <Grid container justify='space-between' spacing={24}>
-                            <IconButton>
-                                <MenuIcon />
-                            </IconButton>
-                            <Typography variant='h6'>
-                               Effective-Reversi
-                            </Typography>
-                            <IconButton>
-                                <ExitToApp />
-                            </IconButton>
-                        </Grid>
-                    </Toolbar>
-                </AppBar>
-                <MyLayout/>
-            </div>
+            <React.Fragment>
+                <GameHeader handleDrawer={this.handleDrawer} />
+                <GameGoldenLayout />
+                <GameDrawer handleDrawer={this.handleDrawer} isOpenDrawer={this.state.isOpenDrawer} />
+            </React.Fragment>
         );
     }
 }

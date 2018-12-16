@@ -1,7 +1,7 @@
 import React from 'react';
 import GoldenLayout from 'golden-layout';
 
-class MyLayout extends React.Component {
+class GameGoldenLayout extends React.Component {
     componentDidMount() {
         const config = {
             content: [{
@@ -49,14 +49,8 @@ class MyLayout extends React.Component {
     }
 }
 
-//TODO: Test Component should be located in another file
-class TestComponent extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-    render() {
-        return (<h1>{this.props.label}</h1>)
-    }
+const TestComponent = (props) => {
+    return <h1>{props.label}</h1>;
 }
 
-export default MyLayout;
+export default GameGoldenLayout;
