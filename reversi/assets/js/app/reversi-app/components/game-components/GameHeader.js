@@ -21,7 +21,7 @@ class GameHeader extends React.Component {
                         <Typography variant='h6'>
                             Effective-Reversi
                         </Typography>
-                        <IconButton>
+                        <IconButton onClick={()=>this.props.handleExitDialog(true)}>
                             <ExitToApp />
                         </IconButton>
                     </Grid>
