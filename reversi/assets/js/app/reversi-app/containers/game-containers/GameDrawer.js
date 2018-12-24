@@ -11,9 +11,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     onAddPanel: panel => {
         dispatch(addPanel(panel));
-    },
-    shouldRemoveAll: shouldRemoveAll => {
-        dispatch(removeAll(shouldRemoveAll));
     }
 })
 
