@@ -12,17 +12,17 @@ class GameExitDialog extends React.Component {
            <Dialog
             open={this.props.isOpenExitDialog}
             onClose={() => this.props.handleExitDialog(flase)}
-            aria-labelledby="alert-leave-title"
-            aria-describedby="alert-leave-description"
+            aria-labelledby='alert-leave-title'
+            aria-describedby='alert-leave-description'
             >
-                <DialogTitle id="alert-leave-title">{"退出しますか?"}</DialogTitle>
+                <DialogTitle id='alert-leave-title'>退出しますか?</DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-leave-description">
+                    <DialogContentText id='alert-leave-description'>
                         ゲームから退出しますか?退出したら負けになります。
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => this.props.handleExitDialog(false)} color="primary" autoFocus>
+                    <Button onClick={() => this.props.handleExitDialog(false)} color='primary' autoFocus>
                         キャンセル
                     </Button>
                     <Button onClick={() => this.props.handleExitDialog(false)}>
