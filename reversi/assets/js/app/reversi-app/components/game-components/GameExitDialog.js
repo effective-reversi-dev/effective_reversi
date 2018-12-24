@@ -11,7 +11,7 @@ class GameExitDialog extends React.Component {
         return (
            <Dialog
             open={this.props.isOpenExitDialog}
-            onClose={() => this.props.handleExitDialog(flase)}
+            onClose={() => this.props.handleExitDialog(false)}
             aria-labelledby='alert-leave-title'
             aria-describedby='alert-leave-description'
             >
