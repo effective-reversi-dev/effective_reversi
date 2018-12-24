@@ -82,7 +82,7 @@ class GameGoldenLayout extends React.Component {
 
     render() {
         return (
-            <div className='goldenLayout'/>
+            <div className="goldenLayout"/>
         );
     }
 }

@@ -22,7 +22,9 @@ class App extends React.Component {
             <React.Fragment>
                 <GameHeader handleDrawer={this.handleDrawer} />
                 <GameGoldenLayout />
-                <GameDrawer handleDrawer={this.handleDrawer} isOpenDrawer={this.state.isOpenDrawer} />
+                <GameDrawer 
+                    handleDrawer={this.handleDrawer} 
+                    isOpenDrawer={this.state.isOpenDrawer} />
             </React.Fragment>
         );
     }

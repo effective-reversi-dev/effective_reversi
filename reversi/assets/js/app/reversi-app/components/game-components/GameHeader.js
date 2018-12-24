@@ -12,13 +12,13 @@ import MenuIcon from '@material-ui/icons/Menu';
 class GameHeader extends React.Component {
     render() {
         return(
-            <AppBar position='static' color='default'>
+            <AppBar position="static" color="default">
                 <Toolbar>
-                    <Grid container justify='space-between' spacing={24}>
+                    <Grid container justify="space-between" spacing={24}>
                         <IconButton onClick={()=>this.props.handleDrawer(true)}>
                             <MenuIcon />
                         </IconButton>
-                        <Typography variant='h6'>
+                        <Typography variant="h6">
                             Effective-Reversi
                         </Typography>
                         <IconButton>

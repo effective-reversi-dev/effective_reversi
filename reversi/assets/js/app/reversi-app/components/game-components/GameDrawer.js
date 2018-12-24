@@ -45,7 +45,7 @@ class GameDrawer extends React.Component {
         return(
             <Drawer
                 anchor="left" open={this.props.isOpenDrawer}
-                variant='persistent'
+                variant="persistent"
             >
                 <div className={classes.chevronButton}>
                     <IconButton onClick={()=>this.props.handleDrawer(false)}>
