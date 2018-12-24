@@ -1,8 +1,8 @@
 import React from 'react';
 
-import GameDrawer from './game-components/GameDrawer';
-import GameGoldenLayout from './game-components/GameGoldenLayout';
-import GameHeader from './game-components/GameHeader';
+import GameDrawer from './../containers/game-containers/GameDrawer';
+import GameGoldenLayout from './../containers/game-containers/GameGoldenLayout';
+import GameHeader from './../containers/game-containers/GameHeader';
 
 class App extends React.Component {
     constructor(props) {

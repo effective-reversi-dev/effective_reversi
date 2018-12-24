@@ -41,7 +41,7 @@ class GameDrawer extends React.Component {
     }
 
     render() {
-        const { classes } = this.props;
+        const { classes, onAddPanel } = this.props;
         return(
             <Drawer
                 anchor="left" open={this.props.isOpenDrawer}
@@ -54,8 +54,8 @@ class GameDrawer extends React.Component {
                 </div>
                 <Divider />
                 <List>
-                    {['exampleA', 'exampleB', 'exampleC', 'exampleD'].map((text, index) => (
-                        <ListItem button key={text}>
+                    {this.props.panelNames.map((text, index) => (
+                        <ListItem button key={text} onClick={() => onAddPanel(text)}>
                             <ListItemIcon>{this._switchIcon(index)}</ListItemIcon>
                             <ListItemText primary={text} />
                         </ListItem>
@@ -67,6 +67,8 @@ class GameDrawer extends React.Component {
 }
 
 GameDrawer.propTypes = {
+    panelNames: PropTypes.arrayOf(PropTypes.string).isRequired,
     classes: PropTypes.object.isRequired,
 }
+
 export default withStyles(styles)(GameDrawer);
