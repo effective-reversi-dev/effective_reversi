@@ -94,7 +94,6 @@ const TestComponent = (props) => {
 GameGoldenLayout.propTypes = {
     panelNames: PropTypes.arrayOf(PropTypes.string).isRequired,
     addedPanel: PropTypes.string,
-    removeAllPanels: PropTypes.bool,
 }
 
 export default GameGoldenLayout;
