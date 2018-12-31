@@ -40,22 +40,30 @@ class GameDrawer extends React.Component {
         }
     }
 
+    _onAddPanel(text){ // do nothing when the clicked panel is already open
+        const {panelsOpen} = this.props;
+        if(panelsOpen[text] === false){
+            return this.props.onAddPanel(text);
+        } else {
+            return
+        }
+    }
+
     render() {
-        const { classes } = this.props;
         return(
             <Drawer
                 anchor="left" open={this.props.isOpenDrawer}
-                variant='persistent'
+                variant="persistent"
             >
-                <div className={classes.chevronButton}>
+                <div className={this.props.classes.chevronButton}>
                     <IconButton onClick={()=>this.props.handleDrawer(false)}>
                         <ChevronLeftIcon />
                     </IconButton>
                 </div>
                 <Divider />
                 <List>
-                    {['exampleA', 'exampleB', 'exampleC', 'exampleD'].map((text, index) => (
-                        <ListItem button key={text}>
+                    {Object.keys(this.props.panelsOpen).map((text, index) => (
+                        <ListItem button key={text} onClick={() => this._onAddPanel(text)}>
                             <ListItemIcon>{this._switchIcon(index)}</ListItemIcon>
                             <ListItemText primary={text} />
                         </ListItem>
@@ -67,6 +75,9 @@ class GameDrawer extends React.Component {
 }
 
 GameDrawer.propTypes = {
+    panelsOpen: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
+    onAddPanel: PropTypes.func.isRequired,
 }
+
 export default withStyles(styles)(GameDrawer);

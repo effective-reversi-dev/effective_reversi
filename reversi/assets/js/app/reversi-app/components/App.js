@@ -1,9 +1,9 @@
 import React from 'react';
 
-import GameDrawer from './game-components/GameDrawer';
-import GameGoldenLayout from './game-components/GameGoldenLayout';
-import GameHeader from './game-components/GameHeader';
-import GameExitDialog from './game-components/GameExitDialog';
+import GameDrawer from './../containers/game-containers/GameDrawer';
+import GameGoldenLayout from './../containers/game-containers/GameGoldenLayout';
+import GameHeader from './../containers/game-containers/GameHeader';
+import GameExitDialog from './../containers/game-containers/GameExitDialog';
 
 class App extends React.Component {
     constructor(props) {
@@ -29,7 +29,9 @@ class App extends React.Component {
             <React.Fragment>
                 <GameHeader handleDrawer={this.handleDrawer} handleExitDialog={this.handleExitDialog} />
                 <GameGoldenLayout />
-                <GameDrawer handleDrawer={this.handleDrawer} isOpenDrawer={this.state.isOpenDrawer} />
+                <GameDrawer 
+                    handleDrawer={this.handleDrawer} 
+                    isOpenDrawer={this.state.isOpenDrawer} />
                 <GameExitDialog
                     handleExitDialog={this.handleExitDialog}
                     isOpenExitDialog={this.state.isOpenExitDialog}

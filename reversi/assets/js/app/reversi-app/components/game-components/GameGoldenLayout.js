@@ -1,56 +1,99 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import GoldenLayout from 'golden-layout';
 
 class GameGoldenLayout extends React.Component {
-    componentDidMount() {
+    constructor(props){
+        super(props);
+        this.state = {
+            layout: null,
+        }
+    }
+
+    componentWillMount() {
         const config = {
             content: [{
                 type: 'row',
+                isClosable: false,
                 content:[{
-                    type:'react-component',
-                    component: 'test-component',
-                    title: 'exampleA',
-                    props: { label: 'A' },
-                    width: 20,
-                },{
-                    type: 'column',
+                    type: 'row',
                     content:[{
                         type:'react-component',
-                        component: 'test-component',
-                        title: 'exampleB',
-                        props: { label: 'B' },
-                    },{
+                        component: this.props.panelNames[0],
+                        title: this.props.panelNames[0],
+                        props: { label: 'A' },
+                        width: 20,
+                    },
+                    {
+                        type: 'column',
+                        content:[{
+                            type:'react-component',
+                            component: this.props.panelNames[1],
+                            title: this.props.panelNames[1],
+                            props: { label: 'B' },
+                        },
+                        {
+                            type:'react-component',
+                            component: this.props.panelNames[2],
+                            title: this.props.panelNames[2],
+                            props: { label: 'C' },
+                            height: 30,
+                        }]
+                    },
+                    {
                         type:'react-component',
-                        component: 'test-component',
-                        title: 'exampleC',
-                        props: { label: 'C' },
-                        height: 30,
+                        component: this.props.panelNames[3],
+                        title: this.props.panelNames[3],
+                        props: { label: 'D' },
+                        width: 20,
                     }]
-                },{
-                    type:'react-component',
-                    component: 'test-component',
-                    title: 'exampleD',
-                    props: { label: 'D' },
-                    width: 20,
                 }]
             }]
         };
-
-        let layout = new GoldenLayout(config, this.layout);
-        layout.registerComponent('test-component', TestComponent);
+        const layout = new GoldenLayout(config);
+        for(let i=0; i<this.props.panelNames.length; i++){
+            layout.registerComponent(this.props.panelNames[i], TestComponent);
+        }
+        layout.on('itemDestroyed', (item) => this.props.onRemoveItem(item));
+        layout.on('itemCreated', (item) => this.props.onRegisterOpen(item));
         layout.init();
+        this.setState({layout: layout});
+    }
 
+    componentWillReceiveProps(newProps) {
+        const { addedPanel } = newProps;
+        if(addedPanel){
+            const config = {
+                type:'react-component',
+                component: addedPanel,
+                title: addedPanel,
+                props: { label: 'A' },
+                width: 20,
+            }
+            const { layout } = this.state;
+            setTimeout(() => {
+                layout.root.contentItems[0].addChild(config);
+            }, 0); 
+            // not to run componentWillUpdate: https://github.com/golden-layout/golden-layout/pull/348 
+        }
     }
 
     render() {
         return (
-            <div className='goldenLayout'/>
+            <div className="goldenLayout"/>
         );
     }
 }
 
 const TestComponent = (props) => {
     return <h1>{props.label}</h1>;
+}
+
+GameGoldenLayout.propTypes = {
+    panelNames: PropTypes.arrayOf(PropTypes.string).isRequired,
+    addedPanel: PropTypes.string.isRequired,
+    onRemoveItem: PropTypes.func.isRequired,
+    onRegisterOpen: PropTypes.func.isRequired,
 }
 
 export default GameGoldenLayout;
