@@ -51,20 +51,18 @@ class GameGoldenLayout extends React.Component {
             }]
         };
         const layout = new GoldenLayout(config);
-        this.setState({layout: layout});
-    }
-
-    componentDidMount() {
-        const { layout } = this.state;
         for(let i=0; i<this.props.panelNames.length; i++){
             layout.registerComponent(this.props.panelNames[i], TestComponent);
         }
+        layout.on('itemDestroyed', (item) => this.props.onRemoveItem(item));
+        layout.on('itemCreated', (item) => this.props.onRegisterOpen(item));
         layout.init();
+        this.setState({layout: layout});
     }
 
     componentWillReceiveProps(newProps) {
         const { addedPanel } = newProps;
-        if(addedPanel !== this.props.addedPanel){
+        if(addedPanel){
             const config = {
                 type:'react-component',
                 component: addedPanel,
@@ -93,7 +91,9 @@ const TestComponent = (props) => {
 
 GameGoldenLayout.propTypes = {
     panelNames: PropTypes.arrayOf(PropTypes.string).isRequired,
-    addedPanel: PropTypes.string,
+    addedPanel: PropTypes.string.isRequired,
+    onRemoveItem: PropTypes.func.isRequired,
+    onRegisterOpen: PropTypes.func.isRequired,
 }
 
 export default GameGoldenLayout;

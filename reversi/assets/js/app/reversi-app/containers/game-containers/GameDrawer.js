@@ -5,14 +5,14 @@ import GameDrawer from '../../components/game-components/GameDrawer';
 const { addPanel } = panelActions;
 
 const mapStateToProps = state => ({
-    panelNames: state.panels.panelNames,
+    panelsOpen: state.panels.panelsOpen,
 });
 
 const mapDispatchToProps = dispatch => ({
     onAddPanel: panel => {
         dispatch(addPanel(panel));
     }
-})
+});
 
 export default connect(
     mapStateToProps,
