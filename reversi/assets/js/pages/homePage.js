@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
+import devToolsEnhancer from 'remote-redux-devtools';
 
 import App from '../app/reversi-app';
 import rootReducer from '../app/reversi-app/reducers';
@@ -11,7 +12,8 @@ import rootReducer from '../app/reversi-app/reducers';
 
 //ReactDOM.render(<ColorChanger title={title} />, document.getElementById('react-app'));
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, devToolsEnhancer({realtime: true}));
+
 ReactDOM.render(
     <Provider store={store}>
         <App/>
