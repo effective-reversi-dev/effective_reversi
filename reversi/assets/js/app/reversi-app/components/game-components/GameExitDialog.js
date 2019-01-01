@@ -5,6 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { withRouter } from 'react-router';
 
 class GameExitDialog extends React.Component {
     render() {
@@ -25,7 +26,7 @@ class GameExitDialog extends React.Component {
                     <Button onClick={() => this.props.handleExitDialog(false)} color='primary' autoFocus>
                         キャンセル
                     </Button>
-                    <Button onClick={() => this.props.handleExitDialog(false)}>
+                    <Button onClick={() => this.props.history.push('/')}>
                         退出する
                     </Button>
                 </DialogActions>
@@ -34,4 +35,4 @@ class GameExitDialog extends React.Component {
     }
 }
 
-export default GameExitDialog
+export default withRouter(GameExitDialog);
