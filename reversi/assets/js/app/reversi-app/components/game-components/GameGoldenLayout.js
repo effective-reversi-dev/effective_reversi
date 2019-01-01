@@ -5,12 +5,7 @@ import GoldenLayout from 'golden-layout';
 class GameGoldenLayout extends React.Component {
     constructor(props){
         super(props);
-        this.state = {
-            layout: null,
-        }
-    }
 
-    componentWillMount() {
         const config = {
             content: [{
                 type: 'row',
@@ -50,6 +45,7 @@ class GameGoldenLayout extends React.Component {
                 }]
             }]
         };
+
         const layout = new GoldenLayout(config);
         for(let i=0; i<this.props.panelNames.length; i++){
             layout.registerComponent(this.props.panelNames[i], TestComponent);
@@ -57,11 +53,14 @@ class GameGoldenLayout extends React.Component {
         layout.on('itemDestroyed', (item) => this.props.onRemoveItem(item));
         layout.on('itemCreated', (item) => this.props.onRegisterOpen(item));
         layout.init();
-        this.setState({layout: layout});
+
+        this.state = {
+            layout: layout,
+        }
     }
 
-    componentWillReceiveProps(newProps) {
-        const { addedPanel } = newProps;
+    componentDidUpdate(prevProps) {
+        const { addedPanel } = this.props;
         if(addedPanel){
             const config = {
                 type:'react-component',
