@@ -5,12 +5,7 @@ import GoldenLayout from 'golden-layout';
 class GameGoldenLayout extends React.Component {
     constructor(props){
         super(props);
-        this.state = {
-            layout: null,
-        }
-    }
 
-    componentWillMount() {
         const config = {
             content: [{
                 type: 'row',
@@ -62,8 +57,8 @@ class GameGoldenLayout extends React.Component {
         }, 0); 
     }
 
-    componentWillReceiveProps(newProps) {
-        const { addedPanel } = newProps;
+    componentDidUpdate(prevProps) {
+        const { addedPanel } = this.props;
         if(addedPanel){
             const config = {
                 type:'react-component',
