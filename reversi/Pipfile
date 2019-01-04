@@ -36,6 +36,7 @@ psutil = "*"
 ipython = "*"
 channels = "*"
 "pypiwin32" = "*"
+channels-redis = "*"
 
 [requires]
 python_version = "3.6"
