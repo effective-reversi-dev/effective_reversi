@@ -27,7 +27,9 @@ class Game extends React.Component {
     render() {
         return(
             <React.Fragment>
-                <GameHeader handleDrawer={this.handleDrawer} handleExitDialog={this.handleExitDialog} />
+                <div className="layout-header-wrapper">
+                    <GameHeader handleDrawer={this.handleDrawer} handleExitDialog={this.handleExitDialog} />
+                </div>
                 <GameGoldenLayout />
                 <GameDrawer 
                     handleDrawer={this.handleDrawer} 

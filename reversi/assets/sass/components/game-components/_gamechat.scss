@@ -1,0 +1,67 @@
+.tracks {
+	overflow: auto;
+	height: calc(100% - #{$inline-bottom-height});
+}
+
+.balloon {
+	.balloon-user {
+		p {
+			font-size: 10px;
+			margin: 0px;
+		}
+	}
+	.balloon-chat {
+		position: relative;
+		display: inline-block;
+		.balloon-left {
+			position: relative;
+			display: inline-block;
+			margin: 1px 0 5px 15px;
+			padding: 5px 10px;
+			color: #555;
+			font-size: 16px;
+			background:	$balloon-color;
+			border-radius: 15px;
+			p {
+				margin: 0;
+				padding: 0;
+			}
+			:before {
+				content: "";
+				position: absolute;
+				top: 60%;
+				left: -20px;
+				margin-top: -10px;
+				border: 10px solid transparent;
+				border-right: 20px solid $balloon-color;
+			}
+		}
+		.balloon-time {
+			position: relative;
+			float: right;
+			bottom: -20px;
+			p {
+				font-size: 10px;
+				margin: 0px;
+			}
+		}
+	}
+}
+
+.inline-bottom {
+	position: absolute;
+	width: 100%;
+	margin: 5px;
+	bottom: 0;
+	.button {
+		position: absolute;
+		bottom: 0;
+		width: $chat-button-width;
+		margin: 1px 1%;
+	}
+	.item {
+		left: $chat-button-width;
+		margin: 2px 2%;
+		width: calc(95% - #{$chat-button-width});
+	}
+}
