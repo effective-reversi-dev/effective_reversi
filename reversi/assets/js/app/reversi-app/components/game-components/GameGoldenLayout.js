@@ -9,6 +9,9 @@ import store from '../../../../pages/homePage';
 class GameGoldenLayout extends React.Component {
     constructor(props){
         super(props);
+        this.state = {
+            layout: null,
+        }
         this.props.initChatSocket();
     }
 
