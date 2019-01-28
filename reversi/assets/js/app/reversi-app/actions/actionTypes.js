@@ -4,8 +4,11 @@ export default {
     REGISTER_OPEN_PANEL: 'REGISTER_OPEN_PANEL',
     REMOVE_PANEL: 'REMOVE_PANEL',
 
-    // Websocket Management for Chat
-    SETUP_CHAT_SOCKET: 'SETUP_CHAT_SOCKET', // with Saga
+    // Websocket Management
+    SETUP_SOCKET: 'SETUP_SOCKET', // with Saga
+    CLOSE_SOCKET: 'CLOSE_SOCKET', //with Saga
+
+    // WebSocket Management for chat
     REGISTER_CHAT_INFO: 'REGISTER_CHAT_INFO', // with Saga
     CLEAR_CHAT_INFO: 'CLEAR_CHAT_INFO', // with Saga
     SEND_CHAT_INFO: 'SEND_CHAT_INFO', // with Saga

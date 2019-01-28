@@ -1,4 +1,4 @@
-import { eventChannel } from 'redux-saga';
+import { eventChannel, END } from 'redux-saga';
 import { call, fork, put, take, takeEvery } from 'redux-saga/effects';
 
 function initChatSocket(ws) {
@@ -25,7 +25,7 @@ function initChatSocket(ws) {
             if (msg) {
                 switch(wsType) {
                     case 'chat':
-                        return emitter({ type: 'REGISTER_CHAT_INFO', payload: msg });
+                        emitter({ type: 'REGISTER_CHAT_INFO', payload: msg });
                     default:
                         console.log("Websocket Type isn't set yet.");
                         return;
@@ -33,7 +33,8 @@ function initChatSocket(ws) {
             }
         }
         ws.onclose = (e) => {
-            console.error('Websocket closed: ' + wsUrl);
+            console.log('Websocket closed: ' + wsUrl);
+            emitter(END);
         }
         // unsubscribe function
         return () => {
@@ -63,6 +64,11 @@ function* registerMessage(webSocket) {
     }
 }
 
+function* closeWebSocket(webSocket) {
+    const action = yield take(['CLOSE_SOCKET']);
+    webSocket.close();
+}
+
 function* setupWebSocket(action) {
     const wsType = action.payload;
     //TODO: get roomName from Store
@@ -78,6 +84,7 @@ function* setupWebSocket(action) {
             break;
     }
     yield fork(registerMessage, ws);
+    yield fork(closeWebSocket, ws);
     while(true) {
         const action = yield take(channel);
         yield put(action);
@@ -86,7 +93,7 @@ function* setupWebSocket(action) {
 
 const chatSagas = [
     // TODO: add actions for other WebSockets
-    takeEvery(['SETUP_CHAT_SOCKET'], setupWebSocket),
+    takeEvery(['SETUP_SOCKET'], setupWebSocket),
 ]
 
 export default chatSagas;
