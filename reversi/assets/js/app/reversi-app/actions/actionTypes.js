@@ -6,7 +6,7 @@ export default {
 
     // Websocket Management
     SETUP_SOCKET: 'SETUP_SOCKET', // with Saga
-    CLOSE_SOCKET: 'CLOSE_SOCKET', //with Saga
+    CLOSE_CHAT_SOCKET: 'CLOSE_CHAT_SOCKET', //with Saga
 
     // WebSocket Management for chat
     REGISTER_CHAT_INFO: 'REGISTER_CHAT_INFO', // with Saga

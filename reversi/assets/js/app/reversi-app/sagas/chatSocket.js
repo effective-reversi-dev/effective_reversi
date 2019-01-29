@@ -1,5 +1,5 @@
 import { eventChannel, END } from 'redux-saga';
-import { call, fork, put, take, takeEvery } from 'redux-saga/effects';
+import { call, fork, put, take, takeEvery, cancel } from 'redux-saga/effects';
 
 function initChatSocket(ws) {
     return eventChannel(emitter => {
@@ -32,7 +32,7 @@ function initChatSocket(ws) {
                 }
             }
         }
-        ws.onclose = (e) => {
+        ws.onclose = () => {
             console.log('Websocket closed: ' + wsUrl);
             emitter(END);
         }
@@ -44,7 +44,7 @@ function initChatSocket(ws) {
 
 }
 
-function* registerMessage(webSocket) {
+function* registerChatMessage(chatSocket) {
     while(true) {
         const action = yield take(['SEND_CHAT_INFO']);
         const message = action.payload;
@@ -58,15 +58,16 @@ function* registerMessage(webSocket) {
         const time = now.getHours() + ':' + minutesWithZero(now.getMinutes());
         //TODO: get userName from Store
         const info = {userName: 'DummyUser', message: message, time: time}
-        webSocket.send(JSON.stringify({
+        chatSocket.send(JSON.stringify({
             'message': info,
         }));
     }
 }
 
-function* closeWebSocket(webSocket) {
-    const action = yield take(['CLOSE_SOCKET']);
-    webSocket.close();
+function* closeChatSocket(chatSocket, registerMessageTask) {
+    yield take(['CLOSE_CHAT_SOCKET']);
+    yield cancel(registerMessageTask);
+    chatSocket.close();
 }
 
 function* setupWebSocket(action) {
@@ -78,16 +79,15 @@ function* setupWebSocket(action) {
     switch(wsType) {
         case 'chat':
             yield put({ type: 'CLEAR_CHAT_INFO' });
-            break;
+            const registerMessageTask = yield fork(registerChatMessage, ws);
+            yield fork(closeChatSocket, ws, registerMessageTask);
+            while(true) { 
+                const action = yield take(channel);
+                yield put(action);
+            }
         default:
             console.log("Websocket Type isn't set yet.");
             break;
-    }
-    yield fork(registerMessage, ws);
-    yield fork(closeWebSocket, ws);
-    while(true) {
-        const action = yield take(channel);
-        yield put(action);
     }
 }
 

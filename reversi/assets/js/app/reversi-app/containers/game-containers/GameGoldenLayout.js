@@ -4,7 +4,7 @@ import chatActions from '../../actions/chatSocket';
 import GameGoldenLayout from '../../components/game-components/GameGoldenLayout';
 
 const { removePanel, registerOpenPanel } = panelActions;
-const { setupSocket, closeSocket } = chatActions;
+const { setupSocket, closeChatSocket } = chatActions;
 
 const mapStateToProps = state => ({
     panelNames: Object.keys(state.panels.panelsOpen),
@@ -16,7 +16,7 @@ const mapDispatchToProps = dispatch => ({
         dispatch(setupSocket('chat'));
     },
     closeChatSocket: () => {
-        dispatch(closeSocket('chat'));
+        dispatch(closeChatSocket());
     },
     onRemoveItem: item => {
         if(item.config.component){ // to exclude item 'stack'
