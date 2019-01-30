@@ -2,8 +2,6 @@
 
 import os
 
-import users
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
@@ -96,6 +94,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+LOGOUT_REDIRECT_URL = '/'
 
 LANGUAGE_CODE = 'ja-jp'
 
