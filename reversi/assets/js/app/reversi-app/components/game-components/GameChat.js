@@ -23,7 +23,6 @@ class GameChat extends React.Component {
     }
     
     render() {
-        console.log(this.props.chatInfo);
         const items = this.props.chatInfo.map((info, index) => {
             return ( 
                 <div className="balloon" key={index}>
