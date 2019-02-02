@@ -26,6 +26,7 @@ function initChatSocket(ws) {
                 switch(wsType) {
                     case 'chat':
                         emitter({ type: 'REGISTER_CHAT_INFO', payload: msg });
+                        break;
                     default:
                         console.log("Websocket Type isn't set yet.");
                         return;
