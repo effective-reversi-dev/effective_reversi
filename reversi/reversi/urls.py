@@ -7,7 +7,7 @@ from django.urls import path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('jsreverse/', django_js_reverse.views.urls_js, name='js_reverse'),
-    path('', include('exampleapp.urls')),
+    path('', include('reversiapp.urls')),
 ]
 
 if settings.DEBUG:

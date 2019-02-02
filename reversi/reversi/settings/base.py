@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'channels',
 
     'chat',
-    'exampleapp'
+    'reversiapp'
 ]
 
 MIDDLEWARE = [

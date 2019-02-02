@@ -12,7 +12,7 @@
           <h3 class="card-title">Sign up</h3>
           <form method="post" novalidate>
             {% csrf_token %}
-            {% include 'common/form.html' %}
+            {% include 'auth/form.html' %}
             <button type="submit" class="btn btn-primary btn-block">サインアップ</button>
           </form>
         </div>

@@ -12,7 +12,7 @@
           <h3 class="card-title">Log in</h3>
           <form method="post" novalidate>
             {% csrf_token %}
-            {% include 'common/form.html' %}
+            {% include 'auth/form.html' %}
             <button type="submit" class="btn btn-primary btn-block">Log in</button>
           </form>
         </div>
