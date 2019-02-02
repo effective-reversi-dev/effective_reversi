@@ -15,6 +15,13 @@ class GameGoldenLayout extends React.Component {
         this.props.initChatSocket();
     }
 
+    resize() {
+        let h = window.innerHeight, 
+            w = window.innerWidth,
+            ht = $(".layout-header-wrapper").height();
+        this.state.layout.updateSize(w, h-ht);
+    }
+
     componentDidMount() {
         const config = {
             settings:{
@@ -63,6 +70,9 @@ class GameGoldenLayout extends React.Component {
             let h = window.innerHeight,
                 ht = $(".layout-header-wrapper").height();
             $(".goldenLayout").height(h-ht);
+
+            // make size of gl reactive
+            $(window).on('load resize', () => this.resize());
 
             const layout = new GoldenLayout(config, $(".goldenLayout"));
             layout.registerComponent(this.props.panelNames[0], TestComponent);
