@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'channels',
 
     'chat',
-    'reversiapp'
+    'reversiapp',
+    'userconfig'
 ]
 
 MIDDLEWARE = [
@@ -96,9 +97,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGOUT_REDIRECT_URL = '/login'
+LOGOUT_REDIRECT_URL = '/users/login'
 LOGIN_REDIRECT_URL = '/'
-LOGIN_URL = 'login'
+LOGIN_URL = '/users/login'
 
 LANGUAGE_CODE = 'ja-jp'
 

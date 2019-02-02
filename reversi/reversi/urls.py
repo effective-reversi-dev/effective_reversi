@@ -8,6 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('jsreverse/', django_js_reverse.views.urls_js, name='js_reverse'),
     path('', include('reversiapp.urls')),
+    path('users/', include('userconfig.urls'))
 ]
 
 if settings.DEBUG:

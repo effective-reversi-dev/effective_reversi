@@ -1,4 +1,4 @@
-{% extends 'auth/base.html' %}
+{% extends 'userconfig/base.html' %}
 
 {% block body %}
 <div class="container">
@@ -12,7 +12,7 @@
           <h3 class="card-title">Log in</h3>
           <form method="post" novalidate>
             {% csrf_token %}
-            {% include 'auth/form.html' %}
+            {% include 'userconfig/form.html' %}
             <button type="submit" class="btn btn-primary btn-block">Log in</button>
           </form>
         </div>
