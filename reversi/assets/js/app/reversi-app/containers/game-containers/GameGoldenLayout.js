@@ -18,15 +18,11 @@ const mapDispatchToProps = dispatch => ({
     closeChatSocket: () => {
         dispatch(closeChatSocket());
     },
-    onRemoveItem: item => {
-        if(item.config.component){ // to exclude item 'stack'
-            dispatch(removePanel(item.config.component));
-        }
+    onRemoveItem: panelName => {
+        dispatch(removePanel(panelName));
     },
-    onRegisterOpen: item => {
-        if(item.config.component){
-            dispatch(registerOpenPanel(item.config.component));
-        }
+    onRegisterOpen: panelName => {
+        dispatch(registerOpenPanel(panelName));
     }
 });
 

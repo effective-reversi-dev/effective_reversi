@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import GoldenLayout from 'golden-layout';
 
 import GameChat from '../../containers/game-containers/GameChat';
-import { Provider } from 'react-redux';
-import store from '../../../../pages/homePage';
+import glComponentWrapper from '../../components/game-components/glComponentWrapper';
 
 class GameGoldenLayout extends React.Component {
     constructor(props){
@@ -75,13 +74,22 @@ class GameGoldenLayout extends React.Component {
             $(window).on('load resize', () => this.resize());
 
             const layout = new GoldenLayout(config, $(".goldenLayout"));
-            layout.registerComponent(this.props.panelNames[0], TestComponent);
-            layout.registerComponent(this.props.panelNames[1], TestComponent);
-            layout.registerComponent(this.props.panelNames[2], TestComponent);
-            layout.registerComponent(this.props.panelNames[3], withProvider(store)(GameChat));
-            
-            layout.on('itemDestroyed', (item) => this.props.onRemoveItem(item));
-            layout.on('itemCreated', (item) => this.props.onRegisterOpen(item));
+            layout.registerComponent(
+                this.props.panelNames[0], 
+                glComponentWrapper(TestComponent, this.props, 0)
+            );
+            layout.registerComponent(
+                this.props.panelNames[1], 
+                glComponentWrapper(TestComponent, this.props, 1)
+            );
+            layout.registerComponent(
+                this.props.panelNames[2], 
+                glComponentWrapper(TestComponent, this.props, 2)
+            );
+            layout.registerComponent(
+                this.props.panelNames[3], 
+                glComponentWrapper(GameChat, this.props, 3)
+            );
             layout.init();
             this.setState({layout: layout});
         }, 0);
@@ -101,7 +109,6 @@ class GameGoldenLayout extends React.Component {
             setTimeout(() => {
                 layout.root.contentItems[0].addChild(config);
             }, 0); 
-            // not to run componentWillUpdate: https://github.com/golden-layout/golden-layout/pull/348 
         }
     }
 
@@ -124,27 +131,13 @@ const TestComponent = (props) => {
     return <h1>{props.label}</h1>;
 }
 
-function withProvider(store) {
-    return (RegisteredComponent) => {
-        return class extends React.Component {
-            render() {
-                return (
-                    <Provider store={store}>
-                        <RegisteredComponent />
-                    </Provider>
-                )
-            }
-        }
-    }
-}
-
 GameGoldenLayout.propTypes = {
     panelNames: PropTypes.arrayOf(PropTypes.string).isRequired,
     addedPanel: PropTypes.string.isRequired,
     initChatSocket: PropTypes.func.isRequired,
     closeChatSocket: PropTypes.func.isRequired,
     onRemoveItem: PropTypes.func.isRequired,
-    onRegisterOpen: PropTypes.func.isRequired,
+    onRegisterOpen: PropTypes.func.isRequired
 }
 
 export default GameGoldenLayout;
