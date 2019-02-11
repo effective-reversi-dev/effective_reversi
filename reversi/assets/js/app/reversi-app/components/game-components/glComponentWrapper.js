@@ -17,7 +17,7 @@ const glComponentWrapper = (RegisteredComponent, props, idx) => {
         render() {
             return (
                 <Provider store={store}>
-                    <RegisteredComponent/>
+                    <RegisteredComponent {...this.props}/>
                 </Provider>
             )
         }
