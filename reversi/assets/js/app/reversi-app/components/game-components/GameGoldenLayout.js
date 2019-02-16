@@ -19,6 +19,8 @@ class GameGoldenLayout extends React.Component {
             w = window.innerWidth,
             ht = $(".layout-header-wrapper").height();
         this.state.layout.updateSize(w, h-ht);
+        $(".goldenLayout").height(h-ht);
+        $(".goldenLayout").width(w);
     }
 
     componentDidMount() {
