@@ -37,9 +37,11 @@ INSTALLED_APPS = [
     'django_js_reverse',
     'webpack_loader',
     'import_export',
+    'channels',
 
     'common',
     'users',
+    'chat',
 ]
 
 MIDDLEWARE = [
@@ -72,6 +74,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'reversi.wsgi.application'
+ASGI_APPLICATION = 'reversi.routing.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {

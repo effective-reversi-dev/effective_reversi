@@ -2,11 +2,33 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import GoldenLayout from 'golden-layout';
 
+import GameChat from '../../containers/game-containers/GameChat';
+import glComponentWrapper from '../../components/game-components/glComponentWrapper';
+
 class GameGoldenLayout extends React.Component {
     constructor(props){
         super(props);
+        this.state = {
+            layout: null,
+        }
+        this.props.initChatSocket();
+    }
 
+    resize() {
+        let h = window.innerHeight, 
+            w = window.innerWidth,
+            ht = $(".layout-header-wrapper").height();
+        this.state.layout.updateSize(w, h-ht);
+        $(".goldenLayout").height(h-ht);
+        $(".goldenLayout").width(w);
+    }
+
+    componentDidMount() {
         const config = {
+            settings:{
+                showPopoutIcon: false,
+                showMaximiseIcon: false,
+            },
             content: [{
                 type: 'row',
                 isClosable: false,
@@ -39,22 +61,40 @@ class GameGoldenLayout extends React.Component {
                         type:'react-component',
                         component: this.props.panelNames[3],
                         title: this.props.panelNames[3],
-                        props: { label: 'D' },
                         width: 20,
                     }]
                 }]
             }]
         };
         setTimeout(() => {
-            const layout = new GoldenLayout(config);
-            for(let i=0; i<this.props.panelNames.length; i++){
-                layout.registerComponent(this.props.panelNames[i], TestComponent);
-            }
-            layout.on('itemDestroyed', (item) => this.props.onRemoveItem(item));
-            layout.on('itemCreated', (item) => this.props.onRegisterOpen(item));
+            // truncate the bottom of the screen
+            let h = window.innerHeight,
+                ht = $(".layout-header-wrapper").height();
+            $(".goldenLayout").height(h-ht);
+
+            // make size of gl reactive
+            $(window).on('load resize', () => this.resize());
+
+            const layout = new GoldenLayout(config, $(".goldenLayout"));
+            layout.registerComponent(
+                this.props.panelNames[0], 
+                glComponentWrapper(TestComponent, this.props, 0)
+            );
+            layout.registerComponent(
+                this.props.panelNames[1], 
+                glComponentWrapper(TestComponent, this.props, 1)
+            );
+            layout.registerComponent(
+                this.props.panelNames[2], 
+                glComponentWrapper(TestComponent, this.props, 2)
+            );
+            layout.registerComponent(
+                this.props.panelNames[3], 
+                glComponentWrapper(GameChat, this.props, 3)
+            );
             layout.init();
             this.setState({layout: layout});
-        }, 0); 
+        }, 0);
     }
 
     componentDidUpdate(prevProps) {
@@ -71,14 +111,14 @@ class GameGoldenLayout extends React.Component {
             setTimeout(() => {
                 layout.root.contentItems[0].addChild(config);
             }, 0); 
-            // not to run componentWillUpdate: https://github.com/golden-layout/golden-layout/pull/348 
         }
     }
 
     componentWillUnmount() {
-        const { layout } = this.state
+        this.props.closeChatSocket();
+        const { layout } = this.state;
         setTimeout(() => {
-            layout.destroy()
+            layout.destroy();
         }, 0);
     }
 
@@ -96,8 +136,10 @@ const TestComponent = (props) => {
 GameGoldenLayout.propTypes = {
     panelNames: PropTypes.arrayOf(PropTypes.string).isRequired,
     addedPanel: PropTypes.string.isRequired,
+    initChatSocket: PropTypes.func.isRequired,
+    closeChatSocket: PropTypes.func.isRequired,
     onRemoveItem: PropTypes.func.isRequired,
-    onRegisterOpen: PropTypes.func.isRequired,
+    onRegisterOpen: PropTypes.func.isRequired
 }
 
 export default GameGoldenLayout;
