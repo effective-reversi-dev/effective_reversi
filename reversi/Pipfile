@@ -17,6 +17,7 @@ pylint = "*"
 pylint-django = "*"
 pylint-celery = "*"
 safety = "*"
+v = {version = "*", editable = true}
 
 [packages]
 django = "*"
@@ -37,6 +38,7 @@ ipython = "*"
 channels = "*"
 "pypiwin32" = "*"
 channels-redis = "*"
+django-widgets-improved = "*"
 
 [requires]
 python_version = "3.6"

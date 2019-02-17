@@ -2,9 +2,6 @@
 
 import os
 
-from decouple import config  # noqa
-
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
@@ -22,7 +19,7 @@ ADMINS = (
     ('Admin', 'polestar1592@yahoo.co.jp'),
 )
 
-AUTH_USER_MODEL = 'users.User'
+# AUTH_USER_MODEL = 'users.User'
 
 ALLOWED_HOSTS = []
 
@@ -33,14 +30,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'widget_tweaks',
     'django_js_reverse',
     'webpack_loader',
     'import_export',
     'channels',
 
     'common',
-    'users',
+    # 'users',
     'chat',
 ]
 
@@ -72,7 +69,6 @@ TEMPLATES = [
         },
     },
 ]
-
 WSGI_APPLICATION = 'reversi.wsgi.application'
 ASGI_APPLICATION = 'reversi.routing.application'
 CHANNEL_LAYERS = {
@@ -99,9 +95,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'en-us'
+LOGOUT_REDIRECT_URL = '/login'
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = 'login'
 
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'ja-jp'
+
+TIME_ZONE = 'Asia/Tokyo'
 
 USE_I18N = True
 
