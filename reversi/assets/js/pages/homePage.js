@@ -5,14 +5,9 @@ import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-import App from '../app/reversi-app';
-import rootReducer from '../app/reversi-app/reducers';
-import rootSaga from '../app/reversi-app/sagas/index';
-
-// const title = 'It really does work! (this section is rendered by React, ' +
-//               "change the app's name below to test hot reloading)";
-
-//ReactDOM.render(<ColorChanger title={title} />, document.getElementById('react-app'));
+import App from '../app/reversi-app/App';
+import rootReducer from '../app/reversi-app';
+import rootSaga from '../app/reversi-app/rootSaga';
 
 const sagaMiddleware = createSagaMiddleware();
 
