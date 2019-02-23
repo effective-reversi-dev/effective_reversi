@@ -9,7 +9,7 @@ class TopPage extends React.Component {
                 <li><Link to='/'>TopPage</Link></li>
                 <li><Link to='/game'>Game</Link></li>
                 {/* 下記リンクではログアウトするためにServer側にHttpリクエストを送出したい。故にアンカータグ */}
-                <li><a href='/logout'>Logout</a></li>
+                <li><a href='/users/logout'>Logout</a></li>
             </ul>
         );
     }

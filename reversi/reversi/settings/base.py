@@ -36,9 +36,9 @@ INSTALLED_APPS = [
     'import_export',
     'channels',
 
-    'common',
-    # 'users',
     'chat',
+    'reversiapp',
+    'userconfig'
 ]
 
 MIDDLEWARE = [
@@ -95,9 +95,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGOUT_REDIRECT_URL = '/login'
+LOGOUT_REDIRECT_URL = '/users/login'
 LOGIN_REDIRECT_URL = '/'
-LOGIN_URL = 'login'
+LOGIN_URL = '/users/login'
 
 LANGUAGE_CODE = 'ja-jp'
 
@@ -126,8 +126,3 @@ WEBPACK_LOADER = {
         'STATS_FILE': 'jquery-webpack-stats.json',
     }
 }
-
-# Celery
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'

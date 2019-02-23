@@ -22,4 +22,4 @@ def signup(request):
             return redirect('/')
     else:
         sign_up_form = SignUpForm()
-    return render(request, 'auth/signup.html', {'form': sign_up_form})
+    return render(request, 'userconfig/signup.html', {'form': sign_up_form})

@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse, resolve
 
-from exampleapp.view.signup import signup, SignUpForm
+from userconfig.view.signup import signup, SignUpForm
 
 
 class SignUpTests(TestCase):
@@ -14,7 +14,7 @@ class SignUpTests(TestCase):
         self.assertEquals(self.response.status_code, 200)
 
     def test_signup_url_resolves_signup_view(self):
-        view = resolve('/signup/')
+        view = resolve('/users/signup/')
         self.assertEquals(view.func, signup)
 
     def test_contains_form(self):

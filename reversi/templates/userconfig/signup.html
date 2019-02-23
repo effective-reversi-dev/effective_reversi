@@ -1,4 +1,4 @@
-{% extends 'auth/base.html' %}
+{% extends 'userconfig/base.html' %}
 
 {% block body %}
 <div class="container">
@@ -12,12 +12,12 @@
           <h3 class="card-title">Sign up</h3>
           <form method="post" novalidate>
             {% csrf_token %}
-            {% include 'common/form.html' %}
+            {% include 'userconfig/form.html' %}
             <button type="submit" class="btn btn-primary btn-block">サインアップ</button>
           </form>
         </div>
         <div class="card-footer text-muted text-center">
-          既に登録済みの場合はこちら <a href="../login">Log in</a>
+          既に登録済みの場合はこちら <a href="{% url 'login' %}">Log in</a>
         </div>
       </div>
     </div>
