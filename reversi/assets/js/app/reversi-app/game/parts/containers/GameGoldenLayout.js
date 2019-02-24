@@ -1,11 +1,10 @@
 import { connect } from 'react-redux';
 import { panelActions } from '../modules';
-// TODO: change directory using webapi
 import { chatActions } from '../../panels/gamechat/modules'; 
 import GameGoldenLayout from '../components/GameGoldenLayout';
 
 const { removePanel, registerOpenPanel } = panelActions;
-const { setupSocket, closeChatSocket } = chatActions;
+const { setupGameSocket, closeChatSocket } = chatActions;
 
 const mapStateToProps = state => ({
     panelNames: Object.keys(state.game.parts.panelsOpen),
@@ -14,7 +13,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     initChatSocket: () => {
-        dispatch(setupSocket('chat'));
+        dispatch(setupGameSocket('chat'));
     },
     closeChatSocket: () => {
         dispatch(closeChatSocket());
