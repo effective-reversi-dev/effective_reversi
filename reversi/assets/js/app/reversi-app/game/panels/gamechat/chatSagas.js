@@ -1,5 +1,5 @@
 import { eventChannel, END } from 'redux-saga';
-import { call, fork, put, take, takeEvery, cancel } from 'redux-saga/effects';
+import { call, fork, put, take, takeEvery, cancel, select } from 'redux-saga/effects';
 
 function initChatSocket(ws) {
     return eventChannel(emitter => {
@@ -73,8 +73,7 @@ function* closeChatSocket(chatSocket, registerMessageTask) {
 
 function* setupWebSocket(action) {
     const wsType = action.payload;
-    //TODO: get roomName from Store
-    const roomName = 'DummyRoom';
+    const roomName = yield select(state => state.game.parts.roomName);
     const ws = new WebSocket(`ws://${window.location.host}/ws/${wsType}/${roomName}/`);
     const channel = yield call(initChatSocket, ws);
     switch(wsType) {

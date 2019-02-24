@@ -14,6 +14,7 @@ export const panelActions = createActions(
 const initialState = {
     panelsOpen: {'情報': true, 'ゲーム画面': true, '戦況': true, 'チャット': true},
     addedPanel: '',
+    roomName: 'dummyRoom' // TODO: change proper room name
 };
 
 export default handleActions({
