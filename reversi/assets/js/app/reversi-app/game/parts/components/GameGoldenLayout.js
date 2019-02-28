@@ -75,7 +75,6 @@ class GameGoldenLayout extends React.Component {
     }
 
     componentWillUnmount() {
-        this.props.closeChatSocket();
         const { layout } = this.state;
         setTimeout(() => {
             layout.destroy();
@@ -97,7 +96,6 @@ GameGoldenLayout.propTypes = {
     panelNames: PropTypes.arrayOf(PropTypes.string).isRequired,
     addedPanel: PropTypes.string.isRequired,
     initChatSocket: PropTypes.func.isRequired,
-    closeChatSocket: PropTypes.func.isRequired,
     onRemoveItem: PropTypes.func.isRequired,
     onRegisterOpen: PropTypes.func.isRequired
 }

@@ -5,7 +5,12 @@ const ADD_PANEL = 'ADD_PANEL';
 const REGISTER_OPEN_PANEL = 'REGISTER_OPEN_PANEL';
 const REMOVE_PANEL = 'REMOVE_PANEL';
 
+// Websocket Management
+export const SETUP_GAME_SOCKET = 'SETUP_GAME_SOCKET'; // with Saga
+
+
 export const panelActions = createActions(
+    SETUP_GAME_SOCKET, 
     ADD_PANEL,
     REGISTER_OPEN_PANEL,
     REMOVE_PANEL

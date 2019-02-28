@@ -1,10 +1,10 @@
+import { SETUP_GAME_SOCKET } from "../../game/parts/modules";
 import {
-    SETUP_GAME_SOCKET,
     CLOSE_CHAT_SOCKET,
     REGISTER_CHAT_INFO,
     SEND_CHAT_INFO,
     CLEAR_CHAT_INFO
-} from "./../../game/panels/gamechat/modules";
+} from "../../game/panels/gamechat/modules";
 
 /**
  * Configuration for actions related to WebSocket connection. There's type check for each value and

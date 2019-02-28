@@ -13,6 +13,10 @@ class GameChat extends React.Component {
         this.onClickButton = this.onClickButton.bind(this);
     }
 
+    componentWillUnmount() {
+        this.props.closeChatSocket();
+    }
+
     onClickButton(){
         if (this.state.message){
             this.props.onSendChatInfo(this.state.message);
@@ -70,6 +74,7 @@ class GameChat extends React.Component {
 
 GameChat.propTypes = {
     chatInfo: PropTypes.arrayOf(PropTypes.object).isRequired,
+    closeChatSocket: PropTypes.func.isRequired,
     onSendChatInfo: PropTypes.func.isRequired,
 }
 export default GameChat;
