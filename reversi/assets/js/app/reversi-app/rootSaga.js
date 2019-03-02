@@ -1,12 +1,12 @@
 import { all } from 'redux-saga/effects'
 
-import chatSagas from './game/panels/gamechat/chatSagas';
+import webSocketSagas from './api/websocket/sagas';
 
 export default function* rootSaga() {
-    yield all([
+    yield all(...[
         Object.assign(
             [],
-            chatSagas
+            webSocketSagas
         )
     ])
 }
