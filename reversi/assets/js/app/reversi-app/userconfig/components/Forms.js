@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';;
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-
+import { withCookies } from'react-cookie'
 class Forms extends React.Component {
     constructor(props){
         super(props);
@@ -32,6 +32,7 @@ class Forms extends React.Component {
             this.setState(Object.assign(this.state.currentConfigs, changedConfig))
         }
         const currentConfigs = this.state.currentConfigs
+        const { cookies } = this.props;
         return (
             <React.Fragment>
                 <div className="form-group">
@@ -42,7 +43,7 @@ class Forms extends React.Component {
                         onChange={(e) => { changeConfigs({displayName:e.target.value})}}
                         margin="normal"
                     />
-                    <small class="form-text text-muted">現在の設定値:</small>
+                    <small className="form-text text-muted">現在の設定: [{cookies.get('display_name')}]</small>
                 </div>
                 <div className="form-group">
                     <TextField
@@ -52,7 +53,7 @@ class Forms extends React.Component {
                         onChange={(e) => { changeConfigs({emailAddress:e.target.value})}}
                         margin="normal"
                     />
-                    <small class="form-text text-muted">現在の設定値:</small>
+                    <small className="form-text text-muted">現在の設定: [{cookies.get('email')}]</small>
                 </div>
                 <div>
                     <Button 
@@ -60,7 +61,7 @@ class Forms extends React.Component {
                         color="primary"
                         className="button"
                         onClick={this.onClickButton}>
-                        送信
+                        変更内容を送信
                     </Button>
                 </div>
             </React.Fragment>
@@ -69,8 +70,7 @@ class Forms extends React.Component {
 }
 
 // UserConfigs.propTypes = {
-//     userInfo: PropTypes.object.isRequired,
 //     requestStatus:PropTypes.object.isRequired,
 //     onSendUserInfoChange: PropTypes.func.isRequired,
 // }
-export default Forms;
+export default withCookies(Forms);

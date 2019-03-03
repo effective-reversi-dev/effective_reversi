@@ -1,5 +1,6 @@
 import React from 'react';
 import Forms from './components/Forms';
+import { CookiesProvider } from 'react-cookie';
 
 class UserConfig extends React.Component {
     constructor(props){
@@ -24,21 +25,17 @@ class UserConfig extends React.Component {
     }
     
     render() {
-        const changeConfigs = (changedConfig) =>{
-            this.setState(Object.assign(this.state.currentConfigs, changedConfig))
-        }
-        const currentConfigs = this.state.currentConfigs
         return (
             <React.Fragment>
-                <div class="container">
-                    <h1 class="text-center logo my-4">
+                <div className="container">
+                    <h1 className="text-center logo my-4">
                         Effective Reversi
                     </h1>
-                    <div class="row justify-content-center">
-                        <div class="col-lg-8 col-md-10 col-sm-12">
-                            <div class="card">
-                            <div class="card-body">
-                                <h3 class="card-title">ユーザ設定</h3>
+                    <div className="row justify-content-center">
+                        <div className="col-lg-8 col-md-10 col-sm-12">
+                            <div className="card">
+                            <div className="card-body">
+                                <h3 className="card-title">ユーザ設定</h3>
                                 <Forms/>
                             </div>
                             </div>
