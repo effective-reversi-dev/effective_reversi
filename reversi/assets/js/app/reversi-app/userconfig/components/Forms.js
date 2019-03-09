@@ -1,8 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';;
+import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { withCookies } from'react-cookie'
+import { withCookies } from'react-cookie';
+
 class Forms extends React.Component {
     constructor(props){
         super(props);
@@ -17,7 +18,7 @@ class Forms extends React.Component {
 
     onClickButton(){
         if (this.state.currentConfigs){
-//            this.props.onSendUserInfoChange(this.state.currentConfigs);
+            this.props.onSendUserInfoChange(this.state.currentConfigs);
             this.setState({
                 currentConfigs: {
                     displayName:"",
@@ -35,6 +36,12 @@ class Forms extends React.Component {
         const { cookies } = this.props;
         return (
             <React.Fragment>
+                <div>
+                    {this.props.requestStatus.errMsg}
+                </div>
+                <div>
+                    {this.props.requestStatus.status}
+                </div>
                 <div className="form-group">
                     <TextField
                         value={currentConfigs.displayName}
@@ -69,8 +76,8 @@ class Forms extends React.Component {
     }
 }
 
-// UserConfigs.propTypes = {
-//     requestStatus:PropTypes.object.isRequired,
-//     onSendUserInfoChange: PropTypes.func.isRequired,
-// }
+Forms.propTypes = {
+     requestStatus:PropTypes.object.isRequired,
+     onSendUserInfoChange: PropTypes.func.isRequired,
+}
 export default withCookies(Forms);

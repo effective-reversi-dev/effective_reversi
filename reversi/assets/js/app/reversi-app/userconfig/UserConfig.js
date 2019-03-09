@@ -1,27 +1,9 @@
 import React from 'react';
-import Forms from './components/Forms';
-import { CookiesProvider } from 'react-cookie';
+import Forms from './containers/Forms';
 
 class UserConfig extends React.Component {
     constructor(props){
         super(props);
-        this.state = {
-            currentConfigs: {
-                displayName:""
-            },
-        }
-        this.onClickButton = this.onClickButton.bind(this);
-    }
-
-    onClickButton(){
-        if (this.state.currentConfigs){
-//            this.props.onSendUserInfoChange(this.state.currentConfigs);
-            this.setState({
-                currentConfigs: {
-                    displayName:""
-                },
-            })
-        };
     }
     
     render() {
