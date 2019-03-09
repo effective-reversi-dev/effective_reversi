@@ -8,10 +8,6 @@
     <title>{% block title %}{% endblock %}</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- React側でフォームを利用するためのcsrfトークン -->
-    <meta name="csrf-token" content='{% csrf_token %}'>
-
     <!-- golden-layout custom -->
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js">
     </script>
@@ -25,6 +21,7 @@
 
   <body>
     <!-- Body Content -->
+    {% csrf_token %}
     {% block body %}{% endblock %}
 
     {% render_bundle 'main' 'js' 'JQUERY' %}

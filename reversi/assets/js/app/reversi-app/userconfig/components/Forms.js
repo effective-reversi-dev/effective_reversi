@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { withCookies } from'react-cookie';
+import { REQUEST_STATUS } from '../modules'
 
 class Forms extends React.Component {
     constructor(props){
@@ -14,18 +15,35 @@ class Forms extends React.Component {
             },
         }
         this.onClickButton = this.onClickButton.bind(this);
+        this.presentResponseStatus = this.presentRequestStatus.bind(this)
     }
 
     onClickButton(){
-        if (this.state.currentConfigs){
-            this.props.onSendUserInfoChange(this.state.currentConfigs);
-            this.setState({
-                currentConfigs: {
-                    displayName:"",
-                    emailAddress:""
-                },
-            })
-        };
+        this.props.onSendUserInfoChange(this.state.currentConfigs);
+        this.setState({
+            currentConfigs: {
+                displayName:"",
+                emailAddress:""
+            },
+        });
+    }
+
+    presentRequestStatus(){
+        if(this.props.requestStatus.status == REQUEST_STATUS.SUCCESS){ 
+            return (
+                <div className='form-control is-valid'>
+                    変更が完了しました。
+                </div>
+            )
+        }else if(this.props.requestStatus.status == REQUEST_STATUS.FAIL){
+            return (
+                <div className='alert alert-danger'>
+                        {this.props.requestStatus.errMsg}
+                </div>
+            )
+        }else{
+            return(<div/>)
+        }
     }
     
     render() {
@@ -36,12 +54,7 @@ class Forms extends React.Component {
         const { cookies } = this.props;
         return (
             <React.Fragment>
-                <div>
-                    {this.props.requestStatus.errMsg}
-                </div>
-                <div>
-                    {this.props.requestStatus.status}
-                </div>
+                {this.presentRequestStatus()}
                 <div className="form-group">
                     <TextField
                         value={currentConfigs.displayName}
