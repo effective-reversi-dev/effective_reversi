@@ -2,11 +2,11 @@ import { handleActions, createActions } from 'redux-actions';
 
 // Window panels management
 const REQUEST_CHANGE = 'REQUEST_CHANGE';
-export const RECIEVE_CHANGE = 'RECIEVE_CHANGE';
+export const RECEIVE_CHANGE = 'RECEIVE_CHANGE';
 
 export const userConfigActions = createActions(
     REQUEST_CHANGE, 
-    RECIEVE_CHANGE
+    RECEIVE_CHANGE
 );
 
 export const REQUEST_STATUS = {
@@ -20,7 +20,7 @@ const initialState = {
 };
 
 export default handleActions({
-    [userConfigActions.recieveChange]: (state, action) => {
+    [userConfigActions.receiveChange]: (state, action) => {
         return Object.assign(
             {},
             state,

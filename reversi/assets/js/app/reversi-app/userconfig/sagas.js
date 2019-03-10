@@ -1,18 +1,18 @@
 import {userConfigActions, REQUEST_STATUS} from './modules'
 import {call, put, take} from 'redux-saga/effects';
-const {recieveChange, requestChange} =  userConfigActions
+const {receiveChange, requestChange} =  userConfigActions
 
 const ERROR_EMPTY_PAYLOAD = "変更内容が入力されていません。"
 const ERROR_SERVER_ERROR = "サーバとの通信に失敗しました。"
 
-const USER_CHANAGE_URL = "users/change_user/"
+const USER_CHANGE_URL = "users/change_user/"
 
 function* userConfigSaga(){
     while(true) {
         const action = yield take([requestChange]);
         const currentConfigs = action.payload;
         if(currentConfigs.displayName == "" && currentConfigs.emailAddress == ""){
-            yield put(recieveChange(
+            yield put(receiveChange(
                 {
                     status: REQUEST_STATUS.FAIL,
                     errMsg: ERROR_EMPTY_PAYLOAD
@@ -20,9 +20,9 @@ function* userConfigSaga(){
         }else{
             const {payload, err} = yield call(fetchChangeResponse, currentConfigs);
             if(payload && !err){
-                yield put(recieveChange(payload));
+                yield put(receiveChange(payload));
             }else{
-                yield put(recieveChange(err));
+                yield put(receiveChange(err));
             }
         }
     }
@@ -36,7 +36,7 @@ async function fetchChangeResponse(currentConfigs) {
     data.append('emailAddress', currentConfigs.emailAddress);
     // ここでcsrfTokenを詰める。
     data.append('csrfmiddlewaretoken', csrfToken)
-    return fetch(USER_CHANAGE_URL, {
+    return fetch(USER_CHANGE_URL, {
         method : "POST",
         body:data,
         credentials: 'same-origin'
