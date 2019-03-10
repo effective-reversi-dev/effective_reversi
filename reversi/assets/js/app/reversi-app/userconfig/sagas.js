@@ -29,11 +29,12 @@ function* userConfigSaga(){
 }
 
 async function fetchChangeResponse(currentConfigs) {
+    // ページの body 内にinput要素として置いてあるcsrfTokenを取りに行く。
     const csrfToken = document.getElementsByName('csrfmiddlewaretoken').item(0).value;
     const data = new FormData();
     data.append('displayName', currentConfigs.displayName);;
     data.append('emailAddress', currentConfigs.emailAddress);
-    // add form input from hidden input elsewhere on the page
+    // ここでcsrfTokenを詰める。
     data.append('csrfmiddlewaretoken', csrfToken)
     return fetch(USER_CHANAGE_URL, {
         method : "POST",
