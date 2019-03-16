@@ -12,7 +12,6 @@ django-naomi = "*"
 isort = "*"
 model-mommy = "*"
 pre-commit = "*"
-prospector = {extras = ["with-vulture"]}
 pylint = "*"
 pylint-django = "*"
 pylint-celery = "*"
@@ -39,6 +38,7 @@ ipython = "*"
 channels = "*"
 channels-redis = "*"
 django-widgets-improved = "*"
+prospector = "*"
 
 [requires]
 python_version = "3.6"
