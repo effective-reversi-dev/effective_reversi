@@ -9,7 +9,7 @@ const mapStateToProps = state => ({
     chatInfo: state.game.panels.chat.chatInfo,
 });
 
-const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = dispatch => ({
     closeChatSocket: () => {
         dispatch(closeChatSocket());
     },
