@@ -1,3 +1,5 @@
+import moment from 'moment';
+import 'moment-timezone';
 import React from 'react';
 import { cleanup, fireEvent, render } from 'react-testing-library';
 
@@ -43,15 +45,14 @@ describe('testing Chat', () => {
     });
 
     test('should send message and time at container level', () => {
-        const dispatch = jest.fn();
-        const DATE_TO_USE = new Date('2018');
-        global.Date = jest.fn(() => DATE_TO_USE);
+        const dispatch = jest.fn(),
+            time = moment().tz('Asia/Tokyo').format('HH:mm');
         mapDispatchToProps(dispatch).onSendChatInfo(message);
         expect(dispatch).toHaveBeenCalledWith(
             {
                 payload: {
                     message,
-                    time: '9:00'
+                    time
                 },
                 type: SEND_CHAT_INFO
             }

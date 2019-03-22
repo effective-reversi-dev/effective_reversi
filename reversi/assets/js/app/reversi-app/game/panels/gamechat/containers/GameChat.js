@@ -1,6 +1,7 @@
+import moment from 'moment';
+import 'moment-timezone';
 import { connect } from 'react-redux';
 import { chatActions } from '../modules';
-import { minutesWithZero } from '../../../../api/websocket/utils';
 import GameChat from '../components/GameChat';
 
 const { sendChatInfo, closeChatSocket } = chatActions;
@@ -14,8 +15,7 @@ export const mapDispatchToProps = dispatch => ({
         dispatch(closeChatSocket());
     },
     onSendChatInfo: chatMessage => {
-        const now = new Date();
-        const time = now.getHours() + ':' + minutesWithZero(now.getMinutes());
+        const time = moment().tz('Asia/Tokyo').format('HH:mm');
         dispatch(sendChatInfo({ message: chatMessage, time: time }));
     }
 });
