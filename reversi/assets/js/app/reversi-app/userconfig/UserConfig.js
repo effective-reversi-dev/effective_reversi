@@ -1,5 +1,6 @@
 import React from 'react';
 import Forms from './containers/Forms';
+import {Link} from 'react-router-dom';
 
 class UserConfig extends React.Component {
     constructor(props){
@@ -9,20 +10,25 @@ class UserConfig extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <div className="container">
-                    <h1 className="text-center logo my-4">
+                <div className='container'>
+                    <h1 className='text-center logo my-4'>
                         Effective Reversi
                     </h1>
-                    <div className="row justify-content-center">
-                        <div className="col-lg-8 col-md-10 col-sm-12">
-                            <div className="card">
-                                <div className="card-body">
-                                    <h3 className="card-title">ユーザ設定</h3>
+                    <div className='row justify-content-center'>
+                        <div className='col-lg-8 col-md-10 col-sm-12'>
+                            <div className='card'>
+                                <div className='card-body'>
+                                    <h3 className='card-title'>ユーザ設定</h3>
                                     <Forms/>
                                 </div>
-                                <div className="card-footer text-muted text-center">
+                                <div className='card-footer text-muted text-center'>
                                     <a href='/users/change_password'>パスワード変更はこちら</a>
                                 </div>
+                            </div>
+                            <div className='text-center py-2'>
+                                <small>
+                                     <Link to='/' className='text-muted'>Topへ戻る</Link>
+                                </small>
                             </div>
                         </div>
                     </div>
