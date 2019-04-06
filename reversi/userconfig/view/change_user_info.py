@@ -34,6 +34,7 @@ def change_user_info(request):
             user.full_clean()
         except ValidationError:
             _add_err_msg(f'表示名が不正です。: {display_name}\n')
+            user.display_name = original_display_name
 
     if 'emailAddress' in changes and changes['emailAddress'] != '':
         email = changes['emailAddress']
@@ -42,6 +43,7 @@ def change_user_info(request):
             user.full_clean()
         except ValidationError:
             _add_err_msg(f'メールアドレスが不正です。: {email}\n')
+            user.email = original_email
 
     if err:
         _revert_changes()
