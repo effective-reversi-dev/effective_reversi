@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import { withCookies } from'react-cookie';
 import { REQUEST_STATUS } from '../modules'
 
-class Forms extends React.Component {
+class Form extends React.Component {
     constructor(props){
         super(props);
         this.state = {
@@ -89,8 +89,9 @@ class Forms extends React.Component {
     }
 }
 
-Forms.propTypes = {
+Form.propTypes = {
+     cookies: PropTypes.object.isRequired,
      requestStatus:PropTypes.object.isRequired,
      onSendUserInfoChange: PropTypes.func.isRequired,
 }
-export default withCookies(Forms);
+export default withCookies(Form);

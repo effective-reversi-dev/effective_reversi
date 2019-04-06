@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { userConfigActions } from '../modules';
-import Forms from '../components/Forms';
+import Form from '../components/Form';
 
 const { requestChange } = userConfigActions;
 
@@ -17,4 +17,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Forms);
+)(Form);
