@@ -10,7 +10,12 @@
     "start": "babel-node server.js",
     "build": "NODE_ENV=production webpack -p --progress --colors --config webpack.prod.config.js --bail",
     "lint": "eslint assets",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "format": "prettier --write assets/js/**/*.js",
+    "check": "prettier --check assets/js/**/*.js"
+  },
+  "prettier": {
+    "singleQuote": true
   },
   "jest": {
     "transform": {
