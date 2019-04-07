@@ -25,7 +25,7 @@ def change_user_info(request):
     def _add_err_msg(msg):
         nonlocal err, err_msg
         err = err or True
-        err_msg = err_msg + msg
+        err_msg = f'{err_msg}{msg}'
 
     if 'displayName' in changes and changes['displayName'] != '':
         display_name = changes['displayName']
@@ -33,7 +33,7 @@ def change_user_info(request):
             user.display_name = changes['displayName']
             user.full_clean()
         except ValidationError:
-            _add_err_msg(f'表示名が不正です。: {display_name}\n')
+            _add_err_msg(f'表示名が不正です。: {display_name}。')
             user.display_name = original_display_name
 
     if 'emailAddress' in changes and changes['emailAddress'] != '':
@@ -42,7 +42,7 @@ def change_user_info(request):
             user.email = email
             user.full_clean()
         except ValidationError:
-            _add_err_msg(f'メールアドレスが不正です。: {email}\n')
+            _add_err_msg(f'メールアドレスが不正です。: {email}。')
             user.email = original_email
 
     if err:

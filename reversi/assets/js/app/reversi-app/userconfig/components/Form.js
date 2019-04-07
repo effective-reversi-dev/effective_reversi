@@ -54,6 +54,8 @@ class Form extends React.Component {
         const { cookies } = this.props;
         return (
             <React.Fragment>
+                <p>ユーザ情報を変更します。変更したい内容を入力してください。</p>
+                <p>入力されていない項目は変更されません。</p>
                 {this.presentRequestStatus()}
                 <div className="form-group">
                     <TextField
