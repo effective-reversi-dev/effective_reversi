@@ -1,14 +1,14 @@
 # Effective Reversi
 Effective Reversiはリバーシアプリの名称、およびその開発を目的としたプロジェクト名です。
 
-環境構築方法や開発規約、使用しているライブラリについてはScrapboxをご参照ください。
+環境の構築方法や開発規約、使用しているライブラリについてはScrapboxをご参照ください。
 
 ソースコードは<b>effective_reversi/reversi</b>ディレクトリにあります。
 
 なお、下記でセットアップや変更反映等々を説明しますが、すべて<b>effective_reversi/reversi</b>ディレクトリで行うことを前提にしています。
 
 ### セットアップ
-環境構築が一通り終了したら、データベースマイグレーションを以下の手順で行ってください。
+環境構築を一通り終えたら、データベースマイグレーションを以下の手順で行ってください。
 
 - マイグレーションファイルを作成：`pipenv run python manage.py makemigrations`
 - マイグレーションする：`pipenv run python manage.py migrate`
@@ -28,5 +28,17 @@ Effective Reversiはリバーシアプリの名称、およびその開発を目
 - サーバサイド(django)のテスト：`pipenv run python manage.py test`
 - クライアントサイドのテスト：`npm run test`
 - クライアントサイドのテスト（ウォッチモード）：`npm run test:watch`
+
+### フォーマット
+JSファイルのフォーマットは、以下のようにして行うことができます。
+
+リモートへの反映、特にプルリクエストを投げるのは必ず整形してからにしてください。
+
+- 全てのファイルに対してのフォーマット： `npm run format`
+
+各ファイルに対してのフォーマットを行いたいときは、以下の手順で行ってください。（VSCodeでの開発を前提とする）
+
+- VSCodeのマーケットプレイスで、プラグイン`Prettier Code - formatter`をインストール
+- 対象のファイルで`Control + Alt + f`
 
 (`pipenv run python ...`のコマンドは`pipenv shell` + `python ...`でも可)
