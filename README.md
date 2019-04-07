@@ -1,4 +1,6 @@
-# Effective Reversi
+Effective Reversi
+===================
+
 Effective Reversiはリバーシアプリの名称、およびその開発を目的としたプロジェクト名です。
 
 環境の構築方法や開発規約、使用しているライブラリについてはScrapboxをご参照ください。
@@ -40,5 +42,12 @@ JSファイルのフォーマットは、以下のようにして行うことが
 
 - VSCodeのマーケットプレイスで、プラグイン`Prettier Code - formatter`をインストール
 - 対象のファイルで`Control + Alt + f`
+
+### ワークフロー・ブランチ名
+ワークフローは基本的に[GitHab flow](https://guides.github.com/introduction/flow/index.html)に準拠してください。
+
+また、ブランチ名は、以下の命名規則に従ってください。
+
+`feature/<取り組む主なIssue番号>/<変更内容>`
 
 (`pipenv run python ...`のコマンドは`pipenv shell` + `python ...`でも可)
