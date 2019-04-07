@@ -23,6 +23,8 @@ phases:
             - pipenv run python manage.py test
         # test js code
             - npm run test
+        # check code format
+            - npm run check
     post_build:
         commands:
             - echo Build completed on `date`
