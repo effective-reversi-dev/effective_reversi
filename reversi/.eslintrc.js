@@ -1,7 +1,10 @@
 const path = require('path');
 
 module.exports = {
-    "extends": "airbnb",
+    "extends": [
+        "airbnb",
+        "plugin:prettier/recommended"
+    ],
     "rules": {
         "jsx-a11y/": 0,
         "react/jsx-filename-extension": 0
