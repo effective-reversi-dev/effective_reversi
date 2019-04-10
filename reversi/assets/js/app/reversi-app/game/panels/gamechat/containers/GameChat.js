@@ -7,20 +7,22 @@ import GameChat from '../components/GameChat';
 const { sendChatInfo, closeChatSocket } = chatActions;
 
 const mapStateToProps = state => ({
-    chatInfo: state.game.panels.chat.chatInfo,
+  chatInfo: state.game.panels.chat.chatInfo
 });
 
 export const mapDispatchToProps = dispatch => ({
-    closeChatSocket: () => {
-        dispatch(closeChatSocket());
-    },
-    onSendChatInfo: chatMessage => {
-        const time = moment().tz('Asia/Tokyo').format('HH:mm');
-        dispatch(sendChatInfo({ message: chatMessage, time: time }));
-    }
+  closeChatSocket: () => {
+    dispatch(closeChatSocket());
+  },
+  onSendChatInfo: chatMessage => {
+    const time = moment()
+      .tz('Asia/Tokyo')
+      .format('HH:mm');
+    dispatch(sendChatInfo({ message: chatMessage, time: time }));
+  }
 });
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(GameChat);

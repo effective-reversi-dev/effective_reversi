@@ -6,13 +6,13 @@ import { render } from 'react-testing-library';
 import rootReducer from '../../index';
 
 // a handy function to test react containers with global state
-export function renderWithRedux(
-    ui,
-    { initialState, store = createStore(rootReducer, initialState) } = {}
+export default function renderWithRedux(
+  ui,
+  { initialState, store = createStore(rootReducer, initialState) } = {}
 ) {
-    return Object.assign(
-        {},
-        render(<Provider store={store}>{ui}</Provider>),
-        store
-    )
+  return Object.assign(
+    {},
+    render(<Provider store={store}>{ui}</Provider>),
+    store
+  );
 }

@@ -7,29 +7,26 @@ export const CLEAR_CHAT_INFO = 'CLEAR_CHAT_INFO'; // with Saga
 export const SEND_CHAT_INFO = 'SEND_CHAT_INFO'; // with Saga
 
 export const chatActions = createActions(
-    CLOSE_CHAT_SOCKET,
-    REGISTER_CHAT_INFO,
-    CLEAR_CHAT_INFO,
-    SEND_CHAT_INFO,
+  CLOSE_CHAT_SOCKET,
+  REGISTER_CHAT_INFO,
+  CLEAR_CHAT_INFO,
+  SEND_CHAT_INFO
 );
 
 const initialState = {
-    chatInfo: []
-}
+  chatInfo: []
+};
 
-export default handleActions({
+export default handleActions(
+  {
     [chatActions.registerChatInfo]: (state, action) => {
-        return Object.assign(
-            {},
-            state,
-            {chatInfo: Object.assign([], state.chatInfo.concat([action.payload]))},
-        )
+      return Object.assign({}, state, {
+        chatInfo: Object.assign([], state.chatInfo.concat([action.payload]))
+      });
     },
-    [chatActions.clearChatInfo]: (state) => {
-        return Object.assign(
-            {},
-            state,
-            {chatInfo: []},
-        )
+    [chatActions.clearChatInfo]: state => {
+      return Object.assign({}, state, { chatInfo: [] });
     }
-}, initialState);
+  },
+  initialState
+);

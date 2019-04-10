@@ -12,21 +12,22 @@ import rootSaga from '../app/reversi-app/rootSaga';
 
 const sagaMiddleware = createSagaMiddleware();
 const logger = createLogger({
-    collapsed: true,
-    diff: true
+  collapsed: true,
+  diff: true
 });
 
 const store = createStore(
-    rootReducer, 
-    composeWithDevTools(applyMiddleware(logger, sagaMiddleware))
+  rootReducer,
+  composeWithDevTools(applyMiddleware(logger, sagaMiddleware))
 );
 
 sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
-    <Provider store={store}>
-        <App/>
-    </Provider>, document.getElementById('reversi-app')
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('reversi-app')
 );
 
 export default store;
