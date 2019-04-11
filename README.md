@@ -15,6 +15,14 @@ Effective Reversiはリバーシアプリの名称、およびその開発を目
 - マイグレーションファイルを作成：`pipenv run python manage.py makemigrations`
 - マイグレーションする：`pipenv run python manage.py migrate`
 
+また、VSCodeのマーケットプレイスから、以下のプラグインをインストールしてください。
+- `Prettier Code - formatter`
+- `ESLint`
+
+さらに、Chrome ウェブストアから以下の拡張機能をインストールしてください。
+- [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=ja)
+- [Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=ja)
+
 ### 変更反映
 他の開発者によるライブラリやデータベース構成の変更は以下の手順でローカルに反映できます。
 
