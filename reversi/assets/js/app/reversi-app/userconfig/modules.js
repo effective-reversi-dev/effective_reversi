@@ -1,12 +1,14 @@
 import { handleActions, createActions } from 'redux-actions';
 
-// Window panels management
+// Serverへの、UserConfigに関する設定変更リクエスト
 const REQUEST_CHANGE = 'REQUEST_CHANGE';
 export const RECEIVE_CHANGE = 'RECEIVE_CHANGE';
+const INITIALIZE_REQUEST_STATUS = 'INITIALIZE_REQUEST_STATUS'
 
 export const userConfigActions = createActions(
     REQUEST_CHANGE, 
-    RECEIVE_CHANGE
+    RECEIVE_CHANGE,
+    INITIALIZE_REQUEST_STATUS,
 );
 
 export const REQUEST_STATUS = {
@@ -26,5 +28,6 @@ export default handleActions({
             state,
             {requestStatus: Object.assign({}, state.requestStatus, {status: action.payload.status, errMsg: action.payload.errMsg})}
         )
-    }
+    },
+    [userConfigActions.initializeRequestStatus]: (state, action) => initialState
 }, initialState);

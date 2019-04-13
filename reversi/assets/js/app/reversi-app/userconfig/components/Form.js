@@ -14,6 +14,7 @@ class Form extends React.Component {
                 emailAddress:""
             },
         }
+        this.props.initializeState()
         this.onClickButton = this.onClickButton.bind(this);
         this.presentResponseStatus = this.presentRequestStatus.bind(this)
     }
@@ -95,5 +96,6 @@ Form.propTypes = {
      cookies: PropTypes.object.isRequired,
      requestStatus:PropTypes.object.isRequired,
      onSendUserInfoChange: PropTypes.func.isRequired,
+     initializeState: PropTypes.func.isRequired
 }
 export default withCookies(Form);
