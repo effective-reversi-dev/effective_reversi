@@ -1,18 +1,24 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import Links from './components/Links';
 
-class TopPage extends React.Component {
-
-    render() {
+const TopPage = (props) => {
         return(
-            <ul>
-                <li><Link to='/'>TopPage</Link></li>
-                <li><Link to='/game'>Game</Link></li>
-                {/* 下記リンクではログアウトするためにServer側にHttpリクエストを送出したい。故にアンカータグ */}
-                <li><a href='/users/logout'>Logout</a></li>
-            </ul>
+              <div className="container">
+                  <h1 className="text-center logo my-4">
+                      Effective Reversi
+                  </h1>
+                  <div className="row justify-content-center">
+                      <div className="col-lg-8 col-md-10 col-sm-12">
+                          <div className="card">
+                          <div className="card-body">
+                              <h3 className="card-title">メインメニュー</h3>
+                              <Links/>
+                          </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
         );
-    }
-}
+    };
 
 export default TopPage;

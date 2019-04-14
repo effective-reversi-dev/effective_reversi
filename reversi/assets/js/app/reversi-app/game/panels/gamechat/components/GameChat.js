@@ -31,7 +31,7 @@ class GameChat extends React.Component {
             return ( 
                 <div className="balloon" key={index}>
                     <div className="balloon-user">
-                        <p>{info.userName}</p>
+                        <p>{info.displayName}</p>
                     </div>
                     <div className="balloon-chat">
                         <div className="balloon-left">

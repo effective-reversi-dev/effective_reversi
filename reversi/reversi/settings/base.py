@@ -19,7 +19,7 @@ ADMINS = (
     ('Admin', 'polestar1592@yahoo.co.jp'),
 )
 
-# AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = 'userconfig.User'
 
 ALLOWED_HOSTS = []
 
