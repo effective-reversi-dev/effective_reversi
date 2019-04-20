@@ -51,6 +51,13 @@ JSファイルのフォーマットは、以下のようにして行うことが
 - VSCodeのマーケットプレイスで、プラグイン`Prettier Code - formatter`をインストール
 - 対象のファイルで`Control + Alt + f`
 
+### 静的コード解析
+JSの静的コード解析は、以下の形で行うことができます。
+
+リモートへの反映、特にプルリクエストを投げるのは必ずチェックでエラーが出ないようにしてから行ってください。
+
+- JSファイルの静的コード解析： `npm run lint`
+
 ### ワークフロー・ブランチ名
 ワークフローは基本的に[GitHab flow](https://guides.github.com/introduction/flow/index.html)に準拠してください。
 
