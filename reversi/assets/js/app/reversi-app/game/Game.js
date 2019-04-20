@@ -17,11 +17,11 @@ class Game extends React.Component {
   }
 
   handleDrawer(isOpenDrawer) {
-    this.setState({ isOpenDrawer: isOpenDrawer });
+    this.setState({ isOpenDrawer });
   }
 
   handleExitDialog(isOpenExitDialog) {
-    this.setState({ isOpenExitDialog: isOpenExitDialog });
+    this.setState({ isOpenExitDialog });
   }
 
   render() {

@@ -1,8 +1,8 @@
+import { Link } from 'react-router-dom';
 import React from 'react';
 import Form from './containers/Form';
-import { Link } from 'react-router-dom';
 
-const UserConfig = props => {
+const UserConfig = () => {
   return (
     <div className="container">
       <h1 className="text-center logo my-4">Effective Reversi</h1>

@@ -18,7 +18,7 @@ export const mapDispatchToProps = dispatch => ({
     const time = moment()
       .tz('Asia/Tokyo')
       .format('HH:mm');
-    dispatch(sendChatInfo({ message: chatMessage, time: time }));
+    dispatch(sendChatInfo({ message: chatMessage, time }));
   }
 });
 

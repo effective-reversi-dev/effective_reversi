@@ -30,24 +30,23 @@ class Form extends React.Component {
   }
 
   presentRequestStatus() {
-    if (this.props.requestStatus.status == REQUEST_STATUS.SUCCESS) {
+    if (this.props.requestStatus.status === REQUEST_STATUS.SUCCESS) {
       return <div className="form-control is-valid">変更が完了しました。</div>;
-    } else if (this.props.requestStatus.status == REQUEST_STATUS.FAIL) {
+    } else if (this.props.requestStatus.status === REQUEST_STATUS.FAIL) {
       return (
         <div className="alert alert-danger">
           {this.props.requestStatus.errMsg}
         </div>
       );
-    } else {
-      return <div />;
     }
+    return <div />;
   }
 
   render() {
     const changeConfigs = changedConfig => {
       this.setState(Object.assign(this.state.currentConfigs, changedConfig));
     };
-    const currentConfigs = this.state.currentConfigs;
+    const { currentConfigs } = this.state;
     const { cookies } = this.props;
     return (
       <React.Fragment>
@@ -98,8 +97,13 @@ class Form extends React.Component {
 }
 
 Form.propTypes = {
-  cookies: PropTypes.object.isRequired,
-  requestStatus: PropTypes.object.isRequired,
+  cookies: PropTypes.shape({
+    get: PropTypes.func.isRequired
+  }).isRequired,
+  requestStatus: PropTypes.shape({
+    errMsg: PropTypes.string,
+    status: PropTypes.string.isRequired
+  }).isRequired,
   onSendUserInfoChange: PropTypes.func.isRequired,
   initializeState: PropTypes.func.isRequired
 };

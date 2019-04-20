@@ -31,7 +31,7 @@ export default handleActions(
         })
       });
     },
-    [userConfigActions.initializeRequestStatus]: (state, action) => initialState
+    [userConfigActions.initializeRequestStatus]: () => initialState
   },
   initialState
 );

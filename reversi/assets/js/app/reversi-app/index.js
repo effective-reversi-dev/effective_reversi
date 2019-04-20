@@ -3,6 +3,6 @@ import game from './game';
 import userConfig from './userconfig';
 
 export default combineReducers({
-  game: game,
-  userConfig: userConfig
+  game,
+  userConfig
 });

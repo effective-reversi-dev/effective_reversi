@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
 import GoldenLayout from 'golden-layout';
@@ -5,6 +6,14 @@ import GoldenLayout from 'golden-layout';
 import GameChat from '../../panels/gamechat/containers/GameChat';
 import glComponentWrapper from '../utils/glComponentWrapper';
 import createGlConfig from '../utils/glConfigCreator';
+
+const TestComponent = props => {
+  return <h1>{props.label}</h1>;
+};
+
+TestComponent.propTypes = {
+  label: PropTypes.string.isRequired
+};
 
 class GameGoldenLayout extends React.Component {
   constructor(props) {
@@ -15,25 +24,24 @@ class GameGoldenLayout extends React.Component {
     this.props.initChatSocket();
   }
 
-  resize() {
-    let h = window.innerHeight,
-      w = window.innerWidth,
-      ht = $('.layout-header-wrapper').height();
-    this.state.layout.updateSize(w, h - ht);
-    $('.goldenLayout').height(h - ht);
-    $('.goldenLayout').width(w);
-  }
-
   componentDidMount() {
+    const resize = () => {
+      const h = window.innerHeight;
+      const w = window.innerWidth;
+      const ht = $('.layout-header-wrapper').height();
+      this.state.layout.updateSize(w, h - ht);
+      $('.goldenLayout').height(h - ht);
+      $('.goldenLayout').width(w);
+    };
     const config = createGlConfig(this.props.panelNames);
     setTimeout(() => {
       // truncate the bottom of the screen
-      let h = window.innerHeight,
-        ht = $('.layout-header-wrapper').height();
+      const h = window.innerHeight;
+      const ht = $('.layout-header-wrapper').height();
       $('.goldenLayout').height(h - ht);
 
       // make size of gl reactive
-      $(window).on('load resize', () => this.resize());
+      $(window).on('load resize', () => resize());
 
       const layout = new GoldenLayout(config, $('.goldenLayout'));
       layout.registerComponent(
@@ -53,11 +61,11 @@ class GameGoldenLayout extends React.Component {
         glComponentWrapper(GameChat, this.props, 3)
       );
       layout.init();
-      this.setState({ layout: layout });
+      this.setState({ layout });
     }, 0);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate() {
     const { addedPanel } = this.props;
     if (addedPanel) {
       const config = {
@@ -86,14 +94,12 @@ class GameGoldenLayout extends React.Component {
   }
 }
 
-const TestComponent = props => {
-  return <h1>{props.label}</h1>;
-};
-
 GameGoldenLayout.propTypes = {
   panelNames: PropTypes.arrayOf(PropTypes.string).isRequired,
   addedPanel: PropTypes.string.isRequired,
   initChatSocket: PropTypes.func.isRequired,
+  // onRemoveItem and onRegisterOpen aren't explicitly used in this file but are
+  // necessary since they're used in `glComponentWrapper`
   onRemoveItem: PropTypes.func.isRequired,
   onRegisterOpen: PropTypes.func.isRequired
 };

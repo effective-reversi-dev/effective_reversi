@@ -11,25 +11,25 @@ import { SEND_CHAT_INFO } from '../modules';
 afterEach(cleanup);
 
 describe('testing Chat', () => {
-  const userName = 'test user',
-    message = 'test message',
-    time = '10:00',
-    chatInfo = [{ userName, message, time }],
-    setupComponent = props => {
-      const initialState = {
-        game: {
-          panels: {
-            chat: {
-              chatInfo
-            }
+  const userName = 'test user';
+  const message = 'test message';
+  const time = '10:00';
+  const chatInfo = [{ userName, message, time }];
+  const setupComponent = props => {
+    const initialState = {
+      game: {
+        panels: {
+          chat: {
+            chatInfo
           }
         }
-      };
-      return Object.assign(
-        {},
-        renderWithRedux(<GameChatContainer {...props} />, { initialState })
-      );
+      }
     };
+    return Object.assign(
+      {},
+      renderWithRedux(<GameChatContainer {...props} />, { initialState })
+    );
+  };
 
   test('should render a chat information received through WebSocket', () => {
     const { getByText } = setupComponent();
@@ -40,13 +40,13 @@ describe('testing Chat', () => {
 
   test('should send a message and should not close WebSocket after submitting it', () => {
     const props = {
-        chatInfo,
-        onSendChatInfo: jest.fn(),
-        closeChatSocket: jest.fn()
-      },
-      { getByText, getByPlaceholderText } = render(
-        <GameChatComponent {...props} />
-      );
+      chatInfo,
+      onSendChatInfo: jest.fn(),
+      closeChatSocket: jest.fn()
+    };
+    const { getByText, getByPlaceholderText } = render(
+      <GameChatComponent {...props} />
+    );
     fireEvent.change(getByPlaceholderText('Input message...'), {
       target: { value: message }
     });
@@ -56,15 +56,15 @@ describe('testing Chat', () => {
   });
 
   test('should send message and time at container level', () => {
-    const dispatch = jest.fn(),
-      time = moment()
-        .tz('Asia/Tokyo')
-        .format('HH:mm');
+    const dispatch = jest.fn();
+    const now = moment()
+      .tz('Asia/Tokyo')
+      .format('HH:mm');
     mapDispatchToProps(dispatch).onSendChatInfo(message);
     expect(dispatch).toHaveBeenCalledWith({
       payload: {
         message,
-        time
+        now
       },
       type: SEND_CHAT_INFO
     });

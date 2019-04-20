@@ -27,11 +27,11 @@ class GameChat extends React.Component {
   }
 
   render() {
-    const items = this.props.chatInfo.map((info, index) => {
+    const items = this.props.chatInfo.map(info => {
       return (
-        <div className="balloon" key={index}>
+        <div className="balloon" key={info.id}>
           <div className="balloon-user">
-            <p>{info.userName}</p>
+            <p>{info.displayName}</p>
           </div>
           <div className="balloon-chat">
             <div className="balloon-left">
@@ -59,7 +59,7 @@ class GameChat extends React.Component {
           <TextField
             value={this.state.message}
             placeholder="Input message..."
-            fullWidth={true}
+            fullWidth
             className="item"
             label="Message"
             onChange={e => {

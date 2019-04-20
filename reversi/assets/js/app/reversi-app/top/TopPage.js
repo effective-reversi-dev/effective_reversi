@@ -1,7 +1,7 @@
 import React from 'react';
 import Links from './components/Links';
 
-const TopPage = props => {
+const TopPage = () => {
   return (
     <div className="container">
       <h1 className="text-center logo my-4">Effective Reversi</h1>
