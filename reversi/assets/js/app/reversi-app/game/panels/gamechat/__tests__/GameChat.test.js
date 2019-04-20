@@ -1,5 +1,6 @@
 import moment from 'moment';
 import 'moment-timezone';
+import shortid from 'shortid';
 import React from 'react';
 import { cleanup, fireEvent, render } from 'react-testing-library';
 
@@ -11,10 +12,11 @@ import { SEND_CHAT_INFO } from '../modules';
 afterEach(cleanup);
 
 describe('testing Chat', () => {
-  const userName = 'test user';
+  const displayName = 'test user';
   const message = 'test message';
   const time = '10:00';
-  const chatInfo = [{ userName, message, time }];
+  const id = shortid.generate();
+  const chatInfo = [{ displayName, message, time, id }];
   const setupComponent = props => {
     const initialState = {
       game: {
@@ -33,7 +35,7 @@ describe('testing Chat', () => {
 
   test('should render a chat information received through WebSocket', () => {
     const { getByText } = setupComponent();
-    getByText(userName);
+    getByText(displayName);
     getByText(message);
     getByText(time);
   });
@@ -64,7 +66,7 @@ describe('testing Chat', () => {
     expect(dispatch).toHaveBeenCalledWith({
       payload: {
         message,
-        now
+        time: now
       },
       type: SEND_CHAT_INFO
     });
