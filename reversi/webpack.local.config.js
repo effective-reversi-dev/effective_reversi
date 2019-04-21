@@ -9,6 +9,8 @@ var nodeModulesDir = path.resolve(__dirname, 'node_modules');
 baseConfig[0].mode = 'development'
 baseConfig[1].mode = 'development'
 
+baseConfig[1].devtool = 'evel-source-map';
+
 baseConfig[1].entry = [
   'webpack-dev-server/client?http://localhost:3000',
   'webpack/hot/only-dev-server',
