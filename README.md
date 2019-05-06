@@ -28,7 +28,7 @@ Effective Reversiはリバーシアプリの名称、およびその開発を目
 
 - サーバサイドのライブラリ変更の反映：`pipenv install --dev`
 - クライアントサイドのライブラリ変更の反映：`npm install` `npm install --only=dev`
-- データベース構成の変更の反映：`db.sqlite3`を削除して`pipenv run python manage.py migrate`
+- データベース構成の変更の反映：`pipenv run python manage.py makemigrations`を行った後、`pipenv run python manage.py migrate`
 
 ### テスト
 テストをローカルで行うときは、以下の手順で行うことができます。
