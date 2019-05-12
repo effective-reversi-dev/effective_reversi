@@ -5,19 +5,19 @@ import Form from '../components/Form';
 const { requestChange, initializeRequestStatus } = userConfigActions;
 
 const mapStateToProps = state => ({
-    requestStatus: state.userConfig.userConfig.requestStatus,
+  requestStatus: state.userConfig.userConfig.requestStatus
 });
 
 const mapDispatchToProps = dispatch => ({
-    initializeState: () => {
-        dispatch(initializeRequestStatus());
-    },
-    onSendUserInfoChange: currentConfigs => {
-        dispatch(requestChange(currentConfigs));
-    }
+  initializeState: () => {
+    dispatch(initializeRequestStatus());
+  },
+  onSendUserInfoChange: currentConfigs => {
+    dispatch(requestChange(currentConfigs));
+  }
 });
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Form);

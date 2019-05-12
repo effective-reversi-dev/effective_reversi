@@ -1,0 +1,35 @@
+version: 0.2
+
+phases:
+    install:
+        commands:
+            - cd reversi
+            - echo Start installation
+        # install python libraries
+            - pip install pipenv
+            - pipenv install
+        # install js libraries
+            - curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+            - sudo apt install -y nodejs
+            - npm install
+            - npm install --only=dev
+            - echo Finish installation
+    build:
+        commands:
+            - echo Build started on `date`
+        # build js code
+            - npm run build
+        # test python (django) code
+            - pipenv run python manage.py test
+        # test js code
+            - npm run test
+        # check js code format
+            - npm run check
+        # static js code analysis
+            - npm run lint
+    post_build:
+        commands:
+            - echo Build completed on `date`
+artifacts:
+    files:
+        - reversi/assets/webpack_bundles/**/*

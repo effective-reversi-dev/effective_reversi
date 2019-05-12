@@ -12,12 +12,12 @@ django-naomi = "*"
 isort = "*"
 model-mommy = "*"
 pre-commit = "*"
-prospector = {extras = ["with-vulture"]}
 pylint = "*"
 pylint-django = "*"
 pylint-celery = "*"
 safety = "*"
 v = {version = "*", editable = true}
+"pypiwin32" = "*"
 
 [packages]
 django = "*"
@@ -36,9 +36,9 @@ whitenoise = "*"
 psutil = "*"
 ipython = "*"
 channels = "*"
-"pypiwin32" = "*"
 channels-redis = "*"
 django-widgets-improved = "*"
+prospector = "*"
 
 [requires]
 python_version = "3.6"
