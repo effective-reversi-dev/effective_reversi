@@ -23,11 +23,21 @@ const store = createStore(
 
 sagaMiddleware.run(rootSaga);
 
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('reversi-app')
-);
+const render = Component => {
+  ReactDOM.render(
+    <Provider store={store}>
+      <Component />
+    </Provider>,
+    document.getElementById('reversi-app')
+  );
+};
+
+render(App);
+
+if (module.hot) {
+  module.hot.addStatusHandler(status => {
+    if (status === 'prepare') console.clear();
+  });
+}
 
 export default store;
