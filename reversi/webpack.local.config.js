@@ -45,6 +45,10 @@ baseConfig[1].module.rules.push(
   }
 );
 
+baseConfig[1].resolve.alias = {
+  'react-dom': '@hot-loader/react-dom'
+};
+
 baseConfig[1].plugins = [
   // Generate hot update chunks
   new webpack.HotModuleReplacementPlugin(),
