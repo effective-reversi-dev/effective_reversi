@@ -4,13 +4,14 @@ const baseConfig = require('./webpack.base.config');
 const SpritesmithPlugin = require('webpack-spritesmith');
 const BundleTracker = require('webpack-bundle-tracker');
 const path = require('path');
+const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
 
 const nodeModulesDir = path.resolve(__dirname, 'node_modules');
 
 baseConfig[0].mode = 'development';
 baseConfig[1].mode = 'development';
 
-baseConfig[1].devtool = 'evel-source-map';
+baseConfig[1].devtool = 'cheap-module-source-map';
 
 baseConfig[1].entry = [
   // Enables websocket connection (needs url and port)
@@ -49,6 +50,7 @@ baseConfig[1].plugins = [
   new webpack.HotModuleReplacementPlugin(),
   new webpack.NamedModulesPlugin(),
   new webpack.NoEmitOnErrorsPlugin(), // don't reload if there is an error
+  new ErrorOverlayPlugin(), // show stack trace
   new SpritesmithPlugin({
     src: {
       cwd: path.resolve(__dirname, 'assets/images/'),
