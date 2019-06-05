@@ -2,6 +2,8 @@ version: 0.2
 
 phases:
     install:
+        runtime-versions:
+            python: 3.7
         commands:
             - cd reversi
             - echo Start installation
@@ -9,6 +11,8 @@ phases:
             - pip install pipenv
             - pipenv install
         # install js libraries
+            - apt update
+            - apt install sudo
             - curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
             - sudo apt install -y nodejs
             - npm install
