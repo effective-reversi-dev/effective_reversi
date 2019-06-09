@@ -78,4 +78,5 @@ GameChat.propTypes = {
   closeChatSocket: PropTypes.func.isRequired,
   onSendChatInfo: PropTypes.func.isRequired
 };
+
 export default GameChat;

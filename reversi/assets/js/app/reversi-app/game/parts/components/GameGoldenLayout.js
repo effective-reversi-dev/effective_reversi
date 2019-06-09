@@ -21,10 +21,10 @@ class GameGoldenLayout extends React.Component {
     this.state = {
       layout: null
     };
-    this.props.initChatSocket();
   }
 
   componentDidMount() {
+    this.props.initChatSocket();
     const resize = () => {
       const h = window.innerHeight;
       const w = window.innerWidth;

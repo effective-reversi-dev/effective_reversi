@@ -39,6 +39,11 @@ module.exports = [{
   output: {
     // defined in local or prod
   },
+  resolve: {
+    alias: {
+      // defined in local or prod
+    }
+  },
   module: {
     rules: [
       {
