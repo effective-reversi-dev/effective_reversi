@@ -16,6 +16,14 @@ import {
   CLEAR_CONSISTENCY
 } from '../../game/panels/reversi/modules';
 
+import {
+  SETUP_ROOM_SELECTION_SOCKET,
+  REGISTER_ROOM_DATA,
+  SEND_ROOM_DATA_REQUEST,
+  CLEAR_ROOM_DATA,
+  CLOSE_ROOM_SELECTION_SOCKET
+} from '../../room/modules';
+
 /**
  * Configuration for actions related to WebSocket connection. There's type
  * check for each value and any WebSocket connections will be failed and an
@@ -53,6 +61,19 @@ import {
  */
 
 const webSocketMap = {
+  [SETUP_ROOM_SELECTION_SOCKET]: [
+    {
+      close: CLOSE_ROOM_SELECTION_SOCKET,
+      register: {
+        room_data: REGISTER_ROOM_DATA
+      },
+      send: {
+        [SEND_ROOM_DATA_REQUEST]: 'room_data'
+      },
+      prepare: [CLEAR_ROOM_DATA],
+      urlPaths: ['room_selection']
+    }
+  ],
   [SETUP_GAME_SOCKET]: [
     {
       close: CLOSE_GAME_SOCKET,
@@ -71,7 +92,10 @@ const webSocketMap = {
         CLEAR_NEXT_REVERSI_POSITION,
         CLEAR_CONSISTENCY
       ],
-      urlPaths: ['game', state => state.game.parts.roomName]
+      urlPaths: [
+        'game',
+        state => state.roomSelection.roomSelection.currentRoomInfo.roomId
+      ]
     }
   ]
 };

@@ -2,13 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { withRouter } from 'react-router';
 import { gameActions } from './modules';
+import { roomActions } from '../room/modules';
 import GameDrawer from './parts/containers/GameDrawer';
 import GameGoldenLayout from './parts/containers/GameGoldenLayout';
 import GameHeader from './parts/components/GameHeader';
 import GameExitModal from './parts/components/GameExitModal';
 
 const { displayExitDialog, closeExitDialog } = gameActions;
+const { exitRoom } = roomActions;
 
 const mapStateToProps = state => {
   const {
@@ -17,7 +20,14 @@ const mapStateToProps = state => {
     shouldDisplayCancel,
     isOpenExitDialog
   } = state.game.game;
-  return { exitTitle, exitDescription, shouldDisplayCancel, isOpenExitDialog };
+  const { roomId } = state.roomSelection.roomSelection.currentRoomInfo;
+  return {
+    exitTitle,
+    exitDescription,
+    shouldDisplayCancel,
+    isOpenExitDialog,
+    hasInValidState: roomId === undefined || roomId === null
+  };
 };
 
 const mapDispatchToProps = dispatch => ({
@@ -25,25 +35,43 @@ const mapDispatchToProps = dispatch => ({
     dispatch(
       displayExitDialog({
         exitTitle: '退出しますか？',
-        exitDescription: 'ゲームから退出しますか?　退出したら負けになります。',
+        exitDescription:
+          'ゲーム画面から移動しますか?　移動した場合負けになります。',
         shouldDisplayCancel: true
       })
     ),
-  closeExitDialog: () => dispatch(closeExitDialog())
+  closeExitDialog: () => dispatch(closeExitDialog()),
+  exitRoom: () => dispatch(exitRoom())
 });
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
+    // ゲーム画面で更新ボタンが押されたり、
+    // アドレスバーから直接 game へ遷移しようとした場合のハンドル。
+    if (props.hasInValidState) {
+      props.history.push('/room_selection');
+    }
+    this.onBeforeunloadHandler = e => {
+      e.returnValue = '画面を更新すると、部屋選択画面へ戻ります。';
+    };
+
     this.state = {
       isOpenDrawer: false
     };
     this.handleDrawer = this.handleDrawer.bind(this);
     this.handleExitDialog = this.handleExitDialog.bind(this);
+    window.addEventListener('beforeunload', this.onBeforeunloadHandler, false);
   }
 
   componentWillUnmount() {
     this.props.closeExitDialog();
+    this.props.exitRoom();
+    window.removeEventListener(
+      'beforeunload',
+      this.onBeforeunloadHandler,
+      false
+    );
   }
 
   handleDrawer(isOpenDrawer) {
@@ -87,16 +115,23 @@ class Game extends React.Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Game);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Game)
+);
 
 Game.propTypes = {
+  hasInValidState: PropTypes.bool.isRequired,
   exitTitle: PropTypes.string.isRequired,
   exitDescription: PropTypes.string.isRequired,
   shouldDisplayCancel: PropTypes.bool.isRequired,
   isOpenExitDialog: PropTypes.bool.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired,
   displayExitDialog: PropTypes.func.isRequired,
-  closeExitDialog: PropTypes.func.isRequired
+  closeExitDialog: PropTypes.func.isRequired,
+  exitRoom: PropTypes.func.isRequired
 };

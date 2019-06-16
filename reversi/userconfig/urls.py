@@ -5,10 +5,10 @@ from userconfig.view.change_user_info import change_user_info
 from userconfig.view.signup import signup
 
 urlpatterns = [
+    # auth周りのview
     path('signup/', signup, name='signup'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('login/', auth_views.LoginView.as_view(template_name='userconfig/login.html'), name='login'),
-    path('change_user/', change_user_info, name='change_user'),
 
     # password reset 用のView
     path(
@@ -44,4 +44,7 @@ urlpatterns = [
          auth_views.PasswordChangeDoneView.as_view(
              template_name='userconfig/password_change_done.html'),
          name='password_change_done'),
+
+    # SPAの中からajax的に呼ばれる
+    path('change_user/', change_user_info, name='change_user'),
 ]

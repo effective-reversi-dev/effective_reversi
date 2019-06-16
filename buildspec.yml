@@ -9,7 +9,7 @@ phases:
             - echo Start installation
         # install python libraries
             - pip install pipenv
-            - pipenv install
+            - pipenv install --dev
         # install js libraries
             - apt update
             - apt install sudo
@@ -18,13 +18,25 @@ phases:
             - npm install
             - npm install --only=dev
             - echo Finish installation
+        # install redis
+            - sudo apt install -y redis-server
+
     build:
         commands:
             - echo Build started on `date`
         # build js code
             - npm run build
+        # setup django application
+            - cp reversi/settings/local.py.example reversi/settings/local.py
+            - cp .env.example .env
+            - pipenv run python manage.py makemigrations
+            - pipenv run python manage.py migrate
         # test python (django) code
             - pipenv run python manage.py test
+        # test python (pytest) code
+            - sudo redis-server --protected-mode no &
+            - sudo redis-cli ping
+            - pipenv run pytest --ignore=node_modules
         # test js code
             - npm run test
         # check js code format
