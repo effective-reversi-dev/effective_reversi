@@ -8,23 +8,30 @@ const REMOVE_PANEL = 'REMOVE_PANEL';
 
 // Websocket management
 export const SETUP_GAME_SOCKET = 'SETUP_GAME_SOCKET'; // with Saga
+export const CLOSE_GAME_SOCKET = 'CLOSE_GAME_SOCKET'; // with Saga
 
 // Interpanel management
 const SET_REVERSI_SITUATION = 'SET_REVERSI_SITUATION';
+export const REGISTER_NEXT_REVERSI_POSITION = 'REGISTER_NEXT_REVERSI_POSITION'; // with Saga
+export const CLEAR_NEXT_REVERSI_POSITION = 'CLEAR_NEXT_REVERSI_POSITION'; // with Saga
+export const SEND_NEXT_REVERSI_POSITION = 'SEND_NEXT_REVERSI_POSITION'; // with Saga
 
 export const panelActions = createActions(
   SETUP_GAME_SOCKET,
+  CLOSE_GAME_SOCKET,
   ADD_PANEL,
   REGISTER_OPEN_PANEL,
-  REMOVE_PANEL
+  REMOVE_PANEL,
+  REGISTER_NEXT_REVERSI_POSITION,
+  CLEAR_NEXT_REVERSI_POSITION,
+  SEND_NEXT_REVERSI_POSITION
 );
 
 export const setReversiSituation = createAction(
   SET_REVERSI_SITUATION,
-  (blackNum, whiteNum, nextColor) => ({
+  (blackNum, whiteNum) => ({
     blackNum,
-    whiteNum,
-    nextColor
+    whiteNum
   })
 );
 
@@ -34,7 +41,11 @@ const initialState = {
   roomName: 'dummyRoom', // TODO: change proper room name
   blackNum: 2,
   whiteNum: 2,
-  nextColor: BLACK
+  nextReversiPosition: {
+    colIdx: null,
+    rowIdx: null,
+    nextColor: BLACK
+  }
 };
 
 export default handleActions(
@@ -58,11 +69,29 @@ export default handleActions(
       });
     },
     [setReversiSituation]: (state, action) => {
-      const { blackNum, whiteNum, nextColor } = action.payload;
+      const { blackNum, whiteNum } = action.payload;
       return Object.assign({}, state, {
         blackNum,
-        whiteNum,
-        nextColor
+        whiteNum
+      });
+    },
+    [panelActions.registerNextReversiPosition]: (state, action) => {
+      const { colIdx, rowIdx, nextColor } = action.payload.data;
+      const nextReversiPosition = { colIdx, rowIdx, nextColor };
+      return Object.assign({}, state, {
+        nextReversiPosition
+      });
+    },
+    [panelActions.clearNextReversiPosition]: state => {
+      const nextReversiPosition = {
+        colIdx: null,
+        rowIdx: null,
+        nextColor: BLACK
+      };
+      return Object.assign({}, state, {
+        blackNum: 2,
+        whiteNum: 2,
+        nextReversiPosition
       });
     }
   },

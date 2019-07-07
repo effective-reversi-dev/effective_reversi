@@ -11,7 +11,7 @@ import {
 } from 'redux-saga/effects';
 import webSocketMap from './map';
 
-function initSocket(ws, registerAction) {
+function initSocket(ws, registerActions) {
   return eventChannel(emitter => {
     const webSocket = ws;
     const wsUrl = webSocket.url;
@@ -31,8 +31,8 @@ function initSocket(ws, registerAction) {
         console.log(`Websocket error: ${wsUrl}`);
         console.error(`Error parsing: ${e.data}`);
       }
-      if (msg) {
-        emitter({ type: registerAction, payload: msg });
+      if (msg && msg.type) {
+        emitter({ type: registerActions[msg.type], payload: msg });
       }
     };
     webSocket.onclose = () => {
@@ -46,13 +46,14 @@ function initSocket(ws, registerAction) {
   });
 }
 
-function* sendMessage(ws, sendAction) {
+function* sendMessage(ws, sendActions) {
   while (true) {
-    const action = yield take([sendAction]);
+    const action = yield take(Object.keys(sendActions));
     const message = action.payload;
     ws.send(
       JSON.stringify({
-        data: message
+        data: message,
+        type: sendActions[action.type]
       })
     );
   }
@@ -89,7 +90,9 @@ function* setupWebSocket(wsActionsList) {
     const url = yield call(getUrl, wsActions.urlPaths);
     const ws = new WebSocket(url);
     const channel = yield call(initSocket, ws, wsActions.register);
-    yield put({ type: wsActions.prepare });
+    for (const prepareAction of wsActions.prepare) {
+      yield put({ type: prepareAction });
+    }
     const sendMessageTask = yield fork(sendMessage, ws, wsActions.send);
     yield fork(closeSocket, ws, sendMessageTask, wsActions.close);
     yield fork(dispatchChannelAction, channel);

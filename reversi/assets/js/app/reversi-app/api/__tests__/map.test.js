@@ -11,11 +11,12 @@ describe('test webSocketMap', () => {
       expect(typeof Array.isArray(wsValue)).toBeTruthy();
       wsValue.forEach(elem => {
         expect(typeof elem.close === 'string').toBeTruthy();
-        expect(typeof elem.register === 'string').toBeTruthy();
-        expect(typeof elem.send === 'string').toBeTruthy();
-        expect(
-          typeof elem.prepare === 'string' || elem.prepare === null
-        ).toBeTruthy();
+        expect(typeof elem.register === 'object').toBeTruthy();
+        expect(typeof elem.send === 'object').toBeTruthy();
+        expect(Array.isArray(elem.prepare)).toBeTruthy();
+        elem.prepare.forEach(prepareAction => {
+          expect(typeof prepareAction === 'string').toBeTruthy();
+        });
         expect(Array.isArray(elem.urlPaths)).toBeTruthy();
         elem.urlPaths.forEach(urlPath => {
           expect(

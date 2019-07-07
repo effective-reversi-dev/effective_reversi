@@ -2,7 +2,12 @@ import { connect } from 'react-redux';
 import { panelActions } from '../modules';
 import GameGoldenLayout from '../components/GameGoldenLayout';
 
-const { removePanel, registerOpenPanel, setupGameSocket } = panelActions;
+const {
+  closeGameSocket,
+  removePanel,
+  registerOpenPanel,
+  setupGameSocket
+} = panelActions;
 
 const mapStateToProps = state => ({
   panelNames: Object.keys(state.game.parts.panelsOpen),
@@ -10,8 +15,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  closeGameSocket: () => {
+    dispatch(closeGameSocket());
+  },
   initChatSocket: () => {
-    dispatch(setupGameSocket('chat'));
+    dispatch(setupGameSocket());
   },
   onRemoveItem: panelName => {
     dispatch(removePanel(panelName));

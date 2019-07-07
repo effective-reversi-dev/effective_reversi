@@ -89,6 +89,7 @@ class GameGoldenLayout extends React.Component {
 
   componentWillUnmount() {
     const { layout } = this.state;
+    this.props.closeGameSocket();
     setTimeout(() => {
       layout.destroy();
     }, 0);
@@ -106,7 +107,8 @@ GameGoldenLayout.propTypes = {
   // onRemoveItem and onRegisterOpen aren't explicitly used in this file but are
   // necessary since they're used in `glComponentWrapper`
   onRemoveItem: PropTypes.func.isRequired,
-  onRegisterOpen: PropTypes.func.isRequired
+  onRegisterOpen: PropTypes.func.isRequired,
+  closeGameSocket: PropTypes.func.isRequired
 };
 
 export default GameGoldenLayout;

@@ -85,12 +85,6 @@ export const getNextReversiState = (reversiState, color, position) => {
 };
 
 export default function Reversi(props) {
-  /* effects */
-  useEffect(() => {
-    resizeBoard(props.glContainer);
-    return undefined;
-  }, []);
-
   /* states */
   const [reversiState, setReversiState] = useState([
     [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
@@ -104,6 +98,28 @@ export default function Reversi(props) {
   ]);
   const [myColor, setMyColor] = useState(BLACK);
 
+  /* effects */
+  useEffect(() => {
+    resizeBoard(props.glContainer);
+    return undefined;
+  }, []);
+
+  useEffect(() => {
+    const { rowIdx, colIdx, nextColor } = props.nextReversiPosition;
+    if (rowIdx === null && colIdx === null) {
+      return undefined;
+    }
+    const nextReversiState = getNextReversiState(
+      JSON.parse(JSON.stringify(reversiState)),
+      myColor,
+      [rowIdx, colIdx]
+    );
+    setReversiState(nextReversiState);
+    setMyColor(nextColor);
+    props.setReversiSituation(nextReversiState);
+    return undefined;
+  }, [props.nextReversiPosition]);
+
   /* actions */
   const changeColumnState = rowIdx => colIdx => {
     const nextReversiState = getNextReversiState(
@@ -113,14 +129,11 @@ export default function Reversi(props) {
     );
     if (JSON.stringify(nextReversiState) === JSON.stringify(reversiState))
       return;
-    setReversiState(nextReversiState);
     let nextColor = getOpponentColor(myColor);
-    if (hasNextStrategy(nextReversiState, nextColor)) {
-      setMyColor(nextColor);
-    } else {
+    if (!hasNextStrategy(nextReversiState, nextColor)) {
       nextColor = getOpponentColor(nextColor);
     }
-    props.setReversiSituation(nextReversiState, nextColor);
+    props.sendNextPosition(rowIdx, colIdx, nextColor);
   };
 
   return (
@@ -139,7 +152,13 @@ export default function Reversi(props) {
 Reversi.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   glContainer: PropTypes.object.isRequired,
-  setReversiSituation: PropTypes.func.isRequired
+  setReversiSituation: PropTypes.func.isRequired,
+  sendNextPosition: PropTypes.func.isRequired,
+  nextReversiPosition: PropTypes.shape({
+    nextColor: PropTypes.string,
+    colIdx: PropTypes.number,
+    rowIdx: PropTypes.number
+  }).isRequired
 };
 
 function Column(props) {

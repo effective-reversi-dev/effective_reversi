@@ -1,11 +1,20 @@
 import { connect } from 'react-redux';
 
 import Reversi from '../components/Reversi';
-import { setReversiSituation } from '../../../parts/modules';
+import { panelActions, setReversiSituation } from '../../../parts/modules';
 import { BLACK, WHITE } from '../constants';
 
+const { sendNextReversiPosition } = panelActions;
+
+const mapStateToProps = state => ({
+  nextReversiPosition: state.game.parts.nextReversiPosition
+});
+
 const mapDispatchToProps = dispatch => ({
-  setReversiSituation: (nextReversiState, nextColor) => {
+  sendNextPosition: (rowIdx, colIdx, nextColor) => {
+    dispatch(sendNextReversiPosition({ rowIdx, colIdx, nextColor }));
+  },
+  setReversiSituation: nextReversiState => {
     let blackNum = 0,
       whiteNum = 0;
     nextReversiState.forEach(rowState => {
@@ -17,11 +26,11 @@ const mapDispatchToProps = dispatch => ({
         }
       });
     });
-    dispatch(setReversiSituation(blackNum, whiteNum, nextColor));
+    dispatch(setReversiSituation(blackNum, whiteNum));
   }
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Reversi);
