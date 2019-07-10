@@ -99,7 +99,7 @@ function* setupWebSocket(wsActionsList) {
   }
 }
 
-const webSocketSagas = () => {
+const webSocketSaga = () => {
   const keyValList = Object.keys(webSocketMap).map(wsSetupAction => [
     wsSetupAction,
     webSocketMap[wsSetupAction]
@@ -108,7 +108,7 @@ const webSocketSagas = () => {
   for (const keyVal of keyValList) {
     wsSagas.push(takeEvery([keyVal[0]], setupWebSocket, keyVal[1]));
   }
-  return all(...wsSagas);
+  return all([...wsSagas]);
 };
 
-export default webSocketSagas();
+export default webSocketSaga();
