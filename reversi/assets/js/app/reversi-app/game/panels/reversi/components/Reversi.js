@@ -18,8 +18,7 @@ export const getLinearFlippedSquares = (
   reversiState,
   myColor,
   getNextPosition,
-  position, // [rowIdx, colIdx]
-  shouldDetect = false
+  position // [rowIdx, colIdx]
 ) => {
   const squaresToFlip = [];
   let [nextRowIdx, nextColIdx] = getNextPosition(position);
@@ -33,31 +32,33 @@ export const getLinearFlippedSquares = (
     if (targetState === myColor) {
       // whether there are sandwitched squares
       if (squaresToFlip.length !== 0) {
-        return shouldDetect ? true : squaresToFlip;
+        return squaresToFlip;
       }
-      return shouldDetect ? false : [[]];
+      return [[]];
     } else if (targetState === EMPTY) {
-      return shouldDetect ? false : [[]];
+      return [[]];
     }
     squaresToFlip.push([nextRowIdx, nextColIdx]);
     [nextRowIdx, nextColIdx] = getNextPosition([nextRowIdx, nextColIdx]);
   }
-  return shouldDetect ? false : [[]]; // opponent's stones alongside aren't sandwitched
+  return [[]]; // opponent's stones alongside aren't sandwitched
 };
 
 const hasNextStrategy = (reversiState, color) => {
   return reversiState.some((rowState, rowIdx) => {
     return rowState.some((squareState, colIdx) =>
       squareState === EMPTY
-        ? NEXT_POSITION_FUNCS.some(getNextPosFunc =>
-            getLinearFlippedSquares(
+        ? NEXT_POSITION_FUNCS.some(getNextPosFunc => {
+            const flippedSquares = getLinearFlippedSquares(
               reversiState,
               color,
               getNextPosFunc,
-              [rowIdx, colIdx],
-              true
-            )
-          )
+              [rowIdx, colIdx]
+            );
+            return !(
+              flippedSquares.length === 1 && flippedSquares[0].length === 0
+            );
+          })
         : false
     );
   });
