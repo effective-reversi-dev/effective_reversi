@@ -1,5 +1,5 @@
-import { handleActions, createActions, createAction } from 'redux-actions';
-import { BLACK } from '../panels/reversi/constants';
+import { handleActions, createActions } from 'redux-actions';
+import { BLACK, INIT_REVERSI_STATE } from '../panels/reversi/constants';
 
 // Window panels management
 const ADD_PANEL = 'ADD_PANEL';
@@ -11,10 +11,9 @@ export const SETUP_GAME_SOCKET = 'SETUP_GAME_SOCKET'; // with Saga
 export const CLOSE_GAME_SOCKET = 'CLOSE_GAME_SOCKET'; // with Saga
 
 // Interpanel management
-const SET_REVERSI_SITUATION = 'SET_REVERSI_SITUATION';
-export const REGISTER_NEXT_REVERSI_POSITION = 'REGISTER_NEXT_REVERSI_POSITION'; // with Saga
+export const REGISTER_NEXT_REVERSI_INFO = 'REGISTER_NEXT_REVERSI_INFO'; // with Saga
 export const CLEAR_NEXT_REVERSI_POSITION = 'CLEAR_NEXT_REVERSI_POSITION'; // with Saga
-export const SEND_NEXT_REVERSI_POSITION = 'SEND_NEXT_REVERSI_POSITION'; // with Saga
+export const SEND_NEXT_REVERSI_INFO = 'SEND_NEXT_REVERSI_INFO'; // with Saga
 
 export const panelActions = createActions(
   SETUP_GAME_SOCKET,
@@ -22,30 +21,28 @@ export const panelActions = createActions(
   ADD_PANEL,
   REGISTER_OPEN_PANEL,
   REMOVE_PANEL,
-  REGISTER_NEXT_REVERSI_POSITION,
+  REGISTER_NEXT_REVERSI_INFO,
   CLEAR_NEXT_REVERSI_POSITION,
-  SEND_NEXT_REVERSI_POSITION
-);
-
-export const setReversiSituation = createAction(
-  SET_REVERSI_SITUATION,
-  (blackNum, whiteNum) => ({
-    blackNum,
-    whiteNum
-  })
+  SEND_NEXT_REVERSI_INFO
 );
 
 const initialState = {
+  // room
+  roomName: 'dummyRoom', // TODO: change proper room name
+  // panel
   panelsOpen: { 情報: true, ゲーム画面: true, 戦況: true, チャット: true },
   addedPanel: '',
-  roomName: 'dummyRoom', // TODO: change proper room name
-  blackNum: 2,
-  whiteNum: 2,
+  // game
+  gameSituation: {
+    blackNum: 2,
+    whiteNum: 2,
+    nextColor: BLACK
+  },
   nextReversiPosition: {
     colIdx: null,
-    rowIdx: null,
-    nextColor: BLACK
-  }
+    rowIdx: null
+  },
+  nextReversiState: INIT_REVERSI_STATE
 };
 
 export default handleActions(
@@ -68,30 +65,33 @@ export default handleActions(
         })
       });
     },
-    [setReversiSituation]: (state, action) => {
-      const { blackNum, whiteNum } = action.payload;
-      return Object.assign({}, state, {
+    [panelActions.registerNextReversiInfo]: (state, action) => {
+      const {
         blackNum,
-        whiteNum
-      });
-    },
-    [panelActions.registerNextReversiPosition]: (state, action) => {
-      const { colIdx, rowIdx, nextColor } = action.payload.data;
-      const nextReversiPosition = { colIdx, rowIdx, nextColor };
+        whiteNum,
+        colIdx,
+        rowIdx,
+        nextColor,
+        nextReversiState
+      } = action.payload.data;
+      const nextReversiPosition = { colIdx, rowIdx };
+      const gameSituation = { blackNum, whiteNum, nextColor };
       return Object.assign({}, state, {
-        nextReversiPosition
+        nextReversiPosition,
+        gameSituation,
+        nextReversiState
       });
     },
     [panelActions.clearNextReversiPosition]: state => {
       const nextReversiPosition = {
         colIdx: null,
-        rowIdx: null,
-        nextColor: BLACK
+        rowIdx: null
       };
+      const gameSituation = { blackNum: 2, whiteNum: 2, nextColor: BLACK };
       return Object.assign({}, state, {
-        blackNum: 2,
-        whiteNum: 2,
-        nextReversiPosition
+        nextReversiPosition,
+        gameSituation,
+        nextReversiState: INIT_REVERSI_STATE
       });
     }
   },

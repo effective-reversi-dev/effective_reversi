@@ -8,7 +8,8 @@ import {
   EMPTY,
   BLACK,
   WHITE,
-  NEXT_POSITION_FUNCS
+  NEXT_POSITION_FUNCS,
+  INIT_REVERSI_STATE
 } from '../constants';
 
 const getOpponentColor = myColor => (myColor === BLACK ? WHITE : BLACK);
@@ -84,18 +85,26 @@ export const getNextReversiState = (reversiState, color, position) => {
   }, reversiState);
 };
 
+const validateNextReversiState = (
+  prevReversiState,
+  rowIdx,
+  colIdx,
+  myColor,
+  nextReversiState
+) => {
+  const localNextReversiState = getNextReversiState(
+    JSON.parse(JSON.stringify(prevReversiState)),
+    myColor,
+    [rowIdx, colIdx]
+  );
+  return (
+    JSON.stringify(localNextReversiState) === JSON.stringify(nextReversiState)
+  );
+};
+
 export default function Reversi(props) {
   /* states */
-  const [reversiState, setReversiState] = useState([
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-    [EMPTY, EMPTY, EMPTY, WHITE, BLACK, EMPTY, EMPTY, EMPTY],
-    [EMPTY, EMPTY, EMPTY, BLACK, WHITE, EMPTY, EMPTY, EMPTY],
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-    [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY]
-  ]);
+  const [reversiState, setReversiState] = useState(INIT_REVERSI_STATE);
   const [myColor, setMyColor] = useState(BLACK);
 
   /* effects */
@@ -105,18 +114,24 @@ export default function Reversi(props) {
   }, []);
 
   useEffect(() => {
-    const { rowIdx, colIdx, nextColor } = props.nextReversiPosition;
+    const { rowIdx, colIdx } = props.nextReversiPosition;
     if (rowIdx === null && colIdx === null) {
+      // initially do nothing
       return undefined;
     }
-    const nextReversiState = getNextReversiState(
-      JSON.parse(JSON.stringify(reversiState)),
+    const consistency = validateNextReversiState(
+      reversiState,
+      rowIdx,
+      colIdx,
       myColor,
-      [rowIdx, colIdx]
+      props.nextReversiState
     );
-    setReversiState(nextReversiState);
-    setMyColor(nextColor);
-    props.setReversiSituation(nextReversiState);
+    if (!consistency) {
+      props.sendConsistency(false);
+      return undefined;
+    }
+    setReversiState(props.nextReversiState);
+    setMyColor(props.nextColor);
     return undefined;
   }, [props.nextReversiPosition]);
 
@@ -133,7 +148,7 @@ export default function Reversi(props) {
     if (!hasNextStrategy(nextReversiState, nextColor)) {
       nextColor = getOpponentColor(nextColor);
     }
-    props.sendNextPosition(rowIdx, colIdx, nextColor);
+    props.sendNextState(nextReversiState, nextColor, rowIdx, colIdx);
   };
 
   return (
@@ -152,13 +167,15 @@ export default function Reversi(props) {
 Reversi.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   glContainer: PropTypes.object.isRequired,
-  setReversiSituation: PropTypes.func.isRequired,
-  sendNextPosition: PropTypes.func.isRequired,
+  sendConsistency: PropTypes.func.isRequired,
+  sendNextState: PropTypes.func.isRequired,
   nextReversiPosition: PropTypes.shape({
-    nextColor: PropTypes.string,
     colIdx: PropTypes.number,
     rowIdx: PropTypes.number
-  }).isRequired
+  }).isRequired,
+  nextColor: PropTypes.string.isRequired,
+  nextReversiState: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string))
+    .isRequired
 };
 
 function Column(props) {

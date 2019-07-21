@@ -1,20 +1,22 @@
 import { connect } from 'react-redux';
 
 import Reversi from '../components/Reversi';
-import { panelActions, setReversiSituation } from '../../../parts/modules';
+import { panelActions as partsPanelActions } from '../../../parts/modules';
+import { panelActions as reversiPanelActions } from '../../reversi/modules';
 import { BLACK, WHITE } from '../constants';
 
-const { sendNextReversiPosition } = panelActions;
+const { sendNextReversiInfo } = partsPanelActions;
+const { sendConsistency } = reversiPanelActions;
 
-const mapStateToProps = state => ({
-  nextReversiPosition: state.game.parts.nextReversiPosition
-});
+const mapStateToProps = state => {
+  const { nextReversiPosition, nextReversiState } = state.game.parts;
+  const { nextColor } = state.game.parts.gameSituation;
+  const { consistency } = state.game.panels.reversi;
+  return { nextReversiPosition, nextColor, consistency, nextReversiState };
+};
 
 const mapDispatchToProps = dispatch => ({
-  sendNextPosition: (rowIdx, colIdx, nextColor) => {
-    dispatch(sendNextReversiPosition({ rowIdx, colIdx, nextColor }));
-  },
-  setReversiSituation: nextReversiState => {
+  sendNextState: (nextReversiState, nextColor, rowIdx, colIdx) => {
     let blackNum = 0,
       whiteNum = 0;
     nextReversiState.forEach(rowState => {
@@ -26,7 +28,19 @@ const mapDispatchToProps = dispatch => ({
         }
       });
     });
-    dispatch(setReversiSituation(blackNum, whiteNum));
+    dispatch(
+      sendNextReversiInfo({
+        blackNum,
+        whiteNum,
+        nextColor,
+        rowIdx,
+        colIdx,
+        nextReversiState
+      })
+    );
+  },
+  sendConsistency: consistency => {
+    dispatch(sendConsistency(consistency));
   }
 });
 

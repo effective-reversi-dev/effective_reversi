@@ -6,9 +6,10 @@ import GameChat from '../components/GameChat';
 
 const { sendChatInfo } = chatActions;
 
-const mapStateToProps = state => ({
-  chatInfo: state.game.panels.chat.chatInfo
-});
+const mapStateToProps = state => {
+  const { chatInfo } = state.game.panels.chat;
+  return { chatInfo };
+};
 
 export const mapDispatchToProps = dispatch => ({
   onSendChatInfo: chatMessage => {

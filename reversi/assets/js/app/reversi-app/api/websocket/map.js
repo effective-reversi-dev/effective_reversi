@@ -1,15 +1,20 @@
 import {
   SETUP_GAME_SOCKET,
   CLOSE_GAME_SOCKET,
-  REGISTER_NEXT_REVERSI_POSITION,
+  REGISTER_NEXT_REVERSI_INFO,
   CLEAR_NEXT_REVERSI_POSITION,
-  SEND_NEXT_REVERSI_POSITION
+  SEND_NEXT_REVERSI_INFO
 } from '../../game/parts/modules';
 import {
   REGISTER_CHAT_INFO,
   SEND_CHAT_INFO,
   CLEAR_CHAT_INFO
 } from '../../game/panels/gamechat/modules';
+import {
+  REGISTER_CONSISTENCY,
+  SEND_CONSISTENCY,
+  CLEAR_CONSISTENCY
+} from '../../game/panels/reversi/modules';
 
 /**
  * Configuration for actions related to WebSocket connection. There's type
@@ -53,13 +58,19 @@ const webSocketMap = {
       close: CLOSE_GAME_SOCKET,
       register: {
         chat: REGISTER_CHAT_INFO,
-        reversi: REGISTER_NEXT_REVERSI_POSITION
+        parts: REGISTER_NEXT_REVERSI_INFO,
+        reversi: REGISTER_CONSISTENCY
       },
       send: {
         [SEND_CHAT_INFO]: 'chat',
-        [SEND_NEXT_REVERSI_POSITION]: 'reversi'
+        [SEND_NEXT_REVERSI_INFO]: 'parts',
+        [SEND_CONSISTENCY]: 'reversi'
       },
-      prepare: [CLEAR_CHAT_INFO, CLEAR_NEXT_REVERSI_POSITION],
+      prepare: [
+        CLEAR_CHAT_INFO,
+        CLEAR_NEXT_REVERSI_POSITION,
+        CLEAR_CONSISTENCY
+      ],
       urlPaths: ['game', state => state.game.parts.roomName]
     }
   ]
