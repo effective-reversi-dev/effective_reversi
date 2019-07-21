@@ -8,6 +8,7 @@ export default function GameSituation(props) {
   let winner = null;
   const NUM_OF_SQUARES = GRID_NUM * GRID_NUM;
   if (blackNum + whiteNum === NUM_OF_SQUARES) {
+    // filled with stones
     if (blackNum > NUM_OF_SQUARES / 2) {
       winner = <div>勝者： ●</div>;
     } else if (NUM_OF_SQUARES / 2 > blackNum) {
@@ -15,6 +16,12 @@ export default function GameSituation(props) {
     } else {
       winner = <div>引き分け</div>;
     }
+  } else if (blackNum === 0) {
+    // all stones are white
+    winner = <div>勝者： ○</div>;
+  } else if (whiteNum === 0) {
+    // all stones are black
+    winner = <div>勝者： ●</div>;
   }
   return (
     <React.Fragment>
