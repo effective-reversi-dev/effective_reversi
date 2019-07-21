@@ -12,9 +12,9 @@ import {
   INIT_REVERSI_STATE
 } from '../constants';
 
-const getOpponentColor = myColor => (myColor === BLACK ? WHITE : BLACK);
+const getOpponentStoneColor = myColor => (myColor === BLACK ? WHITE : BLACK);
 
-export const getLinearFlippedSquares = (
+export const getLinearFlippedStones = (
   reversiState,
   myColor,
   getNextPosition,
@@ -44,12 +44,12 @@ export const getLinearFlippedSquares = (
   return [[]]; // opponent's stones alongside aren't sandwitched
 };
 
-const hasNextStrategy = (reversiState, color) => {
+const shouldPass = (reversiState, color) => {
   return reversiState.some((rowState, rowIdx) => {
     return rowState.some((squareState, colIdx) =>
       squareState === EMPTY
         ? NEXT_POSITION_FUNCS.some(getNextPosFunc => {
-            const flippedSquares = getLinearFlippedSquares(
+            const flippedSquares = getLinearFlippedStones(
               reversiState,
               color,
               getNextPosFunc,
@@ -64,7 +64,7 @@ const hasNextStrategy = (reversiState, color) => {
   });
 };
 
-export const getNextReversiState = (reversiState, color, position) => {
+export const placeStone = (reversiState, color, position) => {
   const [rowIdx, colIdx] = position;
   if (reversiState[rowIdx][colIdx] !== EMPTY) {
     return reversiState; // a stone already exists
@@ -72,7 +72,7 @@ export const getNextReversiState = (reversiState, color, position) => {
   const flippedSquares = NEXT_POSITION_FUNCS.reduce(
     (acc, getNextPosFunc) => [
       ...acc,
-      ...getLinearFlippedSquares(reversiState, color, getNextPosFunc, position)
+      ...getLinearFlippedStones(reversiState, color, getNextPosFunc, position)
     ],
     [[]]
   );
@@ -93,7 +93,7 @@ const validateNextReversiState = (
   myColor,
   nextReversiState
 ) => {
-  const localNextReversiState = getNextReversiState(
+  const localNextReversiState = placeStone(
     JSON.parse(JSON.stringify(prevReversiState)),
     myColor,
     [rowIdx, colIdx]
@@ -144,16 +144,16 @@ export default function Reversi(props) {
 
   /* actions */
   const changeColumnState = rowIdx => colIdx => {
-    const nextReversiState = getNextReversiState(
+    const nextReversiState = placeStone(
       JSON.parse(JSON.stringify(reversiState)),
       myColor,
       [rowIdx, colIdx]
     );
     if (JSON.stringify(nextReversiState) === JSON.stringify(reversiState))
       return;
-    let nextColor = getOpponentColor(myColor);
-    if (!hasNextStrategy(nextReversiState, nextColor)) {
-      nextColor = getOpponentColor(nextColor);
+    let nextColor = getOpponentStoneColor(myColor);
+    if (!shouldPass(nextReversiState, nextColor)) {
+      nextColor = getOpponentStoneColor(nextColor);
     }
     props.sendNextState(nextReversiState, nextColor, rowIdx, colIdx);
   };
