@@ -136,6 +136,12 @@ export default function Reversi(props) {
     return undefined;
   }, [props.nextReversiPosition]);
 
+  useEffect(() => {
+    if (!props.consistency) {
+      props.displayExitDialog();
+    }
+  }, [props.consistency]);
+
   /* actions */
   const changeColumnState = rowIdx => colIdx => {
     const nextReversiState = getNextReversiState(
@@ -170,13 +176,15 @@ Reversi.propTypes = {
   glContainer: PropTypes.object.isRequired,
   sendConsistency: PropTypes.func.isRequired,
   sendNextState: PropTypes.func.isRequired,
+  displayExitDialog: PropTypes.func.isRequired,
   nextReversiPosition: PropTypes.shape({
     colIdx: PropTypes.number,
     rowIdx: PropTypes.number
   }).isRequired,
   nextColor: PropTypes.string.isRequired,
   nextReversiState: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string))
-    .isRequired
+    .isRequired,
+  consistency: PropTypes.bool.isRequired
 };
 
 function Column(props) {

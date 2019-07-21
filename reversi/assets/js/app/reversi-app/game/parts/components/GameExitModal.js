@@ -8,40 +8,44 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { withRouter } from 'react-router';
 
-const GameExitDialog = props => {
+const GameExitModal = props => {
   return (
     <Dialog
       open={props.isOpenExitDialog}
-      onClose={() => props.handleExitDialog(false)}
+      onClose={props.onCloseDialog}
       aria-labelledby="alert-leave-title"
       aria-describedby="alert-leave-description"
     >
-      <DialogTitle id="alert-leave-title">退出しますか?</DialogTitle>
+      <DialogTitle id="alert-leave-title">{props.title}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-leave-description">
-          ゲームから退出しますか?退出したら負けになります。
+          {props.description}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button
-          onClick={() => props.handleExitDialog(false)}
-          color="primary"
-          autoFocus
-        >
-          キャンセル
-        </Button>
+        {props.shouldDisplayCancel ? (
+          <Button onClick={props.onClickCancel} color="primary" autoFocus>
+            キャンセル
+          </Button>
+        ) : null}
         <Button onClick={() => props.history.push('/')}>退出する</Button>
       </DialogActions>
     </Dialog>
   );
 };
 
-export default withRouter(GameExitDialog);
+export default withRouter(GameExitModal);
 
-GameExitDialog.propTypes = {
-  isOpenExitDialog: PropTypes.bool.isRequired,
+GameExitModal.propTypes = {
+  // react-router
   history: PropTypes.shape({
     push: PropTypes.func.isRequired
   }).isRequired,
-  handleExitDialog: PropTypes.func.isRequired
+  // ownProps
+  isOpenExitDialog: PropTypes.bool.isRequired,
+  onCloseDialog: PropTypes.func.isRequired,
+  onClickCancel: PropTypes.func.isRequired,
+  shouldDisplayCancel: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired
 };

@@ -17,10 +17,8 @@ const initialState = {
 export default handleActions(
   {
     [panelActions.registerConsistency]: (state, action) => {
-      return Object.assign({}, state, action.payload);
-    }
-  },
-  {
+      return Object.assign({}, state, { consistency: action.payload.data });
+    },
     [panelActions.clearConsistency]: state => {
       return Object.assign({}, state, { consistency: true });
     }
