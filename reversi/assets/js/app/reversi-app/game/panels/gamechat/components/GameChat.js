@@ -61,6 +61,11 @@ class GameChat extends React.Component {
             onChange={e => {
               this.setState({ message: e.target.value });
             }}
+            onKeyPress={e => {
+              if (e.key === 'Enter') {
+                this.onClickButton();
+              }
+            }}
             margin="normal"
           />
         </div>
