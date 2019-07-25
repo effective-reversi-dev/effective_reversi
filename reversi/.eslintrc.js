@@ -16,6 +16,11 @@ module.exports = {
     // see https://github.com/evcohen/eslint-plugin-jsx-a11y/issues/339
     'jsx-a11y/anchor-is-valid': [0, {
       "specialLink": ["to"]
+    }],
+    // now audio tags are only used for music, not songs so they are not the
+    // case to improve a11y.
+    'jsx-a11y/media-has-caption': [ 1, {
+      "Audio": [ "Audio" ]
     }]
   },
   overrides: [

@@ -30,6 +30,13 @@ export default function GameSituation(props) {
         現在の状況： ● {blackNum} ○ {whiteNum}
       </div>
       {winner}
+      <audio controls className="audio">
+        <source
+          src="http://cf-templates-hzxxytjjlf5s-ap-northeast-1.s3-website-ap-northeast-1.amazonaws.com/mp3/rev2007.mp3"
+          type="audio/mpeg"
+        />
+        音声ファイルは開けません
+      </audio>
     </React.Fragment>
   );
 }
