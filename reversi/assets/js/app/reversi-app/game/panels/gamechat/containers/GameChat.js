@@ -4,16 +4,14 @@ import { connect } from 'react-redux';
 import { chatActions } from '../modules';
 import GameChat from '../components/GameChat';
 
-const { sendChatInfo, closeChatSocket } = chatActions;
+const { sendChatInfo } = chatActions;
 
-const mapStateToProps = state => ({
-  chatInfo: state.game.panels.chat.chatInfo
-});
+const mapStateToProps = state => {
+  const { chatInfo } = state.game.panels.chat;
+  return { chatInfo };
+};
 
 export const mapDispatchToProps = dispatch => ({
-  closeChatSocket: () => {
-    dispatch(closeChatSocket());
-  },
   onSendChatInfo: chatMessage => {
     const time = moment()
       .tz('Asia/Tokyo')

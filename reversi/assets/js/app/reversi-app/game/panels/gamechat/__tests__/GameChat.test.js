@@ -16,7 +16,7 @@ describe('testing Chat', () => {
   const message = 'test message';
   const time = '10:00';
   const id = shortid.generate();
-  const chatInfo = [{ displayName, message, time, id }];
+  const chatInfo = [{ displayName, data: { message, time }, id }];
   const setupComponent = props => {
     const initialState = {
       game: {

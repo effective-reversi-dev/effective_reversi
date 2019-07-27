@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'import_export',
     'channels',
 
-    'chat',
+    'game',
     'reversiapp',
     'userconfig'
 ]

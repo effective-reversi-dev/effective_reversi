@@ -4,8 +4,12 @@ import PropTypes from 'prop-types';
 import GoldenLayout from 'golden-layout';
 
 import GameChat from '../../panels/gamechat/containers/GameChat';
+import Reversi from '../../panels/reversi/containers/Reversi';
+import GameSituation from '../../panels/situation/containers/GameSituation';
+
 import glComponentWrapper from '../utils/glComponentWrapper';
 import createGlConfig from '../utils/glConfigCreator';
+import { listenResizeEvent } from '../utils/glEventManager';
 
 const TestComponent = props => {
   return <h1>{props.label}</h1>;
@@ -41,20 +45,21 @@ class GameGoldenLayout extends React.Component {
       $('.goldenLayout').height(h - ht);
 
       // make size of gl reactive
-      $(window).on('load resize', () => resize());
+      $(window).on('load resize', resize);
 
       const layout = new GoldenLayout(config, $('.goldenLayout'));
+      listenResizeEvent(layout);
       layout.registerComponent(
         this.props.panelNames[0],
         glComponentWrapper(TestComponent, this.props, 0)
       );
       layout.registerComponent(
         this.props.panelNames[1],
-        glComponentWrapper(TestComponent, this.props, 1)
+        glComponentWrapper(Reversi, this.props, 1)
       );
       layout.registerComponent(
         this.props.panelNames[2],
-        glComponentWrapper(TestComponent, this.props, 2)
+        glComponentWrapper(GameSituation, this.props, 2)
       );
       layout.registerComponent(
         this.props.panelNames[3],
@@ -84,6 +89,7 @@ class GameGoldenLayout extends React.Component {
 
   componentWillUnmount() {
     const { layout } = this.state;
+    this.props.closeGameSocket();
     setTimeout(() => {
       layout.destroy();
     }, 0);
@@ -101,7 +107,8 @@ GameGoldenLayout.propTypes = {
   // onRemoveItem and onRegisterOpen aren't explicitly used in this file but are
   // necessary since they're used in `glComponentWrapper`
   onRemoveItem: PropTypes.func.isRequired,
-  onRegisterOpen: PropTypes.func.isRequired
+  onRegisterOpen: PropTypes.func.isRequired,
+  closeGameSocket: PropTypes.func.isRequired
 };
 
 export default GameGoldenLayout;
