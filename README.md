@@ -10,8 +10,10 @@ Effective Reversiはリバーシアプリの名称、およびその開発を目
 なお、下記でセットアップや変更反映等々を説明しますが、すべて<b>effective_reversi/reversi</b>ディレクトリで行うことを前提にしています。
 
 ### セットアップ
-環境構築を一通り終えたら、データベースマイグレーションを以下の手順で行ってください。
+環境構築を一通り終えたら、アプリケーションのセットアップ・データベースマイグレーションを以下の手順で行ってください。
 
+- local実行用アプリケーション設定ファイルのコピー: `cp reversi/settings/local.py.example reversi/settings/local.py`
+- local環境用環境ファイルのコピー: `cp .env.example .env`
 - マイグレーションファイルを作成：`pipenv run python manage.py makemigrations`
 - マイグレーションする：`pipenv run python manage.py migrate`
 
@@ -36,6 +38,7 @@ Effective Reversiはリバーシアプリの名称、およびその開発を目
 リモートに反映する時、特にプルリクエストを投げるときには必ずテストが通ることを確認してください。
 
 - サーバサイド(django)のテスト：`pipenv run python manage.py test`
+- サーバサイド(channels)のテスト：`pipenv run pytest`
 - クライアントサイドのテスト：`npm run test`
 - クライアントサイドのテスト（ウォッチモード）：`npm run test:watch`
 

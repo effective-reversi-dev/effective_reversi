@@ -8,7 +8,7 @@ const Links = () => {
         <Link to="/">TopPage</Link>
       </li>
       <li>
-        <Link to="/game">Game</Link>
+        <Link to="/room_selection">Game</Link>
       </li>
       <li>
         <Link to="/config">Setting</Link>

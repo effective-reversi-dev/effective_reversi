@@ -15,9 +15,11 @@ pre-commit = "*"
 pylint = "*"
 pylint-django = "*"
 pylint-celery = "*"
+pytest = "*"
+pytest-django = "*"
+pytest-asyncio = "*"
 safety = "*"
 v = {version = "*", editable = true}
-"pypiwin32" = "*"
 
 [packages]
 django = "*"
@@ -39,6 +41,8 @@ channels = "*"
 channels-redis = "*"
 django-widgets-improved = "*"
 prospector = "*"
+"pypiwin32" = {version = "*", sys_platform = "== 'win32'"}
+"pywin32" = {version = "*", sys_platform = "== 'win32'"}
 
 [requires]
 python_version = "3.6"
