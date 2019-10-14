@@ -7,7 +7,7 @@ const RoomSelection = () => {
     <div className="container">
       <h1 className="text-center logo my-4">Effective Reversi</h1>
       <div className="row justify-content-center">
-        <div className="col-lg-8 col-md-10 col-sm-12">
+        <div className="col-lg-10 col-md-10 col-sm-12">
           <div className="card">
             <div className="card-body">
               <h3 className="card-title">部屋選択</h3>

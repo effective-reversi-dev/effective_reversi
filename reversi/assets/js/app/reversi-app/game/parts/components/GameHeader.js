@@ -15,7 +15,7 @@ const GameHeader = props => {
     <div className="layout-header-wrapper">
       <AppBar position="static" color="default">
         <Toolbar>
-          <Grid container justify="space-between" spacing={24}>
+          <Grid container justify="space-between" spacing={0}>
             <IconButton onClick={() => props.handleDrawer(true)}>
               <MenuIcon />
             </IconButton>

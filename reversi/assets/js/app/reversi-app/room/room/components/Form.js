@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
+
 import { REQUEST_STATUS } from '../../modules';
+import { COLUMNS } from '../constants';
+
+import Table from '../../../common/table/Table';
 
 class Form extends React.Component {
   constructor(props) {
@@ -13,14 +16,12 @@ class Form extends React.Component {
     this.onClickEnterButton = this.onClickEnterButton.bind(this);
     this.onClickResetButton = this.onClickResetButton.bind(this);
     this.presentRequestError = this.presentRequestError.bind(this);
-    this.presentFormError = this.presentFormError.bind(this);
     this.checkRequestStatus = this.checkRequestStatus.bind(this);
     this.findFromRoomData = this.findFromRoomData.bind(this);
     this.state = {
-      inputForm: {
-        roomName: '',
-        isSpectator: false
-      }
+      selectedRowData: {},
+      isSpectator: false,
+      showAlert: false
     };
   }
 
@@ -34,15 +35,15 @@ class Form extends React.Component {
   }
 
   onClickEnterButton() {
-    const roomData = this.findFromRoomData(this.state.inputForm.roomName);
-    if (roomData.length !== 1) {
-      return;
+    const roomData = this.findFromRoomData();
+    if (roomData.length === 1) {
+      this.props.enterRoom({
+        roomId: roomData[0].room_id,
+        isSpectator: this.state.isSpectator
+      });
+    } else {
+      this.setState({ showAlert: true });
     }
-    const roomId = roomData[0].room_id;
-    this.props.enterRoom({
-      roomId,
-      isSpectator: this.state.inputForm.isSpectator
-    });
   }
 
   onClickResetButton() {
@@ -60,83 +61,44 @@ class Form extends React.Component {
     return <div />;
   }
 
-  presentFormError() {
-    if (this.findFromRoomData(this.state.inputForm.roomName).length !== 1) {
-      return (
-        <div className="alert alert-danger">
-          部屋名の指定が正しくありません。
-        </div>
-      );
-    }
-    return <div />;
-  }
-
   checkRequestStatus() {
     if (this.props.enterRoomResponse.status === REQUEST_STATUS.SUCCESS) {
       this.props.history.push('/game');
     }
   }
 
-  findFromRoomData(roomName) {
+  findFromRoomData() {
     const { roomData } = this.props.fetchRoomResponse;
-    return roomData.filter(room => room.room_name === roomName);
+    return Object.keys(this.state.selectedRowData).length !== 0
+      ? roomData.filter(
+          room => room.room_id === this.state.selectedRowData.room_id
+        )
+      : [];
   }
 
   render() {
-    const changeFormContents = changedContent => {
-      this.setState(Object.assign(this.state.inputForm, changedContent));
-    };
     const { roomData } = this.props.fetchRoomResponse;
-    const { inputForm } = this.state;
-    const header = () => {
-      return (
-        <tr>
-          <th>部屋名</th>
-          <th>対戦者定員</th>
-          <th>対戦者入室数</th>
-          <th>観戦者定員</th>
-          <th>観戦者入室数</th>
-        </tr>
-      );
-    };
-    const items = roomData.map(data => {
-      return (
-        <tr key={data.room_id}>
-          <td>{data.room_name}</td>
-          <td>{data.max_participant}</td>
-          <td>{data.count_participant}</td>
-          <td>{data.max_spectator}</td>
-          <td>{data.count_spectator}</td>
-        </tr>
-      );
-    });
     return (
       <React.Fragment>
         <p>入室したい部屋を選んでください。</p>
         {this.presentRequestError()}
-        {this.presentFormError()}
-        {/* TODO 部屋はテーブルからクリックで選択できるようにしたい。 */}
-        <table>
-          <thead>{header()}</thead>
-          <tbody>{items}</tbody>
-        </table>
-        <div className="form-group">
-          <TextField
-            value={inputForm.roomId}
-            className="item"
-            label="部屋名"
-            onChange={e => {
-              changeFormContents({ roomName: e.target.value });
-            }}
-            margin="normal"
-          />
-        </div>
+        {this.state.showAlert ? (
+          <div className="alert alert-danger">部屋名を指定してください。</div>
+        ) : null}
+        <Table
+          data={roomData}
+          selectedRowData={this.state.selectedRowData}
+          setSelectedRowData={selectedRowData => {
+            this.setState({ selectedRowData });
+          }}
+          columns={COLUMNS}
+        />
         <div className="form-group">
           観戦者モードで入室する。
           <Checkbox
-            checked={inputForm.isSpectator}
+            checked={this.state.isSpectator}
             onChange={e => {
-              changeFormContents({ isSpectator: e.target.checked });
+              this.setState({ isSpectator: e.target.checked });
             }}
             value="観戦者"
             color="primary"
