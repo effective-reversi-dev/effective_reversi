@@ -3,7 +3,7 @@ import json
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 
-from reversiapp.models import get_room_data, delete_belongings
+from reversiapp.models import get_room_data, delete_belongings, find_belonging_rooms_by_user, delete_empty_room
 
 
 class GameConsumer(AsyncWebsocketConsumer):
@@ -25,7 +25,9 @@ class GameConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
-        await self.leave_room()
+        # 適切な退室処理が行われず突如クライアントとの接続が切れた場合を想定した念のための処理
+        await self.delete_belonging()
+        # TODO 部屋の所属状況が変わったら下のsendが自動で呼ばれるようにしたい。
         await self.channel_layer.group_send(RoomSelectionConsumer.ROOM_SELECTION_GROUP,
                                             {'type': RoomSelectionConsumer.SEND_ROOM_DATA})
 
@@ -57,8 +59,11 @@ class GameConsumer(AsyncWebsocketConsumer):
         }))
 
     @database_sync_to_async
-    def leave_room(self):
+    def delete_belonging(self):
+        # TODO 所属情報が消えたら自動で空部屋が消えるようにしたい。
+        rooms = find_belonging_rooms_by_user(self.scope['user'])
         delete_belongings(self.scope['user'])
+        delete_empty_room(rooms)
 
 
 class RoomSelectionConsumer(AsyncWebsocketConsumer):
