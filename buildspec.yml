@@ -31,11 +31,12 @@ phases:
             - cp .env.example .env
             - pipenv run python manage.py makemigrations
             - pipenv run python manage.py migrate
+        # run redis server for test
+            - sudo redis-server --protected-mode no &
+            - sudo redis-cli ping
         # test python (django) code
             - pipenv run python manage.py test
         # test python (pytest) code
-            - sudo redis-server --protected-mode no &
-            - sudo redis-cli ping
             - pipenv run pytest --ignore=node_modules
         # test js code
             - npm run test

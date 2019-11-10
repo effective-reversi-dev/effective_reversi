@@ -1,6 +1,9 @@
 from django.urls import path
 
-from reversiapp.view.reversiapp import reversiapp, fetch_room_data, enter_room, exit_room
+from reversiapp.view.reversiapp import reversiapp
+from reversiapp.view.room.create import create_room
+from reversiapp.view.room.exit import exit_room
+from reversiapp.view.room.select import fetch_room_data, enter_room
 
 urlpatterns = [
     path('', reversiapp, name='home'),
@@ -10,5 +13,6 @@ urlpatterns = [
 
     # SPAの中からajax的に呼ばれる奴ら
     path('fetch_room_data', fetch_room_data, name='fetch_room_data'),
+    path('create_room', create_room, name='create_room'),
     path('enter_room', enter_room, name='enter_room'),
     path('exit_room', exit_room, name='exit_room')]
