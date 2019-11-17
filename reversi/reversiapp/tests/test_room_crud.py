@@ -1,3 +1,5 @@
+import json
+
 from django.test import TestCase
 from django.urls import reverse, resolve
 
@@ -25,6 +27,19 @@ class RoomCreationUrl(TestCase):
         view = resolve('/create_room')
         self.assertEquals(view.func, create_room)
 
+    def test_fetch_room_data(self):
+        url = reverse('fetch_room_data')
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(json.loads(response.content).get('room_data')[0], {
+            'room_id': 1,
+            'room_name': 'test',
+            'count_spectator': 0,
+            'max_spectator': 2,
+            'count_participant': 1,
+            'max_participant': 2,
+            'room_name': 'test',
+        })
 
 class RoomCreationWithoutPassword(TestCase):
     def test_without_password(self):
