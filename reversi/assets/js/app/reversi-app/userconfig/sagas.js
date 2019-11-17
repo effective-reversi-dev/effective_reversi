@@ -1,33 +1,14 @@
 import { call, put, take } from 'redux-saga/effects';
 import { userConfigActions, REQUEST_STATUS } from './modules';
+import { post } from '../api/http/methods';
 
 const { receiveChange, requestChange } = userConfigActions;
-
 const ERROR_EMPTY_PAYLOAD = '変更内容が入力されていません。';
-const ERROR_SERVER_ERROR = 'サーバとの通信に失敗しました。';
 
 const USER_CHANGE_URL = 'users/change_user/';
 
 async function fetchChangeResponse(currentConfigs) {
-  // ページの body 内にinput要素として置いてあるcsrfTokenを取りに行く。
-  const csrfToken = document.getElementsByName('csrfmiddlewaretoken').item(0)
-    .value;
-  const data = new FormData();
-  data.append('displayName', currentConfigs.displayName);
-  data.append('emailAddress', currentConfigs.emailAddress);
-  // ここでcsrfTokenを詰める。
-  data.append('csrfmiddlewaretoken', csrfToken);
-  return fetch(USER_CHANGE_URL, {
-    method: 'POST',
-    body: data,
-    credentials: 'same-origin'
-  })
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error(ERROR_SERVER_ERROR);
-    })
+  return post(USER_CHANGE_URL, currentConfigs)
     .then(responseObj => {
       let result;
       if (responseObj.err === true) {
@@ -37,8 +18,8 @@ async function fetchChangeResponse(currentConfigs) {
       }
       return { payload: result };
     })
-    .catch(() => {
-      const err = { status: REQUEST_STATUS.FAIL, errMsg: ERROR_SERVER_ERROR };
+    .catch(errorObj => {
+      const err = { status: REQUEST_STATUS.FAIL, errMsg: errorObj.message };
       return { err };
     });
 }

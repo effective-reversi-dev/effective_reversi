@@ -51,14 +51,17 @@ class Form extends React.Component {
   }
 
   presentRequestError() {
+    let errorMsg;
     if (this.props.enterRoomResponse.status === REQUEST_STATUS.FAIL) {
-      return (
-        <div className="alert alert-danger">
-          {this.props.enterRoomResponse.errMsg}
-        </div>
-      );
+      errorMsg = this.props.enterRoomResponse.errMsg;
+    } else if (this.props.fetchRoomResponse.errMsg) {
+      errorMsg = this.props.fetchRoomResponse.errMsg;
     }
-    return <div />;
+    return errorMsg ? (
+      <div className="alert alert-danger">{errorMsg}</div>
+    ) : (
+      <div />
+    );
   }
 
   checkRequestStatus() {

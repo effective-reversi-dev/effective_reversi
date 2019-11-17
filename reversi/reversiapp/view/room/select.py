@@ -2,7 +2,7 @@ import json
 
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_GET
 
 from reversiapp.channel.room_modification import send_room_data_to_channel_layer
 from reversiapp.models import get_room_data, check_existence_of_belonging, create_room_belonging, \
@@ -11,7 +11,7 @@ from userconfig.models import User
 
 
 @login_required
-@require_POST
+@require_GET
 def fetch_room_data(request):
     # initial data の構造
     # {

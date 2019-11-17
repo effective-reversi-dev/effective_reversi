@@ -1,5 +1,6 @@
 import { all, call, put, take } from 'redux-saga/effects';
 import { roomActions, REQUEST_STATUS } from '../modules';
+import { get, post, SERVER_CONNECTION_ERROR } from '../../api/http/methods';
 
 const {
   resolveRoomData,
@@ -10,60 +11,24 @@ const {
   exitRoom
 } = roomActions;
 
-// TODO この手の定数の置き場所を作りたい。
-const SERVER_ERROR = 'サーバとの通信に失敗しました。';
-
 const ROOM_DATA_URL = 'fetch_room_data';
 const ENTER_ROOM_URL = 'enter_room';
 const EXIT_ROOM_URL = 'exit_room';
 
 async function fetchRoomData() {
-  const csrfToken = document.getElementsByName('csrfmiddlewaretoken').item(0)
-    .value;
-  const data = new FormData();
-  // ここでcsrfTokenを詰める。
-  data.append('csrfmiddlewaretoken', csrfToken);
-  return fetch(ROOM_DATA_URL, {
-    method: 'POST',
-    body: data,
-    credentials: 'same-origin'
-  })
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error(SERVER_ERROR);
-    })
+  return get(ROOM_DATA_URL)
     .then(responseObj => {
       const result = { roomData: responseObj.room_data, errMsg: null };
       return { payload: result };
     })
-    .catch(() => {
-      const err = { roomData: [], errMsg: SERVER_ERROR };
+    .catch(errorObj => {
+      const err = { roomData: [], errMsg: errorObj.message };
       return { err };
     });
 }
 
 async function requestEnterRoom(roomToEnter) {
-  // ページの body 内にinput要素として置いてあるcsrfTokenを取りに行く。
-  const csrfToken = document.getElementsByName('csrfmiddlewaretoken').item(0)
-    .value;
-  const data = new FormData();
-  data.append('isSpectator', roomToEnter.isSpectator);
-  data.append('roomId', roomToEnter.roomId);
-  // ここでcsrfTokenを詰める。
-  data.append('csrfmiddlewaretoken', csrfToken);
-  return fetch(ENTER_ROOM_URL, {
-    method: 'POST',
-    body: data,
-    credentials: 'same-origin'
-  })
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error(SERVER_ERROR);
-    })
+  return post(ENTER_ROOM_URL, roomToEnter)
     .then(responseObj => {
       if (responseObj.succeeded === false) {
         return {
@@ -73,51 +38,29 @@ async function requestEnterRoom(roomToEnter) {
           }
         };
       }
-      if (responseObj.succeeded === true) {
-        return { payload: { status: REQUEST_STATUS.SUCCESS, errMsg: null } };
-      }
-      return { payload: { status: REQUEST_STATUS.FAIL, errMsg: SERVER_ERROR } };
+      return { payload: { status: REQUEST_STATUS.SUCCESS, errMsg: null } };
     })
-    .catch(() => {
-      const err = { status: REQUEST_STATUS.FAIL, errMsg: SERVER_ERROR };
+    .catch(errorObj => {
+      const err = { status: REQUEST_STATUS.FAIL, errMsg: errorObj.message };
       return { err };
     });
 }
 
 async function requestExitRoom() {
-  // ページの body 内にinput要素として置いてあるcsrfTokenを取りに行く。
-  const csrfToken = document.getElementsByName('csrfmiddlewaretoken').item(0)
-    .value;
-  const data = new FormData();
-  // ここでcsrfTokenを詰める。
-  data.append('csrfmiddlewaretoken', csrfToken);
-  return fetch(EXIT_ROOM_URL, {
-    method: 'POST',
-    body: data,
-    credentials: 'same-origin'
-  })
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error(SERVER_ERROR);
-    })
+  post(EXIT_ROOM_URL)
     .then(responseObj => {
       if (responseObj.succeeded === false) {
         return {
           payload: {
             status: REQUEST_STATUS.FAIL,
-            errMsg: SERVER_ERROR
+            errMsg: SERVER_CONNECTION_ERROR
           }
         };
       }
-      if (responseObj.succeeded === true) {
-        return { payload: { status: REQUEST_STATUS.SUCCESS, errMsg: null } };
-      }
-      return { payload: { status: REQUEST_STATUS.FAIL, errMsg: SERVER_ERROR } };
+      return { payload: { status: REQUEST_STATUS.SUCCESS, errMsg: null } };
     })
-    .catch(() => {
-      const err = { status: REQUEST_STATUS.FAIL, errMsg: SERVER_ERROR };
+    .catch(errorObj => {
+      const err = { status: REQUEST_STATUS.FAIL, errMsg: errorObj.message };
       return { err };
     });
 }
