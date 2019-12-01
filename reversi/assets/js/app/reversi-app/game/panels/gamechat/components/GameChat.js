@@ -24,19 +24,28 @@ class GameChat extends React.Component {
 
   render() {
     const items = this.props.chatInfo.map(info => {
-      return (
-        <div className="balloon" key={info.id}>
+      const balloon = (
+        <div>
           <div className="balloon-user">
             <p>{info.displayName}</p>
           </div>
           <div className="balloon-chat">
-            <div className="balloon-left">
+            <div className="balloon-content">
               <p>{info.data.message}</p>
             </div>
             <div className="balloon-time">
               <p>{info.data.time}</p>
             </div>
           </div>
+        </div>
+      );
+      return info.displayName === this.props.displayName ? (
+        <div className="balloon-mine" key={info.id}>
+          {balloon}
+        </div>
+      ) : (
+        <div className="balloon-others" key={info.id}>
+          {balloon}
         </div>
       );
     });
@@ -76,7 +85,8 @@ class GameChat extends React.Component {
 
 GameChat.propTypes = {
   chatInfo: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onSendChatInfo: PropTypes.func.isRequired
+  onSendChatInfo: PropTypes.func.isRequired,
+  displayName: PropTypes.string.isRequired
 };
 
 export default GameChat;

@@ -1,7 +1,7 @@
 from django.contrib.auth import views as auth_views
 from django.urls import path
 
-from userconfig.view.change_user_info import change_user_info
+from userconfig.view.user_info import get_user_info, change_user_info
 from userconfig.view.signup import signup
 
 urlpatterns = [
@@ -44,6 +44,9 @@ urlpatterns = [
          auth_views.PasswordChangeDoneView.as_view(
              template_name='userconfig/password_change_done.html'),
          name='password_change_done'),
+
+    # ログイン時に呼ばれる
+    path('get_user/', get_user_info, name='get_user'),
 
     # SPAの中からajax的に呼ばれる
     path('change_user/', change_user_info, name='change_user'),

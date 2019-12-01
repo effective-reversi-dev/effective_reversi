@@ -1,10 +1,17 @@
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_GET, require_POST
 
 from common.add_user_info import add_user_info
 from userconfig.models import User
+
+
+@require_GET
+@login_required
+def get_user_info(request):
+    user: User = request.user
+    return JsonResponse({'display_name': user.display_name, 'email': user.email, 'username': user.username})
 
 
 @require_POST

@@ -13,19 +13,51 @@
 	.balloon-chat {
 		position: relative;
 		display: inline-block;
-		.balloon-left {
+		.balloon-content {
+			box-shadow: 2px 2px;
+			border-radius: 15px;
 			position: relative;
 			display: inline-block;
 			margin: 1px 0 5px 15px;
 			padding: 5px 10px;
 			color: #555;
 			font-size: 16px;
-			background:	$balloon-color;
-			border-radius: 15px;
 			p {
 				margin: 0;
 				padding: 0;
 			}
+		}
+		.balloon-time {
+			position: relative;
+			float: right;
+			padding: 5px;
+			bottom: -20px;
+			p {
+				font-size: 10px;
+				margin: 0px;
+			}
+		}
+	}
+}
+
+.balloon-others {
+	@extend .balloon;
+	.balloon-chat {
+		.balloon-content {
+			background:	$balloon-others-color;
+			p {
+				color: $balloon-message-color;
+			}
+		}
+	}
+}
+
+
+.balloon-mine {
+	@extend .balloon;
+	.balloon-chat {
+		.balloon-content {
+			background:	$balloon-my-color;
 			:before {
 				content: "";
 				position: absolute;
@@ -33,16 +65,7 @@
 				left: -20px;
 				margin-top: -10px;
 				border: 10px solid transparent;
-				border-right: 20px solid $balloon-color;
-			}
-		}
-		.balloon-time {
-			position: relative;
-			float: right;
-			bottom: -20px;
-			p {
-				font-size: 10px;
-				margin: 0px;
+				border-right: 20px solid $balloon-my-color;
 			}
 		}
 	}

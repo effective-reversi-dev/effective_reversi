@@ -37,9 +37,9 @@ class RoomCreationUrl(TestCase):
             'count_spectator': 0,
             'max_spectator': 2,
             'count_participant': 1,
-            'max_participant': 2,
-            'room_name': 'test',
+            'max_participant': 2
         })
+
 
 class RoomCreationWithoutPassword(TestCase):
     def test_without_password(self):
