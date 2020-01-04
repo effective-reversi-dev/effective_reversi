@@ -7,6 +7,7 @@ import { REQUEST_STATUS } from '../../modules';
 import { COLUMNS } from '../constants';
 
 import Table from '../../../common/table/Table';
+import PasswordModal from './PasswordModal';
 
 class Form extends React.Component {
   constructor(props) {
@@ -18,10 +19,13 @@ class Form extends React.Component {
     this.presentRequestError = this.presentRequestError.bind(this);
     this.checkRequestStatus = this.checkRequestStatus.bind(this);
     this.findFromRoomData = this.findFromRoomData.bind(this);
+    this.flipPasswordModal = this.flipPasswordModal.bind(this);
+    this.enterWithPassword = this.enterWithPassword.bind(this);
     this.state = {
       selectedRowData: {},
       isSpectator: false,
-      showAlert: false
+      showAlert: false,
+      isOpenPasswordModal: false
     };
   }
 
@@ -35,12 +39,23 @@ class Form extends React.Component {
   }
 
   onClickEnterButton() {
+    // バリデ前に古いアラートをクリアしないと、
+    // 一度出たアラートが画面に出続ける。
+    this.setState({ showAlert: false });
     const roomData = this.findFromRoomData();
+    // サーバ側のテーブルが壊れていない限りroomData.lengthは1以下。
     if (roomData.length === 1) {
-      this.props.enterRoom({
-        roomId: roomData[0].room_id,
-        isSpectator: this.state.isSpectator
-      });
+      const roomDatum = roomData[0];
+      if (!roomDatum.has_password) {
+        this.props.clearEnterRoomRequestStatus();
+        this.props.enterRoom({
+          roomId: roomDatum.room_id,
+          isSpectator: this.state.isSpectator,
+          password: ''
+        });
+      } else {
+        this.flipPasswordModal(true);
+      }
     } else {
       this.setState({ showAlert: true });
     }
@@ -48,6 +63,28 @@ class Form extends React.Component {
 
   onClickResetButton() {
     this.props.resetBelongingRoomInfo();
+  }
+
+  // TODO onClicEnterButtonと一部共通化したい
+  enterWithPassword(password) {
+    this.setState({ showAlert: false });
+    const roomData = this.findFromRoomData();
+    // サーバ側のテーブルが壊れていない限りroomData.lengthは1以下。
+    if (roomData.length === 1) {
+      const roomDatum = roomData[0];
+      this.props.clearEnterRoomRequestStatus();
+      this.props.enterRoom({
+        roomId: roomDatum.room_id,
+        isSpectator: this.state.isSpectator,
+        password
+      });
+    } else {
+      this.setState({ showAlert: true });
+    }
+  }
+
+  flipPasswordModal(open) {
+    this.setState({ isOpenPasswordModal: open });
   }
 
   presentRequestError() {
@@ -86,7 +123,7 @@ class Form extends React.Component {
         <p>入室したい部屋を選んでください。</p>
         {this.presentRequestError()}
         {this.state.showAlert ? (
-          <div className="alert alert-danger">部屋名を指定してください。</div>
+          <div className="alert alert-danger">部屋が選択されていません。</div>
         ) : null}
         <Table
           data={roomData}
@@ -127,6 +164,11 @@ class Form extends React.Component {
             入室状況をリセットする。
           </Button>
         </div>
+        <PasswordModal
+          isOpenModal={this.state.isOpenPasswordModal}
+          closeModal={() => this.flipPasswordModal(false)}
+          submitPassword={this.enterWithPassword}
+        />
       </React.Fragment>
     );
   }

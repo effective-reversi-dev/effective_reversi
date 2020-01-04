@@ -9,6 +9,7 @@ urlpatterns = [
     path('', reversiapp, name='home'),
     path('game', reversiapp, name='game'),
     path('room_selection', reversiapp, name='room_selection'),
+    path('room_creation', reversiapp, name='room_creation'),
     path('config', reversiapp, name='config'),
 
     # SPAの中からajax的に呼ばれる奴ら

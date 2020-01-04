@@ -8,7 +8,10 @@ const Links = () => {
         <Link to="/">TopPage</Link>
       </li>
       <li>
-        <Link to="/room_selection">Game</Link>
+        <Link to="/room_selection">Game(部屋選択)</Link>
+      </li>
+      <li>
+        <Link to="/room_creation">Game(部屋作成)</Link>
       </li>
       <li>
         <Link to="/config">Setting</Link>

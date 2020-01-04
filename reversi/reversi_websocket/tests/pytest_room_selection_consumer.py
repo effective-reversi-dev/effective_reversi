@@ -52,21 +52,24 @@ async def test_room_selection_consumer():
                 'count_spectator': 2,
                 'max_spectator': 4,
                 'count_participant': 1,
-                'max_participant': 2},
+                'max_participant': 2,
+                'has_password': True},
                 {
                     'room_id': room2.id,
                     'room_name': room2.room_name,
                     'count_spectator': 1,
                     'max_spectator': 4,
                     'count_participant': 0,
-                    'max_participant': 2},
+                    'max_participant': 2,
+                    'has_password': True},
                 {
                     'room_id': room3.id,
                     'room_name': room3.room_name,
                     'count_spectator': 0,
                     'max_spectator': 4,
                     'count_participant': 1,
-                    'max_participant': 2}
+                    'max_participant': 2,
+                    'has_password': True},
             ]
         }
     }
