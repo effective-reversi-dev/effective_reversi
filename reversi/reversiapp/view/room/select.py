@@ -73,7 +73,7 @@ def _enter_as_spectator(request, room, belonging_users):
     count_spectator = len([col for col in belonging_users if col.is_spectator])
     max_spectator = room.max_spectator
     if count_spectator + 1 > max_spectator:
-        return _room_overflow()
+        return _spectator_overflow()
     create_room_belonging(user=user, room=room, is_spectator=True)
     return JsonResponse({'succeeded': True, 'err_msg': ''})
 
@@ -83,7 +83,7 @@ def _enter_as_participant(request, room, belonging_users):
     count_participant = len([col for col in belonging_users if not col.is_spectator])
     max_participant = room.max_participant
     if count_participant + 1 > max_participant:
-        return _room_overflow()
+        return _participant_overflow()
     create_room_belonging(user=user, room=room, is_spectator=False)
     return JsonResponse({'succeeded': True, 'err_msg': ''})
 
@@ -92,8 +92,12 @@ def _room_not_found():
     return JsonResponse({'succeeded': False, 'err_msg': '指定された部屋が存在しません。'})
 
 
-def _room_overflow():
-    return JsonResponse({'succeeded': False, 'err_msg': '部屋がすでに満室です。'})
+def _spectator_overflow():
+    return JsonResponse({'succeeded': False, 'err_msg': '観戦者がすでに満員です。'})
+
+
+def _participant_overflow():
+    return JsonResponse({'succeeded': False, 'err_msg': '対戦者がすでに満員です。'})
 
 
 def _already_entered():
