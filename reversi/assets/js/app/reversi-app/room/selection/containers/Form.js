@@ -13,8 +13,8 @@ const {
 } = roomActions;
 
 const mapStateToProps = state => ({
-  fetchRoomResponse: state.roomSelection.roomSelection.fetchRoomResponse,
-  enterRoomResponse: state.roomSelection.roomSelection.enterRoomResponse
+  fetchRoomResponse: state.room.room.fetchRoomResponse,
+  enterRoomResponse: state.room.room.enterRoomResponse
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -17,6 +17,7 @@ class RoomCreationUrl(TestCase):
             'roomName': 'test',
             'password': '',
             'maxSpectator': '2',
+            'isSpectator': 'false'
         }
         self.response = self.client.post(url, data)
 
@@ -37,7 +38,8 @@ class RoomCreationUrl(TestCase):
             'count_spectator': 0,
             'max_spectator': 2,
             'count_participant': 1,
-            'max_participant': 2
+            'max_participant': 2,
+            'has_password': False,
         })
 
 
@@ -52,6 +54,8 @@ class RoomCreationWithoutPassword(TestCase):
             'roomName': 'test',
             'password': '',
             'maxSpectator': '2',
+            'isSpectator': 'false'
+
         }
         enter_data = {
             'roomId': '1',
@@ -102,6 +106,7 @@ class RoomCreationWithPassword(TestCase):
             'roomName': 'test',
             'password': 'pass',
             'maxSpectator': '2',
+            'isSpectator': 'false'
         }
         enter_failure_data = {
             'roomId': '1',

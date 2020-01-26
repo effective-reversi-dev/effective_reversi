@@ -32,7 +32,8 @@ def get_room_data():
                 'count_spectator': count_spectator,
                 'max_spectator': room.max_spectator,
                 'count_participant': count_participant,
-                'max_participant': room.max_participant}
+                'max_participant': room.max_participant,
+                'has_password': len(room.password) > 0}
 
     rooms = Room.objects.all()
     return [_create_room_info(room) for room in rooms]

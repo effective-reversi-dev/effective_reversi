@@ -92,10 +92,7 @@ const webSocketMap = {
         CLEAR_NEXT_REVERSI_POSITION,
         CLEAR_CONSISTENCY
       ],
-      urlPaths: [
-        'game',
-        state => state.roomSelection.roomSelection.currentRoomInfo.roomId
-      ]
+      urlPaths: ['game', state => state.room.room.currentRoomInfo.roomId]
     }
   ]
 };

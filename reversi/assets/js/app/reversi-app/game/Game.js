@@ -20,7 +20,7 @@ const mapStateToProps = state => {
     shouldDisplayCancel,
     isOpenExitDialog
   } = state.game.game;
-  const { roomId } = state.roomSelection.roomSelection.currentRoomInfo;
+  const { roomId } = state.room.room.currentRoomInfo;
   return {
     exitTitle,
     exitDescription,
