@@ -1,12 +1,12 @@
 import json
 
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseServerError
 from django.views.decorators.http import require_POST, require_GET
 
 from reversiapp.channel.room_modification import send_room_data_to_channel_layer
-from reversiapp.models import get_room_data, check_existence_of_belonging, create_room_belonging, \
-    find_rooms_by_id, find_room_belongings_by_room
+from reversiapp.models import UserAttr, get_room_data, check_existence_of_belonging, create_room_belonging, \
+    find_rooms_by_id, find_room_belongings_by_room, game_is_started
 from userconfig.models import User
 
 
@@ -49,11 +49,16 @@ def enter_room(request):
     rooms = find_rooms_by_id(room_id)
     if len(rooms) == 0:
         return _room_not_found()
+    elif len(rooms) > 1:
+        return HttpResponseServerError(json.dumps({'err_msg': 'データに不整合が検出されました。'}))
     room = rooms[0]
 
     # requestのpassword は nullable. django model側は空文字で表現
     if room.password != received_data['password']:
         return _password_mismatched()
+
+    if game_is_started(room):
+        return _already_started()
 
     if check_existence_of_belonging(request.user):
         response = _already_entered()
@@ -70,7 +75,7 @@ def enter_room(request):
 
 def _enter_as_spectator(request, room, belonging_users):
     user: User = request.user
-    count_spectator = len([col for col in belonging_users if col.is_spectator])
+    count_spectator = len([col for col in belonging_users if col.user_attr == UserAttr.SPECTATOR])
     max_spectator = room.max_spectator
     if count_spectator + 1 > max_spectator:
         return _spectator_overflow()
@@ -80,7 +85,7 @@ def _enter_as_spectator(request, room, belonging_users):
 
 def _enter_as_participant(request, room, belonging_users):
     user: User = request.user
-    count_participant = len([col for col in belonging_users if not col.is_spectator])
+    count_participant = len([col for col in belonging_users if not col.user_attr == UserAttr.SPECTATOR])
     max_participant = room.max_participant
     if count_participant + 1 > max_participant:
         return _participant_overflow()
@@ -106,3 +111,7 @@ def _already_entered():
 
 def _password_mismatched():
     return JsonResponse({'succeeded': False, 'err_msg': 'パスワードが正しくありません。'})
+
+
+def _already_started():
+    return JsonResponse({'succeeded': False, 'err_msg': '既にゲームは始まっています。ゲームを開始した部屋には入れません。'})

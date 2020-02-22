@@ -7,7 +7,7 @@ from channels.testing import WebsocketCommunicator
 from django.urls import path
 
 from reversi_websocket.consumers import RoomSelectionConsumer
-from reversiapp.models import Room, RoomBelongings
+from reversiapp.models import Room, RoomBelongings, UserAttr
 from userconfig.models import User
 
 
@@ -100,4 +100,5 @@ def _prepare_test_room(room_name, password, max_spectator=4, max_participant=2) 
 
 
 def _prepare_test_belongings(room: Room, user: User, is_spectator: bool) -> RoomBelongings:
-    return RoomBelongings.objects.create(room_id=room, user_id=user, is_spectator=is_spectator)
+    user_attr = UserAttr.SPECTATOR if is_spectator else UserAttr.UNASSIGNED_PLAYER
+    return RoomBelongings.objects.create(room_id=room, user_id=user, user_attr=user_attr)

@@ -11,10 +11,26 @@ const { sendConsistency } = reversiPanelActions;
 const { displayExitDialog } = gameActions;
 
 const mapStateToProps = state => {
-  const { nextReversiPosition, nextReversiState } = state.game.parts;
+  const {
+    nextReversiPosition,
+    nextReversiState,
+    playerInfo
+  } = state.game.parts;
   const { nextColor } = state.game.parts.gameSituation;
   const { consistency } = state.game.panels.reversi;
-  return { nextReversiPosition, nextColor, consistency, nextReversiState };
+  const { userName } = state.userInfo.userInfo;
+  const { whiteUserName, blackUserName } = playerInfo;
+  const isMyTurn =
+    (nextColor === BLACK && blackUserName === userName) ||
+    (nextColor === WHITE && whiteUserName === userName);
+
+  return {
+    nextReversiPosition,
+    nextColor,
+    consistency,
+    nextReversiState,
+    isMyTurn
+  };
 };
 
 const mapDispatchToProps = dispatch => ({

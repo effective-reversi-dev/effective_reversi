@@ -4,6 +4,7 @@ import webSocketSaga from './api/websocket/sagas';
 import userConfigSaga from './userconfig/sagas';
 import roomSelectionSaga from './room/selection/sagas';
 import roomCreationSaga from './room/creation/sagas';
+import gameStartSaga from './game/sagas';
 import topPageSaga from './top/sagas';
 
 export default function* rootSaga() {
@@ -12,6 +13,7 @@ export default function* rootSaga() {
     ...[userConfigSaga],
     ...[roomSelectionSaga],
     ...[roomCreationSaga],
+    ...[gameStartSaga],
     ...[topPageSaga]
   ]);
 }

@@ -164,6 +164,7 @@ export default function Reversi(props) {
         <Column
           columnState={columnState}
           changeColumnState={changeColumnState(idx)}
+          disableClickEvent={!props.isMyTurn}
           key={uuid()}
         />
       ))}
@@ -184,7 +185,8 @@ Reversi.propTypes = {
   nextColor: PropTypes.string.isRequired,
   nextReversiState: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string))
     .isRequired,
-  consistency: PropTypes.bool.isRequired
+  consistency: PropTypes.bool.isRequired,
+  isMyTurn: PropTypes.bool.isRequired
 };
 
 function Column(props) {
@@ -197,6 +199,7 @@ function Column(props) {
         <Square
           squareState={squareState}
           changeSquareState={changeSquareState(idx)}
+          disableClickEvent={props.disableClickEvent}
           key={uuid()}
         />
       ))}
@@ -206,7 +209,8 @@ function Column(props) {
 
 Column.propTypes = {
   columnState: PropTypes.arrayOf(PropTypes.string).isRequired,
-  changeColumnState: PropTypes.func.isRequired
+  changeColumnState: PropTypes.func.isRequired,
+  disableClickEvent: PropTypes.bool.isRequired
 };
 
 function Square(props) {
@@ -225,7 +229,10 @@ function Square(props) {
       );
     default:
       return (
-        <button className="square" onClick={props.changeSquareState}>
+        <button
+          className="square"
+          onClick={props.disableClickEvent ? null : props.changeSquareState}
+        >
           <div className={EMPTY} />
         </button>
       );
@@ -234,5 +241,6 @@ function Square(props) {
 
 Square.propTypes = {
   squareState: PropTypes.string.isRequired,
-  changeSquareState: PropTypes.func.isRequired
+  changeSquareState: PropTypes.func.isRequired,
+  disableClickEvent: PropTypes.bool.isRequired
 };

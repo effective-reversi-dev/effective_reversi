@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from typing import Dict, List
+from enum import Enum
 
 from django.db import models
 
@@ -16,17 +17,32 @@ class Room(models.Model):
     max_participant = models.IntegerField()
 
 
+class UserAttr(Enum):
+    WHITE = ('wh', 'White Player')
+    BLACK = ('bl', 'Black Player')
+    UNASSIGNED_PLAYER = ('un', 'Unassigned Player')
+    SPECTATOR = ('sp', 'Spectator')
+
+    @classmethod
+    def get_value(cls, member):
+        return cls[member].value[0]
+
+
 class RoomBelongings(models.Model):
     room_id = models.ForeignKey(Room, models.CASCADE)
     user_id = models.ForeignKey(User, models.CASCADE)
-    is_spectator = models.BooleanField()
+    user_attr = models.CharField(
+        max_length=2,
+        choices=[attr.value for attr in UserAttr],
+        default=UserAttr.SPECTATOR
+    )
 
 
 def get_room_data():
     def _create_room_info(room: Room) -> Dict[str, object]:
-        belonging_users = RoomBelongings.objects.filter(room_id=room.id)
-        count_spectator = len([col for col in belonging_users if col.is_spectator])
-        count_participant = len([col for col in belonging_users if not col.is_spectator])
+        belonging_users = RoomBelongings.objects.filter(room_id=room)
+        count_spectator = len(belonging_users.filter(user_attr=UserAttr.SPECTATOR))
+        count_participant = len(belonging_users) - count_spectator
         return {'room_id': room.id,
                 'room_name': room.room_name,
                 'count_spectator': count_spectator,
@@ -43,12 +59,18 @@ def delete_belongings(user: User):
     RoomBelongings.objects.filter(user_id=user).delete()
 
 
+def find_room_by_id(room_id: int) -> Room:
+    return Room.objects.filter(id=room_id).get()
+
 def find_rooms_by_id(room_id: int) -> List[Room]:
     return list(Room.objects.filter(id=room_id))
 
-
 def find_room_belongings_by_room(room: Room) -> List[RoomBelongings]:
     return list(RoomBelongings.objects.filter(room_id=room))
+
+
+def find_not_started_player_room_belongings_by_room(room: Room) -> List[RoomBelongings]:
+    return list(RoomBelongings.objects.filter(room_id=room, user_attr=UserAttr.UNASSIGNED_PLAYER))
 
 
 def find_belonging_rooms_by_user(user: User) -> List[Room]:
@@ -66,7 +88,8 @@ def create_room(room_name, password, max_spectator, max_participant) -> Room:
 
 
 def create_room_belonging(user, room, is_spectator) -> RoomBelongings:
-    return RoomBelongings.objects.create(user_id=user, room_id=room, is_spectator=is_spectator)
+    user_attr = UserAttr.SPECTATOR if is_spectator else UserAttr.UNASSIGNED_PLAYER
+    return RoomBelongings.objects.create(user_id=user, room_id=room, user_attr=user_attr)
 
 
 def room_is_empty(room: Room) -> bool:
@@ -76,3 +99,22 @@ def room_is_empty(room: Room) -> bool:
 def delete_empty_room(rooms: List[Room]):
     for room in filter(room_is_empty, rooms):
         room.delete()
+
+
+def game_is_started(room: Room) -> bool:
+    return not RoomBelongings.objects.filter(room_id=room, user_attr=UserAttr.UNASSIGNED_PLAYER).exists()
+
+
+def assign_stone_users(black_stone_room_belongings: RoomBelongings, white_stone_room_belongings: RoomBelongings):
+    black_stone_room_belongings.user_attr = UserAttr.BLACK
+    white_stone_room_belongings.user_attr = UserAttr.WHITE
+    black_stone_room_belongings.save()
+    white_stone_room_belongings.save()
+
+
+def resign_stone_users(black_stone_room_belongings: RoomBelongings, white_stone_room_belongings: RoomBelongings):
+    # when a player exits game after starting game
+    black_stone_room_belongings.user_attr = UserAttr.UNASSIGNED_PLAYER
+    white_stone_room_belongings.user_attr = UserAttr.UNASSIGNED_PLAYER
+    black_stone_room_belongings.save()
+    white_stone_room_belongings.save()

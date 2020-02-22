@@ -3,7 +3,9 @@ import {
   CLOSE_GAME_SOCKET,
   REGISTER_NEXT_REVERSI_INFO,
   CLEAR_NEXT_REVERSI_POSITION,
-  SEND_NEXT_REVERSI_INFO
+  SEND_NEXT_REVERSI_INFO,
+  REGISTER_GAME_START_INFO,
+  CLEAR_GAME_START_INFO
 } from '../../game/parts/modules';
 import {
   REGISTER_CHAT_INFO,
@@ -42,6 +44,10 @@ import {
  *                `action.payload` and its structure should be defined in the
  *                server side. Key is an id to distinguish actions and value is
  *                a name of an action.
+ *                Expected data from server should be as follows:
+ *                  `{'message': {'type': <key name>, ...}}`
+ *                and value of `message` will be sent to reducer as data inside
+ *                payload of the action.
  * send(map): an action to send data through WebSocket. Key is a name of an
  *            action and value is id to distinguish actions. The data to be sent
  *            should be in `action.payload` and the server side receives it as
@@ -80,7 +86,8 @@ const webSocketMap = {
       register: {
         chat: REGISTER_CHAT_INFO,
         parts: REGISTER_NEXT_REVERSI_INFO,
-        reversi: REGISTER_CONSISTENCY
+        reversi: REGISTER_CONSISTENCY,
+        start_game: REGISTER_GAME_START_INFO
       },
       send: {
         [SEND_CHAT_INFO]: 'chat',
@@ -90,7 +97,8 @@ const webSocketMap = {
       prepare: [
         CLEAR_CHAT_INFO,
         CLEAR_NEXT_REVERSI_POSITION,
-        CLEAR_CONSISTENCY
+        CLEAR_CONSISTENCY,
+        CLEAR_GAME_START_INFO
       ],
       urlPaths: ['game', state => state.room.room.currentRoomInfo.roomId]
     }

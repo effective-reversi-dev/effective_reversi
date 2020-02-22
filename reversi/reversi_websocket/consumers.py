@@ -7,6 +7,9 @@ from reversiapp.models import get_room_data, delete_belongings, find_belonging_r
 
 
 class GameConsumer(AsyncWebsocketConsumer):
+    SEND_GAME_START_DATA = 'send_game_start_data'
+    START_GAME_CLIENT_ACTION_TYPE = 'start_game'
+
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'game_%s' % self.room_name
@@ -58,6 +61,12 @@ class GameConsumer(AsyncWebsocketConsumer):
             'message': message
         }))
 
+    async def send_game_start_data(self, event):
+        message = event['message']
+        await self.send(text_data=json.dumps({
+            'message': message
+        }))
+
     @database_sync_to_async
     def delete_belonging(self):
         # TODO 所属情報が消えたら自動で空部屋が消えるようにしたい。
@@ -98,8 +107,8 @@ class RoomSelectionConsumer(AsyncWebsocketConsumer):
         room_info_dicts = await self.get_room_data_async()
         await self.send(text_data=json.dumps(
             {'message':
-                 {'type': RoomSelectionConsumer.ROOM_DATA_CLIENT_ACTION_TYPE,
-                  'roomData': room_info_dicts}}))
+                {'type': RoomSelectionConsumer.ROOM_DATA_CLIENT_ACTION_TYPE,
+                 'roomData': room_info_dicts}}))
 
     @database_sync_to_async
     def get_room_data_async(self):
