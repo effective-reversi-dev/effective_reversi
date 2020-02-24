@@ -1,0 +1,29 @@
+.game-info {
+    height: 100%;
+    .tracks {
+        overflow: auto;
+        height: 100%;
+    }
+    .balloon {
+        .balloon-body {
+            position: relative;
+            display: inline-block;
+            .balloon-content {
+                background:	$balloon-info-color;
+                box-shadow: 2px 2px;
+                border-radius: 15px;
+                position: relative;
+                display: inline-block;
+                margin: 1px 0 5px 15px;
+                padding: 5px 10px;
+                color: #555;
+                font-size: 16px;
+                p {
+                    color: $balloon-info-message-color;
+                    margin: 0;
+                    padding: 0;
+                }
+            }
+        }
+    }
+}

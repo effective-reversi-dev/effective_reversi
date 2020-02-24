@@ -4,6 +4,7 @@ from enum import Enum
 from typing import Dict, List
 
 from django.db import models
+from django.db.models import Q
 
 from userconfig.models import User
 
@@ -26,6 +27,9 @@ class UserAttr(Enum):
     @classmethod
     def get_value(cls, member):
         return cls[member].value[0]
+
+    def __str__(self):
+        return self.value[0]
 
 
 class RoomBelongings(models.Model):
@@ -104,7 +108,8 @@ def delete_empty_room(rooms: List[Room]):
 
 
 def game_is_started(room: Room) -> bool:
-    return not RoomBelongings.objects.filter(room_id=room, user_attr=UserAttr.UNASSIGNED_PLAYER).exists()
+    return RoomBelongings.objects.filter(
+        Q(room_id=room) & (Q(user_attr=UserAttr.BLACK) | Q(user_attr=UserAttr.WHITE))).exists()
 
 
 def assign_stone_users(black_stone_room_belongings: RoomBelongings, white_stone_room_belongings: RoomBelongings):

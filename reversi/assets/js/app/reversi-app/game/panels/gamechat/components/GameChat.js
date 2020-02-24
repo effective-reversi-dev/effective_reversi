@@ -50,7 +50,7 @@ class GameChat extends React.Component {
       );
     });
     return (
-      <React.Fragment>
+      <div className="game-chat">
         <div className="tracks">{items}</div>
         <div className="inline-bottom">
           <Button
@@ -78,7 +78,7 @@ class GameChat extends React.Component {
             margin="normal"
           />
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }

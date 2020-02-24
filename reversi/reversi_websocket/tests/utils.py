@@ -2,15 +2,11 @@ from userconfig.models import User
 
 
 class AuthMiddlewareMock:
-    def __init__(self, username, display_name, inner):
+    def __init__(self, user: User, inner):
         # Store the ASGI application we were passed
         self.inner = inner
-        self.username = username
-        self.display_name = display_name
+        self.user = user
 
     def __call__(self, scope):
-        user = User()
-        user.username = self.username
-        user.display_name = self.display_name
-        scope['user'] = user
+        scope['user'] = self.user
         return self.inner(scope)

@@ -13,6 +13,11 @@ import {
   CLEAR_CHAT_INFO
 } from '../../game/panels/gamechat/modules';
 import {
+  REGISTER_MEMBER_DATA,
+  REGISTER_PLAYER_STONE,
+  CLEAR_INFORMATION
+} from '../../game/panels/gameinfo/modules';
+import {
   REGISTER_CONSISTENCY,
   SEND_CONSISTENCY,
   CLEAR_CONSISTENCY
@@ -87,7 +92,9 @@ const webSocketMap = {
         chat: REGISTER_CHAT_INFO,
         parts: REGISTER_NEXT_REVERSI_INFO,
         reversi: REGISTER_CONSISTENCY,
-        start_game: REGISTER_GAME_START_INFO
+        start_game: REGISTER_GAME_START_INFO,
+        member_data: REGISTER_MEMBER_DATA,
+        player_stone: REGISTER_PLAYER_STONE
       },
       send: {
         [SEND_CHAT_INFO]: 'chat',
@@ -98,7 +105,8 @@ const webSocketMap = {
         CLEAR_CHAT_INFO,
         CLEAR_NEXT_REVERSI_POSITION,
         CLEAR_CONSISTENCY,
-        CLEAR_GAME_START_INFO
+        CLEAR_GAME_START_INFO,
+        CLEAR_INFORMATION
       ],
       urlPaths: ['game', state => state.room.room.currentRoomInfo.roomId]
     }
