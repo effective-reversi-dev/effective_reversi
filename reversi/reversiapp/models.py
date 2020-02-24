@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
-from typing import Dict, List
 from enum import Enum
+from typing import Dict, List
 
 from django.db import models
 
@@ -62,8 +62,10 @@ def delete_belongings(user: User):
 def find_room_by_id(room_id: int) -> Room:
     return Room.objects.filter(id=room_id).get()
 
+
 def find_rooms_by_id(room_id: int) -> List[Room]:
     return list(Room.objects.filter(id=room_id))
+
 
 def find_room_belongings_by_room(room: Room) -> List[RoomBelongings]:
     return list(RoomBelongings.objects.filter(room_id=room))

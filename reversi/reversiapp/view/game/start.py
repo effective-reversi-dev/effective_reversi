@@ -1,13 +1,12 @@
-import random
 import json
+import random
 
-from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
 from django.http import JsonResponse, HttpResponseServerError
+from django.views.decorators.http import require_POST
 
-from reversiapp.models import find_room_by_id, find_not_started_player_room_belongings_by_room, assign_stone_users
 from reversiapp.channel.start_game import send_game_start_data_to_channel_layer
+from reversiapp.models import find_room_by_id, find_not_started_player_room_belongings_by_room, assign_stone_users
 
 
 @login_required
@@ -42,3 +41,7 @@ def start_game(request):
 
 def _num_of_players_not_enough(player_num):
     return JsonResponse({'succeeded': False, 'err_msg': f'プレイヤーの人数が不足しています。(現在プレイヤー人数： {player_num})'})
+
+
+def _find_mismatched_data():
+    return HttpResponseServerError(json.dumps({'err_msg': f'データに不整合が検出されました。恐れ入りますが、もう一度部屋に入りなおしてください。'}))
