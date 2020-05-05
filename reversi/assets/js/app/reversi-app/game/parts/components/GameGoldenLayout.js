@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import GoldenLayout from 'golden-layout';
 
 import GameChat from '../../panels/gamechat/containers/GameChat';
+import GameInfo from '../../panels/gameinfo/containers/GameInfo';
 import Reversi from '../../panels/reversi/containers/Reversi';
 import GameSituation from '../../panels/situation/containers/GameSituation';
 
@@ -51,7 +52,7 @@ class GameGoldenLayout extends React.Component {
       listenResizeEvent(layout);
       layout.registerComponent(
         this.props.panelNames[0],
-        glComponentWrapper(TestComponent, this.props, 0)
+        glComponentWrapper(GameInfo, this.props, 0)
       );
       layout.registerComponent(
         this.props.panelNames[1],
