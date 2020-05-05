@@ -7,12 +7,15 @@ phases:
         commands:
             - cd reversi
             - echo Start installation
-        # install python libraries
-            - pip install pipenv
-            - pipenv install --dev
-        # install js libraries
+        # setup for Ubuntu env
             - apt update
             - apt install sudo
+            - apt install -y python3-dev
+        # install python libraries
+            - pip install pipenv
+            - sudo apt install 
+            - pipenv install --dev
+        # install js libraries
             - curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
             - sudo apt install -y nodejs
             - npm install
