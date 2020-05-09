@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
-import { GRID_NUM, BLACK, EMPTY } from '../../reversi/constants';
+import { BLACK, WHITE, EMPTY, DRAW } from '../../reversi/constants';
 import { S3URL, REV_URL } from '../constants';
 
 export default function GameSituation(props) {
@@ -13,7 +13,8 @@ export default function GameSituation(props) {
     whiteNum,
     isSpectator,
     gameStart,
-    roomId
+    roomId,
+    result
   } = props;
   const AUDIO_REV = (
     <audio controls className="audio">
@@ -46,22 +47,17 @@ export default function GameSituation(props) {
     );
   }
   let winner = null;
-  const NUM_OF_SQUARES = GRID_NUM * GRID_NUM;
-  if (blackNum + whiteNum === NUM_OF_SQUARES) {
-    // filled with stones
-    if (blackNum > NUM_OF_SQUARES / 2) {
+  switch (result) {
+    case BLACK:
       winner = <div>勝者： ●</div>;
-    } else if (NUM_OF_SQUARES / 2 > blackNum) {
+      break;
+    case WHITE:
       winner = <div>勝者： ○</div>;
-    } else {
+      break;
+    case DRAW:
       winner = <div>引き分け</div>;
-    }
-  } else if (blackNum === 0) {
-    // all stones are white
-    winner = <div>勝者： ○</div>;
-  } else if (whiteNum === 0) {
-    // all stones are black
-    winner = <div>勝者： ●</div>;
+      break;
+    default:
   }
   return (
     <React.Fragment>
@@ -76,6 +72,7 @@ export default function GameSituation(props) {
 }
 
 GameSituation.propTypes = {
+  result: PropTypes.string.isRequired,
   nextColor: PropTypes.string.isRequired,
   blackNum: PropTypes.number.isRequired,
   whiteNum: PropTypes.number.isRequired,

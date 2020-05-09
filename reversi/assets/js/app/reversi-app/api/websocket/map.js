@@ -5,7 +5,8 @@ import {
   CLEAR_NEXT_REVERSI_POSITION,
   SEND_NEXT_REVERSI_INFO,
   REGISTER_GAME_START_INFO,
-  CLEAR_GAME_START_INFO
+  CLEAR_GAME_START_INFO,
+  CLEAR_RESULT
 } from '../../game/parts/modules';
 import {
   REGISTER_CHAT_INFO,
@@ -106,7 +107,8 @@ const webSocketMap = {
         CLEAR_NEXT_REVERSI_POSITION,
         CLEAR_CONSISTENCY,
         CLEAR_GAME_START_INFO,
-        CLEAR_INFORMATION
+        CLEAR_INFORMATION,
+        CLEAR_RESULT
       ],
       urlPaths: ['game', state => state.room.room.currentRoomInfo.roomId]
     }

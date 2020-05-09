@@ -25,6 +25,11 @@ describe('testing Chat', () => {
             chatInfo
           }
         }
+      },
+      userInfo: {
+        userInfo: {
+          displayName
+        }
       }
     };
     return Object.assign(
@@ -43,6 +48,7 @@ describe('testing Chat', () => {
   test('should send a message and should not close WebSocket after submitting it', () => {
     const props = {
       chatInfo,
+      displayName,
       onSendChatInfo: jest.fn(),
       closeChatSocket: jest.fn()
     };

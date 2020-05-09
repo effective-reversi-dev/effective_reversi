@@ -1,5 +1,11 @@
-import { getLinearFlippedStones, placeStone } from '../components/Reversi';
-import { EMPTY, BLACK, WHITE } from '../constants';
+import {
+  getLinearFlippedStones,
+  placeStone,
+  judgeGameOver,
+  getResult,
+  countStoneNum
+} from '../utils';
+import { EMPTY, BLACK, WHITE, DRAW } from '../constants';
 
 const REVERSI_STATE = [
   [BLACK, EMPTY, BLACK, EMPTY, BLACK, EMPTY, BLACK, BLACK],
@@ -10,6 +16,61 @@ const REVERSI_STATE = [
   [BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
   [BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
   [BLACK, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY]
+];
+
+const REVERSI_STATE_NO_EMPTY_BLACK_WIN = [
+  [BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK],
+  [BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK],
+  [BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK],
+  [BLACK, WHITE, WHITE, WHITE, BLACK, BLACK, WHITE, BLACK],
+  [BLACK, WHITE, WHITE, WHITE, BLACK, BLACK, WHITE, BLACK],
+  [BLACK, WHITE, WHITE, WHITE, BLACK, BLACK, WHITE, BLACK],
+  [BLACK, WHITE, WHITE, WHITE, BLACK, BLACK, WHITE, BLACK],
+  [BLACK, WHITE, WHITE, WHITE, BLACK, BLACK, WHITE, BLACK]
+];
+
+const REVERSI_STATE_NO_EMPTY_WHITE_WIN = [
+  [WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE],
+  [BLACK, WHITE, WHITE, WHITE, BLACK, BLACK, WHITE, BLACK],
+  [BLACK, WHITE, WHITE, WHITE, BLACK, BLACK, WHITE, BLACK],
+  [BLACK, WHITE, WHITE, WHITE, BLACK, BLACK, WHITE, BLACK],
+  [BLACK, WHITE, WHITE, WHITE, BLACK, BLACK, WHITE, BLACK],
+  [BLACK, WHITE, WHITE, WHITE, BLACK, BLACK, WHITE, BLACK],
+  [BLACK, WHITE, WHITE, WHITE, BLACK, BLACK, WHITE, BLACK],
+  [BLACK, WHITE, WHITE, WHITE, BLACK, BLACK, WHITE, BLACK]
+];
+
+const REVERSI_STATE_NO_EMPTY_DRAW = [
+  [BLACK, WHITE, WHITE, WHITE, BLACK, BLACK, WHITE, BLACK],
+  [BLACK, WHITE, WHITE, WHITE, BLACK, BLACK, WHITE, BLACK],
+  [BLACK, WHITE, WHITE, WHITE, BLACK, BLACK, WHITE, BLACK],
+  [BLACK, WHITE, WHITE, WHITE, BLACK, BLACK, WHITE, BLACK],
+  [BLACK, WHITE, WHITE, WHITE, BLACK, BLACK, WHITE, BLACK],
+  [BLACK, WHITE, WHITE, WHITE, BLACK, BLACK, WHITE, BLACK],
+  [BLACK, WHITE, WHITE, WHITE, BLACK, BLACK, WHITE, BLACK],
+  [BLACK, WHITE, WHITE, WHITE, BLACK, BLACK, WHITE, BLACK]
+];
+
+const REVERSI_STATE_ALL_BLACK = [
+  [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
+  [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
+  [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, BLACK, EMPTY, EMPTY],
+  [EMPTY, EMPTY, EMPTY, BLACK, BLACK, EMPTY, EMPTY, EMPTY],
+  [EMPTY, EMPTY, EMPTY, BLACK, BLACK, EMPTY, EMPTY, EMPTY],
+  [EMPTY, EMPTY, BLACK, BLACK, BLACK, EMPTY, EMPTY, EMPTY],
+  [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
+  [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY]
+];
+
+const REVERSI_STATE_NO_PROCEED = [
+  [EMPTY, BLACK, EMPTY, EMPTY, EMPTY, BLACK, EMPTY, EMPTY],
+  [EMPTY, EMPTY, BLACK, EMPTY, EMPTY, BLACK, EMPTY, EMPTY],
+  [EMPTY, EMPTY, EMPTY, BLACK, EMPTY, BLACK, EMPTY, WHITE],
+  [EMPTY, EMPTY, EMPTY, BLACK, BLACK, BLACK, BLACK, EMPTY],
+  [BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK],
+  [EMPTY, EMPTY, BLACK, BLACK, BLACK, EMPTY, EMPTY, EMPTY],
+  [EMPTY, EMPTY, BLACK, BLACK, BLACK, EMPTY, EMPTY, EMPTY],
+  [EMPTY, EMPTY, BLACK, BLACK, BLACK, BLACK, BLACK, EMPTY]
 ];
 
 const left = pos => [pos[0], pos[1] - 1];
@@ -107,5 +168,31 @@ describe('testing Reversi', () => {
     const nextReversiState = placeStone(REVERSI_STATE, myColor, targetPosition);
     expect(nextReversiState[3][7]).toEqual(EMPTY);
     expect(nextReversiState[4][7]).toEqual(EMPTY);
+  });
+  test('should not end game when there are places a player can put stone', () => {
+    expect(judgeGameOver(REVERSI_STATE)).toEqual(false);
+  });
+  test('white stone player shoule win the game when white stones are more than black stones', () => {
+    expect(judgeGameOver(REVERSI_STATE_NO_EMPTY_WHITE_WIN)).toEqual(true);
+    expect(getResult(REVERSI_STATE_NO_EMPTY_WHITE_WIN)).toEqual(WHITE);
+  });
+  test('black stone player shoule win the game when black stones are more than white stones', () => {
+    expect(judgeGameOver(REVERSI_STATE_NO_EMPTY_BLACK_WIN)).toEqual(true);
+    expect(getResult(REVERSI_STATE_NO_EMPTY_BLACK_WIN)).toEqual(BLACK);
+  });
+  test('the game should be draw when the number of black stones are equal to that of white stones', () => {
+    expect(judgeGameOver(REVERSI_STATE_NO_EMPTY_DRAW)).toEqual(true);
+    expect(getResult(REVERSI_STATE_NO_EMPTY_DRAW)).toEqual(DRAW);
+  });
+  test('should end game when there are no white stones in the board', () => {
+    expect(judgeGameOver(REVERSI_STATE_ALL_BLACK)).toEqual(true);
+    expect(getResult(REVERSI_STATE_ALL_BLACK)).toEqual(BLACK);
+  });
+  test('should end game when both players cannot place stone anywhere', () => {
+    expect(judgeGameOver(REVERSI_STATE_NO_PROCEED)).toEqual(true);
+    expect(getResult(REVERSI_STATE_NO_PROCEED)).toEqual(BLACK);
+  });
+  test('count number of black and white stones at reversiState', () => {
+    expect(countStoneNum(REVERSI_STATE)).toEqual([16, 8]);
   });
 });

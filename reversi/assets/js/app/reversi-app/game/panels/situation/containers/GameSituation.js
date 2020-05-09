@@ -6,9 +6,10 @@ import GameSituation from '../components/GameSituation';
 const { startGame } = panelActions;
 
 const mapStateToProps = state => {
+  const { result } = state.game.parts;
   const { nextColor, blackNum, whiteNum } = state.game.parts.gameSituation;
   const { isSpectator, roomId } = state.room.room.currentRoomInfo;
-  return { nextColor, blackNum, whiteNum, isSpectator, roomId };
+  return { result, nextColor, blackNum, whiteNum, isSpectator, roomId };
 };
 
 const mapDispatchToProps = dispatch => ({

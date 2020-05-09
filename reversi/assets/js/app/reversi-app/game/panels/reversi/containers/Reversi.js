@@ -5,6 +5,7 @@ import { panelActions as partsPanelActions } from '../../../parts/modules';
 import { panelActions as reversiPanelActions } from '../../reversi/modules';
 import { gameActions } from '../../../modules';
 import { BLACK, WHITE } from '../constants';
+import { countStoneNum } from '../utils';
 
 const { sendNextReversiInfo } = partsPanelActions;
 const { sendConsistency } = reversiPanelActions;
@@ -35,17 +36,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   sendNextState: (nextReversiState, nextColor, rowIdx, colIdx) => {
-    let blackNum = 0,
-      whiteNum = 0;
-    nextReversiState.forEach(rowState => {
-      rowState.forEach(squareState => {
-        if (squareState === BLACK) {
-          blackNum += 1;
-        } else if (squareState === WHITE) {
-          whiteNum += 1;
-        }
-      });
-    });
+    const [blackNum, whiteNum] = countStoneNum(nextReversiState);
     dispatch(
       sendNextReversiInfo({
         blackNum,

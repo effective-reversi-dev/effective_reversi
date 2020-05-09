@@ -3,105 +3,13 @@ import PropTypes from 'prop-types';
 import { v4 as uuid } from 'uuid';
 
 import { resizeBoard } from '../../../parts/utils/glEventManager';
+import { EMPTY, BLACK, WHITE, INIT_REVERSI_STATE } from '../constants';
 import {
-  GRID_NUM,
-  EMPTY,
-  BLACK,
-  WHITE,
-  NEXT_POSITION_FUNCS,
-  INIT_REVERSI_STATE
-} from '../constants';
-
-const getOpponentStoneColor = myColor => (myColor === BLACK ? WHITE : BLACK);
-
-export const getLinearFlippedStones = (
-  reversiState,
-  myColor,
-  getNextPosition,
-  position // [rowIdx, colIdx]
-) => {
-  const squaresToFlip = [];
-  let [nextRowIdx, nextColIdx] = getNextPosition(position);
-  while (
-    nextRowIdx >= 0 &&
-    nextColIdx >= 0 &&
-    GRID_NUM - 1 >= nextRowIdx &&
-    GRID_NUM - 1 >= nextColIdx
-  ) {
-    const targetState = reversiState[nextRowIdx][nextColIdx];
-    if (targetState === myColor) {
-      // whether there are sandwitched squares
-      if (squaresToFlip.length !== 0) {
-        return squaresToFlip;
-      }
-      return [[]];
-    } else if (targetState === EMPTY) {
-      return [[]];
-    }
-    squaresToFlip.push([nextRowIdx, nextColIdx]);
-    [nextRowIdx, nextColIdx] = getNextPosition([nextRowIdx, nextColIdx]);
-  }
-  return [[]]; // opponent's stones alongside aren't sandwitched
-};
-
-const shouldPass = (reversiState, color) => {
-  return reversiState.some((rowState, rowIdx) => {
-    return rowState.some((squareState, colIdx) =>
-      squareState === EMPTY
-        ? NEXT_POSITION_FUNCS.some(getNextPosFunc => {
-            const flippedSquares = getLinearFlippedStones(
-              reversiState,
-              color,
-              getNextPosFunc,
-              [rowIdx, colIdx]
-            );
-            return !(
-              flippedSquares.length === 1 && flippedSquares[0].length === 0
-            );
-          })
-        : false
-    );
-  });
-};
-
-export const placeStone = (reversiState, color, position) => {
-  const [rowIdx, colIdx] = position;
-  if (reversiState[rowIdx][colIdx] !== EMPTY) {
-    return reversiState; // a stone already exists
-  }
-  const flippedSquares = NEXT_POSITION_FUNCS.reduce(
-    (acc, getNextPosFunc) => [
-      ...acc,
-      ...getLinearFlippedStones(reversiState, color, getNextPosFunc, position)
-    ],
-    [[]]
-  );
-  return flippedSquares.reduce((acc, flippedSquare) => {
-    if (flippedSquare.length === 0) {
-      return acc; // no flipped squares in certain direction
-    }
-    acc[flippedSquare[0]][flippedSquare[1]] = color;
-    acc[rowIdx][colIdx] = color;
-    return acc;
-  }, reversiState);
-};
-
-const validateNextReversiState = (
-  prevReversiState,
-  rowIdx,
-  colIdx,
-  myColor,
-  nextReversiState
-) => {
-  const localNextReversiState = placeStone(
-    JSON.parse(JSON.stringify(prevReversiState)),
-    myColor,
-    [rowIdx, colIdx]
-  );
-  return (
-    JSON.stringify(localNextReversiState) === JSON.stringify(nextReversiState)
-  );
-};
+  validateNextReversiState,
+  placeStone,
+  getOpponentStoneColor,
+  canFlipStones
+} from '../utils';
 
 export default function Reversi(props) {
   /* states */
@@ -152,7 +60,8 @@ export default function Reversi(props) {
     if (JSON.stringify(nextReversiState) === JSON.stringify(reversiState))
       return;
     let nextColor = getOpponentStoneColor(myColor);
-    if (!shouldPass(nextReversiState, nextColor)) {
+    if (!canFlipStones(nextReversiState, nextColor)) {
+      // pass my turn
       nextColor = getOpponentStoneColor(nextColor);
     }
     props.sendNextState(nextReversiState, nextColor, rowIdx, colIdx);

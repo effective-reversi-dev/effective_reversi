@@ -1,5 +1,6 @@
 import { handleActions, createActions } from 'redux-actions';
 import { INIT_REVERSI_STATE, BLACK, EMPTY } from '../panels/reversi/constants';
+import { judgeGameOver, getResult } from '../panels/reversi/utils';
 
 // Window panels management
 const ADD_PANEL = 'ADD_PANEL';
@@ -18,6 +19,7 @@ export const REGISTER_GAME_START_INFO = 'REGISTER_GAME_START_INFO'; // with Saga
 export const CLEAR_GAME_START_INFO = 'CLEAR_GAME_START_INFO'; // with Saga
 export const START_GAME = 'START_GAME'; // with Saga
 export const GET_START_GAME_INFO = 'GET_START_GAME_INFO'; // with Saga
+export const CLEAR_RESULT = 'CLEAR_RESULT'; // with Saga
 
 export const panelActions = createActions(
   SETUP_GAME_SOCKET,
@@ -30,7 +32,8 @@ export const panelActions = createActions(
   SEND_NEXT_REVERSI_INFO,
   REGISTER_GAME_START_INFO,
   CLEAR_GAME_START_INFO,
-  START_GAME
+  START_GAME,
+  CLEAR_RESULT
 );
 
 const initialState = {
@@ -55,7 +58,8 @@ const initialState = {
     whiteDisplayName: null,
     blackUserName: null,
     blackDisplayName: null
-  }
+  },
+  result: '' // winner's color or "draw"
 };
 
 export default handleActions(
@@ -89,10 +93,15 @@ export default handleActions(
       } = action.payload.data;
       const nextReversiPosition = { colIdx, rowIdx };
       const gameSituation = { blackNum, whiteNum, nextColor };
+      let result = '';
+      if (judgeGameOver(nextReversiState)) {
+        result = getResult(nextReversiState);
+      }
       return Object.assign({}, state, {
         nextReversiPosition,
         gameSituation,
-        nextReversiState
+        nextReversiState,
+        result
       });
     },
     [panelActions.clearNextReversiPosition]: state => {
@@ -126,7 +135,10 @@ export default handleActions(
         })
       });
     },
-    [panelActions.clearStartInfo]: state => {
+    [panelActions.clearResult]: state => {
+      return Object.assign({}, state, { result: '' });
+    },
+    [panelActions.clearGameStartInfo]: state => {
       const playerInfo = {
         whiteUserName: null,
         whiteDisplayName: null,
