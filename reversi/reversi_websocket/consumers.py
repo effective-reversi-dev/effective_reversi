@@ -13,6 +13,8 @@ class GameConsumer(AsyncWebsocketConsumer):
     START_GAME_CLIENT_ACTION_TYPE = 'start_game'
     SEND_ENTERING_MEMBER_DATA = 'send_entering_member_data'
     SEND_ENTERING_MEMBER_DATA_CLIENT_ACTION_TYPE = 'entering_member_data'
+    SEND_EXITING_MEMBER_DATA = 'send_exiting_member_data'
+    SEND_EXITING_MEMBER_DATA_CLIENT_ACTION_TYPE = 'exiting_member_data'
     SEND_PLAYER_STONE_CLIENT_ACTION_TYPE = 'player_stone'
 
     async def connect(self):
@@ -43,6 +45,12 @@ class GameConsumer(AsyncWebsocketConsumer):
         # TODO 部屋の所属状況が変わったら下のsendが自動で呼ばれるようにしたい。
         await self.channel_layer.group_send(RoomSelectionConsumer.ROOM_SELECTION_GROUP,
                                             {'type': RoomSelectionConsumer.SEND_ROOM_DATA})
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                'type': GameConsumer.SEND_EXITING_MEMBER_DATA,
+                'removal': self.scope['user'].display_name
+            })
 
     # Receive message from WebSocket
     async def receive(self, text_data):
@@ -102,10 +110,24 @@ class GameConsumer(AsyncWebsocketConsumer):
         # }
         belongings = await self.get_belongings()
         await self.send(text_data=json.dumps(
-            {'message':
-                 {'type': GameConsumer.SEND_ENTERING_MEMBER_DATA_CLIENT_ACTION_TYPE,
-                  'members': belongings,
-                  'additional': event['additional']}}))
+            {'message': {'type': GameConsumer.SEND_ENTERING_MEMBER_DATA_CLIENT_ACTION_TYPE,
+                         'members': belongings,
+                         'additional': event['additional']}}))
+
+    async def send_exiting_member_data(self, event):
+        # {
+        #  'type': 'exiting_member_data,
+        #  'members': [{
+        #          'displayName': 'ユーザ表示名'
+        #          'attribute': '属性', {wh, bl, un, sp} のいずれか
+        #       }],
+        #  'removal': '今回退出したユーザの表示名'
+        # }
+        belongings = await self.get_belongings()
+        await self.send(text_data=json.dumps(
+            {'message': {'type': GameConsumer.SEND_EXITING_MEMBER_DATA_CLIENT_ACTION_TYPE,
+                         'members': belongings,
+                         'removal': event['removal']}}))
 
     @database_sync_to_async
     def delete_belonging(self) -> Awaitable[None]:
