@@ -32,7 +32,9 @@ function initSocket(ws, registerActions) {
         console.error(`Error parsing: ${e.data}`);
       }
       if (msg && msg.type) {
-        emitter({ type: registerActions[msg.type], payload: msg });
+        registerActions[msg.type].forEach(registerAction => {
+          emitter({ type: registerAction, payload: msg });
+        });
       }
     };
     webSocket.onclose = () => {

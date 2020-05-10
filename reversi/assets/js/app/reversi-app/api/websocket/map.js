@@ -2,6 +2,7 @@ import {
   SETUP_GAME_SOCKET,
   CLOSE_GAME_SOCKET,
   REGISTER_NEXT_REVERSI_INFO,
+  REGISTER_RESULT,
   CLEAR_NEXT_REVERSI_POSITION,
   SEND_NEXT_REVERSI_INFO,
   REGISTER_GAME_START_INFO,
@@ -46,7 +47,7 @@ import {
  * Contents of the object in the array are as follows:
  * close(str): an action to close WebSocket. The target WebSocket will be closed
  *             when this action is dispatched.
- * register(map): an action to register data from WebSocket. The data is in
+ * register(map): actions to register data from WebSocket. The data is in
  *                `action.payload` and its structure should be defined in the
  *                server side. Key is an id to distinguish actions and value is
  *                a name of an action.
@@ -77,7 +78,7 @@ const webSocketMap = {
     {
       close: CLOSE_ROOM_SELECTION_SOCKET,
       register: {
-        room_data: REGISTER_ROOM_DATA
+        room_data: [REGISTER_ROOM_DATA]
       },
       send: {
         [SEND_ROOM_DATA_REQUEST]: 'room_data'
@@ -90,12 +91,12 @@ const webSocketMap = {
     {
       close: CLOSE_GAME_SOCKET,
       register: {
-        chat: REGISTER_CHAT_INFO,
-        parts: REGISTER_NEXT_REVERSI_INFO,
-        reversi: REGISTER_CONSISTENCY,
-        start_game: REGISTER_GAME_START_INFO,
-        member_data: REGISTER_MEMBER_DATA,
-        player_stone: REGISTER_PLAYER_STONE
+        chat: [REGISTER_CHAT_INFO],
+        parts: [REGISTER_NEXT_REVERSI_INFO, REGISTER_RESULT],
+        reversi: [REGISTER_CONSISTENCY],
+        start_game: [REGISTER_GAME_START_INFO],
+        member_data: [REGISTER_MEMBER_DATA],
+        player_stone: [REGISTER_PLAYER_STONE]
       },
       send: {
         [SEND_CHAT_INFO]: 'chat',

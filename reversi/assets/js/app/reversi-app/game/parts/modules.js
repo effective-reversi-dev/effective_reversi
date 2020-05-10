@@ -13,6 +13,7 @@ export const CLOSE_GAME_SOCKET = 'CLOSE_GAME_SOCKET'; // with Saga
 
 // Interpanel management
 export const REGISTER_NEXT_REVERSI_INFO = 'REGISTER_NEXT_REVERSI_INFO'; // with Saga
+export const REGISTER_RESULT = 'REGISTER_RESULT'; // with Saga
 export const CLEAR_NEXT_REVERSI_POSITION = 'CLEAR_NEXT_REVERSI_POSITION'; // with Saga
 export const SEND_NEXT_REVERSI_INFO = 'SEND_NEXT_REVERSI_INFO'; // with Saga
 export const REGISTER_GAME_START_INFO = 'REGISTER_GAME_START_INFO'; // with Saga
@@ -28,6 +29,7 @@ export const panelActions = createActions(
   REGISTER_OPEN_PANEL,
   REMOVE_PANEL,
   REGISTER_NEXT_REVERSI_INFO,
+  REGISTER_RESULT,
   CLEAR_NEXT_REVERSI_POSITION,
   SEND_NEXT_REVERSI_INFO,
   REGISTER_GAME_START_INFO,
@@ -93,16 +95,19 @@ export default handleActions(
       } = action.payload.data;
       const nextReversiPosition = { colIdx, rowIdx };
       const gameSituation = { blackNum, whiteNum, nextColor };
+      return Object.assign({}, state, {
+        nextReversiPosition,
+        gameSituation,
+        nextReversiState
+      });
+    },
+    [panelActions.registerResult]: (state, action) => {
+      const { nextReversiState } = action.payload.data;
       let result = '';
       if (judgeGameOver(nextReversiState)) {
         result = getResult(nextReversiState);
       }
-      return Object.assign({}, state, {
-        nextReversiPosition,
-        gameSituation,
-        nextReversiState,
-        result
-      });
+      return Object.assign({}, state, { result });
     },
     [panelActions.clearNextReversiPosition]: state => {
       const nextReversiPosition = {
