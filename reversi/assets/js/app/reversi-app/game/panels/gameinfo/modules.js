@@ -2,12 +2,12 @@ import shortid from 'shortid';
 import { handleActions, createActions } from 'redux-actions';
 
 // WebSocket Management for chat
-export const REGISTER_MEMBER_DATA = 'REGISTER_MEMBER_DATA'; // with Saga
+export const REGISTER_ENTERING_MEMBER_DATA = 'REGISTER_ENTERING_MEMBER_DATA'; // with Saga
 export const REGISTER_PLAYER_STONE = 'REGISTER_PLAYER_STONE'; // with Saga
 export const CLEAR_INFORMATION = 'CLEAR_INFORMATION'; // with Saga
 
 export const informationActions = createActions(
-  REGISTER_MEMBER_DATA,
+  REGISTER_ENTERING_MEMBER_DATA,
   REGISTER_PLAYER_STONE,
   CLEAR_INFORMATION
 );
@@ -25,7 +25,7 @@ const initialState = {
 
 export default handleActions(
   {
-    [informationActions.registerMemberData]: (state, action) => {
+    [informationActions.registerEnteringMemberData]: (state, action) => {
       const messages1 = [`${action.payload.additional} さんが入室しました。`];
       const messages2 = ['現在の参加者。'];
       action.payload.members.forEach(member => {

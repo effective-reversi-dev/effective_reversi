@@ -11,8 +11,8 @@ from reversiapp.models import get_room_data, delete_belongings, find_belonging_r
 class GameConsumer(AsyncWebsocketConsumer):
     SEND_GAME_START_DATA = 'send_game_start_data'
     START_GAME_CLIENT_ACTION_TYPE = 'start_game'
-    SEND_MEMBER_DATA = 'send_member_data'
-    SEND_MEMBER_DATA_CLIENT_ACTION_TYPE = 'member_data'
+    SEND_ENTERING_MEMBER_DATA = 'send_entering_member_data'
+    SEND_ENTERING_MEMBER_DATA_CLIENT_ACTION_TYPE = 'entering_member_data'
     SEND_PLAYER_STONE_CLIENT_ACTION_TYPE = 'player_stone'
 
     async def connect(self):
@@ -28,7 +28,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_send(
             self.room_group_name,
             {
-                'type': GameConsumer.SEND_MEMBER_DATA,
+                'type': GameConsumer.SEND_ENTERING_MEMBER_DATA,
                 'additional': self.scope['user'].display_name
             })
 
@@ -91,9 +91,9 @@ class GameConsumer(AsyncWebsocketConsumer):
             }
         }))
 
-    async def send_member_data(self, event):
+    async def send_entering_member_data(self, event):
         # {
-        #  'type': 'member_data,
+        #  'type': 'entering_member_data,
         #  'members': [{
         #          'displayName': 'ユーザ表示名'
         #          'attribute': '属性', {wh, bl, un, sp} のいずれか
@@ -103,7 +103,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         belongings = await self.get_belongings()
         await self.send(text_data=json.dumps(
             {'message':
-                 {'type': GameConsumer.SEND_MEMBER_DATA_CLIENT_ACTION_TYPE,
+                 {'type': GameConsumer.SEND_ENTERING_MEMBER_DATA_CLIENT_ACTION_TYPE,
                   'members': belongings,
                   'additional': event['additional']}}))
 

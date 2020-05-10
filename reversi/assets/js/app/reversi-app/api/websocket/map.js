@@ -15,7 +15,7 @@ import {
   CLEAR_CHAT_INFO
 } from '../../game/panels/gamechat/modules';
 import {
-  REGISTER_MEMBER_DATA,
+  REGISTER_ENTERING_MEMBER_DATA,
   REGISTER_PLAYER_STONE,
   CLEAR_INFORMATION
 } from '../../game/panels/gameinfo/modules';
@@ -95,7 +95,7 @@ const webSocketMap = {
         parts: [REGISTER_NEXT_REVERSI_INFO, REGISTER_RESULT],
         reversi: [REGISTER_CONSISTENCY],
         start_game: [REGISTER_GAME_START_INFO],
-        member_data: [REGISTER_MEMBER_DATA],
+        entering_member_data: [REGISTER_ENTERING_MEMBER_DATA],
         player_stone: [REGISTER_PLAYER_STONE]
       },
       send: {

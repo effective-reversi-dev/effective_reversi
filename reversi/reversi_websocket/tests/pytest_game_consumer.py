@@ -20,7 +20,7 @@ async def test_game_consumer_send_msg():
     assert connected
 
     response = await communicator.receive_from()
-    assert response == json.dumps({"message": {"type": "member_data",
+    assert response == json.dumps({"message": {"type": "entering_member_data",
                                                "members": [{"displayName": dummy_user.display_name,
                                                             "attribute": "un"}],
                                                "additional": dummy_user.display_name}})
