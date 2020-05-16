@@ -15,15 +15,17 @@ const mapStateToProps = state => {
   const {
     nextReversiPosition,
     nextReversiState,
-    playerInfo
+    playerInfo,
+    result
   } = state.game.parts;
   const { nextColor } = state.game.parts.gameSituation;
   const { consistency } = state.game.panels.reversi;
   const { userName } = state.userInfo.userInfo;
   const { whiteUserName, blackUserName } = playerInfo;
+  const isGameOver = [BLACK, WHITE].includes(result);
   const isMyTurn =
-    (nextColor === BLACK && blackUserName === userName) ||
-    (nextColor === WHITE && whiteUserName === userName);
+    (nextColor === BLACK && blackUserName === userName && !isGameOver) ||
+    (nextColor === WHITE && whiteUserName === userName && !isGameOver);
 
   return {
     nextReversiPosition,

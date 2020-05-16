@@ -49,7 +49,10 @@ class GameConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             {
                 'type': GameConsumer.SEND_EXITING_MEMBER_DATA,
-                'removal': self.scope['user'].display_name
+                'left_user': {
+                    'display_name': self.scope['user'].display_name,
+                    'user_name': self.scope['user'].username
+                }
             })
 
     # Receive message from WebSocket
@@ -121,13 +124,19 @@ class GameConsumer(AsyncWebsocketConsumer):
         #          'displayName': 'ユーザ表示名'
         #          'attribute': '属性', {wh, bl, un, sp} のいずれか
         #       }],
-        #  'removal': '今回退出したユーザの表示名'
+        #  'leftUser': {
+        #       'userName': '今回退出したユーザのユーザ名',
+        #       'displayName': '今回退出したユーザの表示名'
+        #   }
         # }
         belongings = await self.get_belongings()
         await self.send(text_data=json.dumps(
             {'message': {'type': GameConsumer.SEND_EXITING_MEMBER_DATA_CLIENT_ACTION_TYPE,
                          'members': belongings,
-                         'removal': event['removal']}}))
+                         'leftUser': {
+                             'displayName': event['left_user']['display_name'],
+                             'userName': event['left_user']['user_name']
+                         }}}))
 
     @database_sync_to_async
     def delete_belonging(self) -> Awaitable[None]:

@@ -3,6 +3,7 @@ import {
   CLOSE_GAME_SOCKET,
   REGISTER_NEXT_REVERSI_INFO,
   REGISTER_RESULT,
+  CHECK_GAME_ABORTED,
   CLEAR_NEXT_REVERSI_POSITION,
   SEND_NEXT_REVERSI_INFO,
   REGISTER_GAME_START_INFO,
@@ -97,7 +98,7 @@ const webSocketMap = {
         reversi: [REGISTER_CONSISTENCY],
         start_game: [REGISTER_GAME_START_INFO],
         entering_member_data: [REGISTER_ENTERING_MEMBER_DATA],
-        exiting_member_data: [REGISTER_EXITING_MEMBER_DATA],
+        exiting_member_data: [REGISTER_EXITING_MEMBER_DATA, CHECK_GAME_ABORTED],
         player_stone: [REGISTER_PLAYER_STONE]
       },
       send: {

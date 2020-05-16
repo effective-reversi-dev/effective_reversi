@@ -55,7 +55,9 @@ export default handleActions(
       });
     },
     [informationActions.registerExitingMemberData]: (state, action) => {
-      const messages1 = [`${action.payload.removal} さんが退出しました。`];
+      const messages1 = [
+        `${action.payload.leftUser.displayName} さんが退出しました。`
+      ];
       const messages2 = createCurrentMemberMessages(action.payload.members);
       return Object.assign({}, state, {
         information: state.information.concat([

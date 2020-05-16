@@ -1,5 +1,10 @@
 import { handleActions, createActions } from 'redux-actions';
-import { INIT_REVERSI_STATE, BLACK, EMPTY } from '../panels/reversi/constants';
+import {
+  INIT_REVERSI_STATE,
+  BLACK,
+  WHITE,
+  EMPTY
+} from '../panels/reversi/constants';
 import { judgeGameOver, getResult } from '../panels/reversi/utils';
 
 // Window panels management
@@ -14,6 +19,7 @@ export const CLOSE_GAME_SOCKET = 'CLOSE_GAME_SOCKET'; // with Saga
 // Interpanel management
 export const REGISTER_NEXT_REVERSI_INFO = 'REGISTER_NEXT_REVERSI_INFO'; // with Saga
 export const REGISTER_RESULT = 'REGISTER_RESULT'; // with Saga
+export const CHECK_GAME_ABORTED = 'CHECK_GAME_ABORTED'; // with Saga
 export const CLEAR_NEXT_REVERSI_POSITION = 'CLEAR_NEXT_REVERSI_POSITION'; // with Saga
 export const SEND_NEXT_REVERSI_INFO = 'SEND_NEXT_REVERSI_INFO'; // with Saga
 export const REGISTER_GAME_START_INFO = 'REGISTER_GAME_START_INFO'; // with Saga
@@ -30,6 +36,7 @@ export const panelActions = createActions(
   REMOVE_PANEL,
   REGISTER_NEXT_REVERSI_INFO,
   REGISTER_RESULT,
+  CHECK_GAME_ABORTED,
   CLEAR_NEXT_REVERSI_POSITION,
   SEND_NEXT_REVERSI_INFO,
   REGISTER_GAME_START_INFO,
@@ -106,6 +113,17 @@ export default handleActions(
       let result = '';
       if (judgeGameOver(nextReversiState)) {
         result = getResult(nextReversiState);
+      }
+      return Object.assign({}, state, { result });
+    },
+    [panelActions.checkGameAborted]: (state, action) => {
+      const { userName } = action.payload.leftUser;
+      const { whiteUserName, blackUserName } = state.playerInfo;
+      let result = '';
+      if (userName === whiteUserName) {
+        result = BLACK;
+      } else if (userName === blackUserName) {
+        result = WHITE;
       }
       return Object.assign({}, state, { result });
     },
