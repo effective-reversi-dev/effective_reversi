@@ -5,12 +5,14 @@ import { handleActions, createActions } from 'redux-actions';
 export const REGISTER_ENTERING_MEMBER_DATA = 'REGISTER_ENTERING_MEMBER_DATA'; // with Saga
 export const REGISTER_EXITING_MEMBER_DATA = 'REGISTER_EXITING_MEMBER_DATA'; // with Saga
 export const REGISTER_PLAYER_STONE = 'REGISTER_PLAYER_STONE'; // with Saga
+export const REGISTER_LOG_MESSAGE = 'REGISTER_LOG_MESSAGE'; // with Saga
 export const CLEAR_INFORMATION = 'CLEAR_INFORMATION'; // with Saga
 
 export const informationActions = createActions(
   REGISTER_ENTERING_MEMBER_DATA,
   REGISTER_EXITING_MEMBER_DATA,
   REGISTER_PLAYER_STONE,
+  REGISTER_LOG_MESSAGE,
   CLEAR_INFORMATION
 );
 
@@ -22,7 +24,7 @@ const attributeToDisplayString = {
 };
 
 const initialState = {
-  information: []
+  information: [] // list の list. 情報タブの一つのバルーンの中の各段落をネストされた list で表現.
 };
 
 const createCurrentMemberMessages = members => {
@@ -43,7 +45,6 @@ export default handleActions(
       return Object.assign({}, state, {
         information: state.information.concat([
           {
-            // 情報タブの一つのバルーンの中の各段落をリストで表現。
             messages: messages1,
             id: shortid.generate()
           },
@@ -62,7 +63,6 @@ export default handleActions(
       return Object.assign({}, state, {
         information: state.information.concat([
           {
-            // 情報タブの一つのバルーンの中の各段落をリストで表現。
             messages: messages1,
             id: shortid.generate()
           },
@@ -83,13 +83,21 @@ export default handleActions(
       );
       return Object.assign({}, state, {
         information: state.information.concat([
-          Object.assign(
-            {},
-            {
-              messages,
-              id: shortid.generate()
-            }
-          )
+          {
+            messages,
+            id: shortid.generate()
+          }
+        ])
+      });
+    },
+    [informationActions.registerLogMessage]: (state, action) => {
+      const messages = [action.payload.logMessage];
+      return Object.assign({}, state, {
+        information: state.information.concat([
+          {
+            messages,
+            id: shortid.generate()
+          }
         ])
       });
     },

@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseServerError
 from django.views.decorators.http import require_POST
 
-from reversiapp.channel.start_game import send_game_start_data_to_channel_layer
+from reversiapp.channel.game import send_game_start_data_to_channel_layer, send_log_message
 from reversiapp.models import find_room_by_id, find_not_started_player_room_belongings_by_room, assign_stone_users
 
 
@@ -20,9 +20,9 @@ def start_game(request):
     # search player room belongings
     player_room_belongings = find_not_started_player_room_belongings_by_room(room)
     if len(player_room_belongings) > 2:
-        return _find_mismatched_data()  # found more than two players
+        return _find_mismatched_data(room.id)  # found more than two players
     elif len(player_room_belongings) < 2:
-        return _num_of_players_not_enough(len(player_room_belongings))
+        return _num_of_players_not_enough(len(player_room_belongings), room.id)
 
     # assign stone
     if random.random() >= 0.5:
@@ -39,9 +39,14 @@ def start_game(request):
     return JsonResponse({'succeeded': True, 'err_msg': ''})
 
 
-def _num_of_players_not_enough(player_num):
-    return JsonResponse({'succeeded': False, 'err_msg': f'プレイヤーの人数が不足しています。(現在プレイヤー人数： {player_num})'})
+def _num_of_players_not_enough(player_num: int, room_id: int):
+    error_message = f'プレイヤーの人数が不足しているため、ゲームを開始できませんでした。' \
+        f'(現在プレイヤー人数： {player_num}, 必要プレイヤー人数: 2)'
+    send_log_message(room_id, error_message)
+    return JsonResponse({'succeeded': False, 'err_msg': error_message})
 
 
-def _find_mismatched_data():
-    return HttpResponseServerError(json.dumps({'err_msg': f'データに不整合が検出されました。恐れ入りますが、もう一度部屋に入りなおしてください。'}))
+def _find_mismatched_data(room_id: int):
+    error_message = 'データに不整合が検出されました。恐れ入りますが、もう一度部屋に入りなおしてください。'
+    send_log_message(room_id, error_message)
+    return HttpResponseServerError(json.dumps({'err_msg': error_message}))
