@@ -19,6 +19,7 @@ import {
   REGISTER_ENTERING_MEMBER_DATA,
   REGISTER_EXITING_MEMBER_DATA,
   REGISTER_PLAYER_STONE,
+  REGISTER_LOG_MESSAGE,
   CLEAR_INFORMATION
 } from '../../game/panels/gameinfo/modules';
 import {
@@ -99,7 +100,8 @@ const webSocketMap = {
         start_game: [REGISTER_GAME_START_INFO],
         entering_member_data: [REGISTER_ENTERING_MEMBER_DATA],
         exiting_member_data: [REGISTER_EXITING_MEMBER_DATA, CHECK_GAME_ABORTED],
-        player_stone: [REGISTER_PLAYER_STONE]
+        player_stone: [REGISTER_PLAYER_STONE],
+        log_message: [REGISTER_LOG_MESSAGE]
       },
       send: {
         [SEND_CHAT_INFO]: 'chat',

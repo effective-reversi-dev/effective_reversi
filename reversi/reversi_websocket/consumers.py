@@ -16,6 +16,8 @@ class GameConsumer(AsyncWebsocketConsumer):
     SEND_EXITING_MEMBER_DATA = 'send_exiting_member_data'
     SEND_EXITING_MEMBER_DATA_CLIENT_ACTION_TYPE = 'exiting_member_data'
     SEND_PLAYER_STONE_CLIENT_ACTION_TYPE = 'player_stone'
+    SEND_LOG_MESSAGE = 'send_log_message'
+    SEND_LOG_MESSAGE_CLIENT_ACTION_TYPE = 'log_message'
 
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_id']
@@ -138,6 +140,15 @@ class GameConsumer(AsyncWebsocketConsumer):
                              'displayName': event['left_user']['display_name'],
                              'userName': event['left_user']['user_name']
                          }}}))
+
+    async def send_log_message(self, event):
+        # {
+        #  'type': 'log_message,
+        #  'logMessage': ゲーム画面infoタブに表示したい情報
+        # }
+        await self.send(text_data=json.dumps(
+            {'message': {'type': GameConsumer.SEND_LOG_MESSAGE_CLIENT_ACTION_TYPE,
+                         'logMessage': event['log_message']}}))
 
     @database_sync_to_async
     def delete_belonging(self) -> Awaitable[None]:
