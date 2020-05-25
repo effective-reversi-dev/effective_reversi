@@ -75,6 +75,7 @@ class GameConsumer(AsyncWebsocketConsumer):
     async def chat_message(self, event):
         message = event['message']
         message['displayName'] = event['display_name']
+        message['userName'] = event['user_name']
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
