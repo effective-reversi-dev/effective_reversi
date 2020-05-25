@@ -34,7 +34,8 @@ async def test_game_consumer_send_msg():
     assert response == json.dumps({'message': {
         'data': {'message': test_message},
         'type': test_type,
-        'displayName': dummy_user.display_name}
+        'displayName': dummy_user.display_name,
+        'userName': dummy_user.username}
     })
     # Close
     await communicator.disconnect()
