@@ -39,7 +39,7 @@ class GameChat extends React.Component {
           </div>
         </div>
       );
-      return info.displayName === this.props.displayName ? (
+      return info.userName === this.props.userName ? (
         <div className="balloon-mine" key={info.id}>
           {balloon}
         </div>
@@ -86,7 +86,7 @@ class GameChat extends React.Component {
 GameChat.propTypes = {
   chatInfo: PropTypes.arrayOf(PropTypes.object).isRequired,
   onSendChatInfo: PropTypes.func.isRequired,
-  displayName: PropTypes.string.isRequired
+  userName: PropTypes.string.isRequired
 };
 
 export default GameChat;

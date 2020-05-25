@@ -8,8 +8,8 @@ const { sendChatInfo } = chatActions;
 
 const mapStateToProps = state => {
   const { chatInfo } = state.game.panels.chat;
-  const { displayName } = state.userInfo.userInfo;
-  return { chatInfo, displayName };
+  const { userName } = state.userInfo.userInfo;
+  return { chatInfo, userName };
 };
 
 export const mapDispatchToProps = dispatch => ({
