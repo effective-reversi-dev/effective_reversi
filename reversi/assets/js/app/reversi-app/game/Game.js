@@ -36,7 +36,7 @@ const mapDispatchToProps = dispatch => ({
       displayExitDialog({
         exitTitle: '退出しますか？',
         exitDescription:
-          'ゲーム画面から移動しますか?　移動した場合負けになります。',
+          'ゲーム画面から移動しますか?　既にゲームが始まっている場合再入室することはできません。また、対戦中のプレイヤーが退出した場合は負けになります。',
         shouldDisplayCancel: true
       })
     ),
