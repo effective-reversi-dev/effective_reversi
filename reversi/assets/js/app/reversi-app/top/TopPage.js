@@ -42,8 +42,12 @@ const TopPage = props => {
   );
 };
 
+TopPage.defaultProps = {
+  userName: ''
+};
+
 TopPage.propTypes = {
-  userName: PropTypes.string.isRequired,
+  userName: PropTypes.string,
   getUserInfo: PropTypes.func.isRequired
 };
 
