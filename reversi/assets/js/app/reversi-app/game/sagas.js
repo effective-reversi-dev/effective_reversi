@@ -1,10 +1,11 @@
-import { all, take, call } from 'redux-saga/effects';
+import { all, take, call, put } from 'redux-saga/effects';
 
 import { post } from '../api/http/methods';
-import { REQUEST_STATUS } from '../room/modules';
 import { panelActions } from './parts/modules';
+import { informationActions } from './panels/gameinfo/modules';
 
 const { startGame } = panelActions;
+const { registerLogMessage } = informationActions;
 
 const START_GAME_URL = 'start_game';
 
@@ -12,18 +13,13 @@ async function startGameAsPlayer(roomInfo) {
   return post(START_GAME_URL, roomInfo)
     .then(responseObj => {
       if (responseObj.succeeded === false) {
-        return {
-          payload: {
-            status: REQUEST_STATUS.FAIL,
-            errMsg: responseObj.err_msg
-          }
-        };
+        return { errMsg: responseObj.err_msg };
       }
-      return { payload: { status: REQUEST_STATUS.SUCCESS, errMsg: null } };
+      return { errMsg: null };
     })
     .catch(errorObj => {
-      const err = { status: REQUEST_STATUS.FAIL, errMsg: errorObj.message };
-      return { err };
+      // サーバ側でハンドルする想定で無視。
+      return { ignored: errorObj.message, errMsg: null };
     });
 }
 
@@ -31,7 +27,10 @@ function* gameStartSaga() {
   while (true) {
     const action = yield take([startGame]);
     const roomInfo = action.payload;
-    yield call(startGameAsPlayer, roomInfo); // TODO: add put
+    const { errMsg } = yield call(startGameAsPlayer, roomInfo);
+    if (errMsg !== null) {
+      yield put(registerLogMessage({ logMessage: errMsg }));
+    }
   }
 }
 

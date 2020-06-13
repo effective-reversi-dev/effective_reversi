@@ -40,10 +40,9 @@ def start_game(request):
 
 
 def _num_of_players_not_enough(player_num: int, room_id: int):
-    error_message = f'プレイヤーの人数が不足しているため、ゲームを開始できませんでした。' \
-        f'(現在プレイヤー人数： {player_num}, 必要プレイヤー人数: 2)'
-    send_log_message(room_id, error_message)
-    return JsonResponse({'succeeded': False, 'err_msg': error_message})
+    return JsonResponse({'succeeded': False,
+                         'err_msg': f'プレイヤーの人数が不足しているため、ゲームを開始できませんでした。'
+                         f' (現在プレイヤー人数： {player_num}, 必要プレイヤー人数: 2)'})
 
 
 def _find_mismatched_data(room_id: int):
