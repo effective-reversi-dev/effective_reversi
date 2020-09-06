@@ -15,9 +15,7 @@ SECURE_HSTS_PRELOAD = True
 
 DEBUG = True
 
-ADMINS = (
-    ('Admin', 'polestar1592@yahoo.co.jp'),
-)
+ADMINS = []
 
 AUTH_USER_MODEL = 'userconfig.User'
 
