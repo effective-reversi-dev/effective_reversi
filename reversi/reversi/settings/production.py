@@ -9,11 +9,15 @@ DEBUG = False
 SECRET_KEY = config('SECRET_KEY')
 
 DATABASES = {
-    'default': config('DATABASE_URL', cast=db_url),
+    # 'default': config('DATABASE_URL', cast=db_url),
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': base_dir_join('db.sqlite3'),
+    }
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+ALLOWED_HOSTS = config('ALLOWED_HOSTS')
 
 STATIC_ROOT = base_dir_join('staticfiles')
 STATIC_URL = '/static/'
@@ -21,33 +25,33 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = base_dir_join('mediafiles')
 MEDIA_URL = '/media/'
 
-SERVER_EMAIL = 'xxx@xx.ne.jp'
+# SERVER_EMAIL = 'xxx@xx.ne.jp'
 
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = config('SENDGRID_USERNAME')
-EMAIL_HOST_PASSWORD = config('SENDGRID_PASSWORD')
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.sendgrid.net'
+# EMAIL_HOST_USER = config('SENDGRID_USERNAME')
+# EMAIL_HOST_PASSWORD = config('SENDGRID_PASSWORD')
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
 
 # Security
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-SECURE_HSTS_SECONDS = 3600
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SECURE_SSL_REDIRECT = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# SECURE_HSTS_SECONDS = 3600
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
-SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_BROWSER_XSS_FILTER = True
-X_FRAME_OPTIONS = 'DENY'
+# SECURE_CONTENT_TYPE_NOSNIFF = True
+# SECURE_BROWSER_XSS_FILTER = True
+# X_FRAME_OPTIONS = 'DENY'
 
 # Webpack
 WEBPACK_LOADER['DEFAULT']['CACHE'] = True
 
 # Celery
-CELERY_BROKER_URL = config('REDIS_URL')
-CELERY_RESULT_BACKEND = config('REDIS_URL')
-CELERY_SEND_TASK_ERROR_EMAILS = True
+# CELERY_BROKER_URL = config('REDIS_URL')
+# CELERY_RESULT_BACKEND = config('REDIS_URL')
+# CELERY_SEND_TASK_ERROR_EMAILS = True
 
 # Whitenoise
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
