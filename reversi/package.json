@@ -92,7 +92,7 @@
     "prop-types": "^15.6.2",
     "react": "^16.8.6",
     "react-cookie": "3.0.8",
-    "react-dev-utils": "^8.0.0",
+    "react-dev-utils": "^11.0.4",
     "react-dom": "^16.8.6",
     "react-hot-loader": "^4.8.4",
     "react-redux": "^6.0.0",
